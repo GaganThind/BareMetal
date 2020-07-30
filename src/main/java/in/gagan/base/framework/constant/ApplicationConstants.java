@@ -8,7 +8,7 @@ package in.gagan.base.framework.constant;
  */
 public final class ApplicationConstants {
 	
-	private ApplicationConstants() { /** Private Constructor */}
+	private ApplicationConstants() { }
 	
 	public static final char CHAR_Y = 'Y';
 	public static final char CHAR_N = 'N';

@@ -8,7 +8,7 @@ package in.gagan.base.framework.constant;
  */
 public final class PersistenceConstants {
 	
-	private PersistenceConstants() { /** Private Constructor */}
+	private PersistenceConstants() { }
 	
 	public static final String HIBERNATE_CONF_DIALECT = "hibernate.dialect";
 	public static final String HIBERNATE_CONF_SHOW_SQL = "hibernate.show_sql";
