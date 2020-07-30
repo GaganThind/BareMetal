@@ -64,7 +64,7 @@ public class LoggingAspect {
 	 * @throws Throwable throws IllegalArgumentException
 	 */
 	@Around("baseFrameworkPointcut() || applicationPointcut() || springBeanPointcut()")
-	public void logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+	public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
 		if(logger.isDebugEnabled()) {
 			logger.debug("Enter: {}.{}() with argument[s] = {}", 
 					joinPoint.getSignature().getDeclaringTypeName(),
@@ -72,13 +72,15 @@ public class LoggingAspect {
 					Arrays.toString(joinPoint.getArgs()));
 		}
 		
-		joinPoint.proceed();
+		Object result = joinPoint.proceed();
 		
 		if(logger.isDebugEnabled()) {
 			logger.debug("Exit: {}.{}()", 
 					joinPoint.getSignature().getDeclaringTypeName(),
 					joinPoint.getSignature().getName());
 		}
+		
+		return result;
 	}
 	
 	/**
