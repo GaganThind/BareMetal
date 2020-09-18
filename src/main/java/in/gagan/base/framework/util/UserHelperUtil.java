@@ -24,14 +24,12 @@ public final class UserHelperUtil {
 	}
 	
 	public static UserSecurity convertToUserSecurity(UserDTO user) {
-		Set<Role> roles = convertDTOToRole(user.getUserRole());
 		return new UserSecurity(user.getPassword(), 
 				LocalDateTime.now().plusDays(ApplicationConstants.PASSWORD_EXPIRE_DAYS), 
 				ApplicationConstants.DEFAULT_FAILED_LOGIN_ATTEMPTS, 
 				ApplicationConstants.CHAR_N, 
-				roles, 
+				convertDTOToRole(user.getUserRole()), 
 				convertToUser(user));
-		
 	}
 	
 	public static Set<UserRoleDTO> convertRoleToDTO(Set<Role> roles) {

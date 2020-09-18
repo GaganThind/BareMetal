@@ -54,28 +54,33 @@ public class Role extends AbstractBaseEntity {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (int) (roleId ^ (roleId >>> 32));
+		result = prime * result + ((roleName == null) ? 0 : roleName.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if(this == obj) {
+		if (this == obj)
 			return true;
-		} else if(obj == null) {
+		if (obj == null)
 			return false;
-		} else if(getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
-		
 		Role other = (Role) obj;
-		
-		return roleId == other.roleId;
+		if (roleId != other.roleId)
+			return false;
+		if (roleName == null) {
+			if (other.roleName != null)
+				return false;
+		} else if (!roleName.equals(other.roleName))
+			return false;
+		return true;
 	}
-
+	
 }
