@@ -1,5 +1,6 @@
-package in.gagan.base.framework.model;
+package in.gagan.base.framework.entity;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,8 +19,10 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import in.gagan.base.framework.constant.ApplicationConstants;
+
 /**
- * Model/Entity representing the UserSecurity table 
+ * Entity representing the UserSecurity table 
  * 
  * @author gaganthind
  *
@@ -27,18 +30,21 @@ import org.hibernate.annotations.FetchMode;
 @Entity
 @Table(name = "USER_SECURITY")
 @NamedQuery(name = "HQL_GET_ALL_USER_SECURITY", query = "select us from UserSecurity us join fetch us.user u")
-public class UserSecurity extends AbstractBaseModel {
+public class UserSecurity extends AbstractBaseEntity {
 	
 	/**
 	 * Serial version id
 	 */
 	private static final long serialVersionUID = 1563028499730085442L;
-
+	
 	@Id
 	private long securityId;
 	
 	@Column(name = "PASSWORD", nullable = false, length = 100)
 	private String password;
+	
+	@Column(name = "PASSWORD_EXPIRE_DATE", nullable = false)
+	private LocalDateTime passwordExpireDate;
 
 	@Column(name = "FAILED_LOGIN_ATTEMPTS", nullable = false)
 	private short failedLoginAttempts;
@@ -56,6 +62,19 @@ public class UserSecurity extends AbstractBaseModel {
 	@JoinColumn(name = "USER_ID")
 	private User user;
 	
+	public UserSecurity() { super(); }
+	
+	public UserSecurity(String password, LocalDateTime passwordExpireDate, short failedLoginAttempts, char accountLocked, Set<Role> userRole, 
+			User user) {
+		super(ApplicationConstants.CHAR_Y);
+		this.password = password;
+		this.passwordExpireDate = passwordExpireDate;
+		this.failedLoginAttempts = failedLoginAttempts;
+		this.accountLocked = accountLocked;
+		this.userRole = null == userRole ? new HashSet<>() : userRole;
+		this.user = user;
+	}
+	
 	public long getUserSecurityId() {
 		return securityId;
 	}
@@ -70,6 +89,14 @@ public class UserSecurity extends AbstractBaseModel {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public LocalDateTime getPasswordExpireDate() {
+		return passwordExpireDate;
+	}
+
+	public void setPasswordExpireDate(LocalDateTime passwordExpireDate) {
+		this.passwordExpireDate = passwordExpireDate;
 	}
 
 	public short getFailedLoginAttempts() {
@@ -97,7 +124,6 @@ public class UserSecurity extends AbstractBaseModel {
 	}
 	
 	public void addRole(Role role) {
-		role.setUserSecurity(this);
 		this.userRole.add(role);
 	}
 

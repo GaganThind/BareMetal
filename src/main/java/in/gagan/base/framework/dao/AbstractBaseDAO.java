@@ -3,18 +3,19 @@ package in.gagan.base.framework.dao;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
-import in.gagan.base.framework.model.AbstractBaseModel;
+import in.gagan.base.framework.entity.AbstractBaseEntity;
 
 /**
  * The Base DAO for all the DAO classes. This class provides the commonly used CRUD methods. 
@@ -25,9 +26,9 @@ import in.gagan.base.framework.model.AbstractBaseModel;
  * @param <K>
  */
 @Repository
-public abstract class AbstractBaseDAO<E extends AbstractBaseModel, K extends Serializable> implements BaseDAO<E, K> {
+public abstract class AbstractBaseDAO<E extends AbstractBaseEntity, K extends Serializable> implements BaseDAO<E, K> {
 	
-	private static final String ITERAL_FROM = "from ";
+	protected static final String ITERAL_FROM = "from ";
 
 	@PersistenceContext
 	public EntityManager entityManager;
@@ -59,8 +60,8 @@ public abstract class AbstractBaseDAO<E extends AbstractBaseModel, K extends Ser
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<E> findAll() {
-		return entityManager.createQuery(ITERAL_FROM + getPersistentClass().getSimpleName()).getResultList();
+	public Optional<Iterable<E>> findAll() {
+		return Optional.ofNullable(entityManager.createQuery(ITERAL_FROM + getPersistentClass().getSimpleName()).getResultList());
 	}
 	
 	/**
@@ -72,8 +73,8 @@ public abstract class AbstractBaseDAO<E extends AbstractBaseModel, K extends Ser
 	 * @throws IllegalArgumentException if {@code id} is {@literal null}.
 	 */
 	@Override
-	public E findById(K id) {
-		return entityManager.find(getPersistentClass(), id);
+	public Optional<E> findById(K id) {
+		return Optional.ofNullable(entityManager.find(getPersistentClass(), id));
 	}
 	
 	/**
@@ -86,7 +87,7 @@ public abstract class AbstractBaseDAO<E extends AbstractBaseModel, K extends Ser
 	 */
 	@Override
 	public boolean existsById(K id) {
-		return null != findById(id);
+		return findById(id).isPresent();
 	}
 
 	/**
@@ -96,8 +97,8 @@ public abstract class AbstractBaseDAO<E extends AbstractBaseModel, K extends Ser
 	 * @return
 	 */
 	@Override
-	public Iterable<E> findAllById(Iterable<K> ids) {
-		return entityManager.unwrap(Session.class).byMultipleIds(getPersistentClass()).multiLoad((List<K>) ids);
+	public Optional<Iterable<E>> findAllById(Iterable<K> ids) {
+		return Optional.ofNullable(entityManager.unwrap(Session.class).byMultipleIds(getPersistentClass()).multiLoad((List<K>) ids));
 	}
 
 	/**
@@ -105,8 +106,8 @@ public abstract class AbstractBaseDAO<E extends AbstractBaseModel, K extends Ser
 	 */
 	@Override
 	public long count() {
-		Collection<E> entities = (Collection<E>) findAll();
-		return CollectionUtils.isEmpty(entities) ? 0 : entities.size();
+		Iterable<E> entities = findAll().orElse(Collections.emptyList());
+		return ((Collection<E>) entities).size();
 	}
 	
 	/**
@@ -158,10 +159,7 @@ public abstract class AbstractBaseDAO<E extends AbstractBaseModel, K extends Ser
 	 */
 	@Override
 	public void hardDeleteById(K id) {
-		E entity = findById(id);
-		if (null != entity) {
-			hardDelete(entity);
-		}
+		findById(id).ifPresent(e -> hardDelete(e));
 	}
 
 	/**
@@ -196,10 +194,7 @@ public abstract class AbstractBaseDAO<E extends AbstractBaseModel, K extends Ser
 	 */
 	@Override
 	public void hardDeleteAll() {
-		Iterable<E> entities = findAll();
-		if (null != entities) {
-			hardDeleteAll(entities);
-		}
+		findAll().ifPresent(e -> hardDeleteAll(e));
 	}
 	
 	/**
@@ -210,10 +205,7 @@ public abstract class AbstractBaseDAO<E extends AbstractBaseModel, K extends Ser
 	 */
 	@Override
 	public void deleteById(K id) {
-		E entity = findById(id);
-		if (null != entity) {
-			delete(entity);
-		}
+		findById(id).ifPresent(e -> delete(e));
 	}
 
 	/**
@@ -247,10 +239,7 @@ public abstract class AbstractBaseDAO<E extends AbstractBaseModel, K extends Ser
 	 */
 	@Override
 	public void deleteAll() {
-		Iterable<E> entities = findAll();
-		if (null != entities) {
-			deleteAll(entities);
-		}
+		findAll().ifPresent(e -> deleteAll(e));
 	}
 	
 }

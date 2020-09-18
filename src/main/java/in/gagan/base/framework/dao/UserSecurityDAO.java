@@ -1,10 +1,10 @@
 package in.gagan.base.framework.dao;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import in.gagan.base.framework.model.UserSecurity;
+import in.gagan.base.framework.entity.UserSecurity;
 
 /**
  * This class is used to CRUD operations on the UserSecurity table using DAO pattern
@@ -20,8 +20,8 @@ public class UserSecurityDAO extends AbstractBaseDAO<UserSecurity, Long> {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<UserSecurity> findAll() {
-		return entityManager.createNamedQuery("HQL_GET_ALL_USER_SECURITY").getResultList();
+	public Optional<Iterable<UserSecurity>> findAll() {
+		return Optional.ofNullable(entityManager.createNamedQuery("HQL_GET_ALL_USER_SECURITY").getResultList());
 	}
 	
 }

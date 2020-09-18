@@ -1,6 +1,6 @@
-package in.gagan.base.framework.model;
+package in.gagan.base.framework.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,20 +9,33 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import in.gagan.base.framework.constant.ApplicationConstants;
+
 /**
- * Model/Entity representing the User table 
+ * Entity representing the User table 
  * 
  * @author gaganthind
  *
  */
 @Entity
 @Table(name="USERS")
-public class User extends AbstractBaseModel {
+public class User extends AbstractBaseEntity {
 
 	/**
 	 * Serial Version
 	 */
 	private static final long serialVersionUID = -2144175799559542686L;
+	
+	public User() { super(); }
+	
+	public User(String firstName, String lastName, String email, LocalDate dob, char gender) {
+		super(ApplicationConstants.CHAR_Y);
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.dob = dob;
+		this.gender = gender;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +52,7 @@ public class User extends AbstractBaseModel {
 	private String email;
 	
 	@Column(name = "DOB", nullable = true)
-	private LocalDateTime dob;
+	private LocalDate dob;
 	
 	@Column(name = "GENDER", nullable = true)
 	private char gender;
@@ -76,11 +89,11 @@ public class User extends AbstractBaseModel {
 		this.email = email;
 	}
 
-	public LocalDateTime getDob() {
+	public LocalDate getDob() {
 		return dob;
 	}
 
-	public void setDob(LocalDateTime dob) {
+	public void setDob(LocalDate dob) {
 		this.dob = dob;
 	}
 
@@ -114,5 +127,4 @@ public class User extends AbstractBaseModel {
 		
 		return userId == other.userId;
 	}
-
 }

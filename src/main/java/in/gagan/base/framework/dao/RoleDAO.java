@@ -2,7 +2,7 @@ package in.gagan.base.framework.dao;
 
 import org.springframework.stereotype.Repository;
 
-import in.gagan.base.framework.model.Role;
+import in.gagan.base.framework.entity.Role;
 
 /**
  * This class is used to CRUD operations on the Role table using DAO pattern

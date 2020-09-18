@@ -1,5 +1,10 @@
 package in.gagan.base.framework.dao;
 
+import java.io.Serializable;
+import java.util.Optional;
+
+import in.gagan.base.framework.entity.AbstractBaseEntity;
+
 /**
  * Base interface for all DAO classes
  * 
@@ -8,7 +13,7 @@ package in.gagan.base.framework.dao;
  * @param <E>
  * @param <K>
  */
-public interface BaseDAO<E, K> {
+public interface BaseDAO<E extends AbstractBaseEntity, K extends Serializable> {
 	
 	/**
 	 * Retrieves an entity by its id.
@@ -17,7 +22,7 @@ public interface BaseDAO<E, K> {
 	 * @return the entity with the given id or {@literal Optional#empty()} if none found
 	 * @throws IllegalArgumentException if {@code id} is {@literal null}.
 	 */
-	E findById(K id);
+	Optional<E> findById(K id);
 
 	/**
 	 * Returns whether an entity with the given id exists.
@@ -33,7 +38,7 @@ public interface BaseDAO<E, K> {
 	 *
 	 * @return all entities
 	 */
-	Iterable<E> findAll();
+	Optional<Iterable<E>> findAll();
 
 	/**
 	 * Returns all instances of the type with the given IDs.
@@ -41,7 +46,7 @@ public interface BaseDAO<E, K> {
 	 * @param ids
 	 * @return
 	 */
-	Iterable<E> findAllById(Iterable<K> ids);
+	Optional<Iterable<E>> findAllById(Iterable<K> ids);
 
 	/**
 	 * Returns the number of entities available.

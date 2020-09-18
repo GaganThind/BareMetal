@@ -1,4 +1,4 @@
-package in.gagan.base.framework.model;
+package in.gagan.base.framework.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -12,19 +12,26 @@ import org.hibernate.annotations.UpdateTimestamp;
 import in.gagan.base.framework.constant.ApplicationConstants;
 
 /**
- * Abstract Base model for all model classes. This abstract implementation of base model will have common columns.
+ * Abstract Base entity for all entity classes. This abstract implementation of base entity will have common columns.
  * 
  * @author gaganthind
  *
  */
 @MappedSuperclass
-public abstract class AbstractBaseModel implements Serializable, BaseModel {
+public abstract class AbstractBaseEntity implements Serializable, BaseEntity {
 	
 	/**
 	 * Serial Version
 	 */
 	private static final long serialVersionUID = -1287823037715243132L;
 	
+	public AbstractBaseEntity() { }
+	
+	public AbstractBaseEntity(char activeSw) {
+		super();
+		this.activeSw = activeSw;
+	}
+
 	@Column(name="ACTIVE_SW", nullable = false, length = 1)
 	private char activeSw = ApplicationConstants.CHAR_Y;
 	
