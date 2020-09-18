@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -31,27 +32,27 @@ public class GlobalExceptionHandler {
 	}
 	
 	/**
-	 * Global exception handler for UserNotFoundException
+	 * Global exception handler for UsernameExistException
 	 * 
 	 * @param ex
 	 * @param request
 	 * @return
 	 */
-	@ExceptionHandler(UserNotFoundException.class)
-	public final ResponseEntity<?> userNotFoundExceptionHandler(final Exception ex, WebRequest request) {
+	@ExceptionHandler(UsernameExistException.class)
+	public final ResponseEntity<?> usernameExistExceptionHandler(final Exception ex, WebRequest request) {
 		return new ResponseEntity<>(handleException(ex), HttpStatus.NOT_FOUND);
 	}
 	
 	/**
-	 * Global exception handler for UserNotAuthorizedException
+	 * Global exception handler for UserNameNotFoundException
 	 * 
 	 * @param ex
 	 * @param request
 	 * @return
 	 */
-	@ExceptionHandler(UserNotAuthorizedException.class)
-	public final ResponseEntity<?> userNotAuthorizedExceptionHandler(final Exception ex, WebRequest request) {
-		return new ResponseEntity<>(handleException(ex), HttpStatus.UNAUTHORIZED);
+	@ExceptionHandler(UsernameNotFoundException.class)
+	public final ResponseEntity<?> UsernameNotFoundException(final Exception ex, WebRequest request) {
+		return new ResponseEntity<>(handleException(ex), HttpStatus.NOT_FOUND);
 	}
 	
 	/**

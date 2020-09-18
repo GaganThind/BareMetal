@@ -48,8 +48,8 @@ public class JPAPersistenceConf {
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(dataSource);
-		em.setPackagesToScan(PersistenceConstants.BASE_MODELS_PATH, 
-				PersistenceConstants.APPLICATION_MODELS_PATH);
+		em.setPackagesToScan(PersistenceConstants.BASE_ENTITY_PATH, 
+				PersistenceConstants.APPLICATION_ENTITY_PATH);
 		em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		em.setJpaProperties(additionalProperties());
 

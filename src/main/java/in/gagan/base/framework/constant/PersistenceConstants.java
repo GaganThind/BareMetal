@@ -18,7 +18,7 @@ public final class PersistenceConstants {
 	public static final String HIBERNATE_CONF_CURRENT_SESSION_CONTEXT_CLASS = "hibernate.current_session_context_class";
 	public static final String HIBERNATE_CONF_CACHE_PROVIDER_CLASS = "hibernate.cache.provider_class";
 	
-	public static final String BASE_MODELS_PATH = "in.gagan.base.framework.model";
-	public static final String APPLICATION_MODELS_PATH = "in.gagan.base.framework.model";
+	public static final String BASE_ENTITY_PATH = "in.gagan.base.framework.entity";
+	public static final String APPLICATION_ENTITY_PATH = "in.gagan.base.framework.model";
 
 }
