@@ -1,15 +1,13 @@
 package in.gagan.base.framework.dto;
 
-import in.gagan.base.framework.entity.Role;
-
 public class UserRoleDTO {
 	
 	private String roleName;
 	
 	public UserRoleDTO() { }
 	
-	public UserRoleDTO(Role role) {
-		this.roleName = role.getRoleName();
+	public UserRoleDTO(String roleName) {
+		this.roleName = roleName;
 	}
 
 	public String getRoleName() {

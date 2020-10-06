@@ -5,9 +5,6 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import in.gagan.base.framework.constant.ApplicationConstants;
-import in.gagan.base.framework.entity.User;
-import in.gagan.base.framework.entity.UserSecurity;
 import in.gagan.base.framework.util.UserHelperUtil;
 
 public class UserDTO implements Serializable {
@@ -28,6 +25,8 @@ public class UserDTO implements Serializable {
 	private String password;
 
 	private LocalDate dob;
+	
+	private int age;
 
 	private char gender;
 	
@@ -47,17 +46,7 @@ public class UserDTO implements Serializable {
 		this.dob = dob;
 		this.gender = gender;
 		this.userRole = userRole;
-	}
-	
-	public UserDTO(User user, UserSecurity userSecurity) {
-		this.firstName = user.getFirstName();
-		this.lastName = user.getLastName();
-		this.username = new StringBuilder(user.getFirstName()).append(ApplicationConstants.BLANK).append(user.getLastName()).toString();
-		this.email = user.getEmail();
-		this.password = "";
-		this.dob = user.getDob();
-		this.gender = user.getGender();
-		this.userRole = UserHelperUtil.convertRoleToDTO(userSecurity.getUserRole());
+		this.age = UserHelperUtil.calculateAge(dob);
 	}
 
 	public String getFirstName() {
@@ -131,6 +120,14 @@ public class UserDTO implements Serializable {
 	public void setUserRole(Set<UserRoleDTO> userRole) {
 		this.userRole = userRole;
 	}
+	
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
 
 	@Override
 	public int hashCode() {
@@ -156,5 +153,5 @@ public class UserDTO implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 }

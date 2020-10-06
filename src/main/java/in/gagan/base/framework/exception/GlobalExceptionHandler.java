@@ -51,7 +51,19 @@ public class GlobalExceptionHandler {
 	 * @return
 	 */
 	@ExceptionHandler(UsernameNotFoundException.class)
-	public final ResponseEntity<?> UsernameNotFoundException(final Exception ex, WebRequest request) {
+	public final ResponseEntity<?> usernameNotFoundException(final Exception ex, WebRequest request) {
+		return new ResponseEntity<>(handleException(ex), HttpStatus.NOT_FOUND);
+	}
+	
+	/**
+	 * Global exception handler for NullPointerException
+	 * 
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
+	@ExceptionHandler(NullPointerException.class)
+	public final ResponseEntity<?> nullPointerException(final Exception ex, WebRequest request) {
 		return new ResponseEntity<>(handleException(ex), HttpStatus.NOT_FOUND);
 	}
 	

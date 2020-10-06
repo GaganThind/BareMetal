@@ -20,23 +20,27 @@ import in.gagan.base.framework.constant.PersistenceConstants;
  * 
  * @author gaganthind
  *
- *//*
+ */ /*
 @Configuration
 @EnableTransactionManagement
 public class HibernatePersistenceConf {
 
-	@Autowired
-	private DataSource dataSource;
+	private final DataSource dataSource;
 
+	private final Environment environment;
+	
 	@Autowired
-	private Environment environment;
+	public HibernatePersistenceConf(DataSource dataSource, Environment environment) {
+		this.dataSource = dataSource;
+		this.environment = environment;
+	}
 
 	@Autowired
 	@Bean(name = "sessionFactory")
 	public LocalSessionFactoryBean getSessionFactory() {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource);
-		sessionFactory.setPackagesToScan(PersistenceConstants.BASE_MODELS_PATH);
+		sessionFactory.setPackagesToScan(PersistenceConstants.BASE_ENTITY_PATH);
 		sessionFactory.setHibernateProperties(additionalProperties());
 		return sessionFactory;
 	}

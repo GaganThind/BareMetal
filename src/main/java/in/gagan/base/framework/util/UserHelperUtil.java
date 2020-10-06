@@ -1,8 +1,12 @@
 package in.gagan.base.framework.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.BeanUtils;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dto.UserDTO;
@@ -34,14 +38,37 @@ public final class UserHelperUtil {
 	
 	public static Set<UserRoleDTO> convertRoleToDTO(Set<Role> roles) {
 		return roles.stream()
+					.map(role -> role.getRoleName())
 					.map(UserRoleDTO::new)
 					.collect(Collectors.toSet());
 	}
 	
 	public static Set<Role> convertDTOToRole(Set<UserRoleDTO> roles) {
 		return roles.stream()
-					.map(role -> new Role(role.getRoleName()))
+					.map(role -> role.getRoleName())
+					.map(Role::new)
 					.collect(Collectors.toSet());
 	}
-
+	
+	public static int calculateAge(LocalDate inputDate) {
+		if (null == inputDate) {
+			return 0;
+		}
+		return Period.between(LocalDate.now(), inputDate).getYears();
+	}
+	
+	public static UserDTO convertToUserDTO(UserSecurity userSecurity) {
+		UserDTO userDTO = new UserDTO();
+		User user = new User();
+		BeanUtils.copyProperties(user, userDTO);
+		BeanUtils.copyProperties(userSecurity, userDTO,"password", "userRole");
+		userDTO.setUsername(new StringBuilder(user.getFirstName()).append(ApplicationConstants.BLANK).append(user.getLastName()).toString());
+		userDTO.setUserRole(convertRoleToDTO(userSecurity.getUserRole()));
+		return userDTO;
+	}
+	
+	public static UserRoleDTO converToUserRoleDTO(Role role) {
+		return new UserRoleDTO(role.getRoleName()); 
+	}
+	
 }

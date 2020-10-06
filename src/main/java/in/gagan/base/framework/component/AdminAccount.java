@@ -10,7 +10,7 @@ import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.entity.Role;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.entity.UserSecurity;
-import in.gagan.base.framework.enums.Roles;
+import static in.gagan.base.framework.enums.Roles.*;
 
 @Component
 public class AdminAccount {
@@ -41,7 +41,7 @@ public class AdminAccount {
 		
 		UserSecurity userSecurity = new UserSecurity(password, LocalDateTime.now().plusDays(Integer.valueOf(passwordExp)), 
 				(short) 0, ApplicationConstants.CHAR_N, null, user);
-		userSecurity.addRole(new Role(Roles.ADMIN.name()));
+		userSecurity.addRole(new Role(ADMIN.name()));
 		
 		return userSecurity;
 	}

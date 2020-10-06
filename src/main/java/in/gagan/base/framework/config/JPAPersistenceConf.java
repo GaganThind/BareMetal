@@ -30,14 +30,18 @@ public class JPAPersistenceConf {
 	/**
 	 * Default Spring data source
 	 */
-	@Autowired
-	private DataSource dataSource;
+	private final DataSource dataSource;
 
 	/**
 	 * Environment variable
 	 */
+	private final Environment environment;
+	
 	@Autowired
-	private Environment environment;
+	public JPAPersistenceConf(Environment environment, DataSource dataSource) {
+		this.dataSource = dataSource;
+		this.environment = environment;
+	}
 
 	/**
 	 * Default Entity Manager instance

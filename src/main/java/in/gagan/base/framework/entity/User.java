@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
+import in.gagan.base.framework.util.UserHelperUtil;
 
 /**
  * Entity representing the User table 
@@ -103,6 +104,10 @@ public class User extends AbstractBaseEntity {
 
 	public void setGender(char gender) {
 		this.gender = gender;
+	}
+	
+	public int getAge() {
+		return UserHelperUtil.calculateAge(getDob());
 	}
 	
 	@Override
