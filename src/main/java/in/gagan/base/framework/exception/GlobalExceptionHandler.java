@@ -21,13 +21,23 @@ public class GlobalExceptionHandler {
 	Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 	
 	/**
-	 * Convert the thrown exception into custom format using the Exception details class
+	 * Convert the thrown exception into custom format using the Exception details class and log it
 	 * 
 	 * @param ex
 	 * @return
 	 */
 	private final ExceptionDetail handleException(final Exception ex) {
 		logger.error("Exception with cause = {}", null != ex.toString() ? ex.toString() : "Unknown");
+		return new ExceptionDetail(ex);
+	}
+	
+	/**
+	 * Convert the thrown exception into custom format using the Exception details class
+	 * 
+	 * @param ex
+	 * @return
+	 */
+	private final ExceptionDetail handleExceptionWithoutLog(final Exception ex) {
 		return new ExceptionDetail(ex);
 	}
 	
@@ -40,7 +50,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(UsernameExistException.class)
 	public final ResponseEntity<?> usernameExistExceptionHandler(final Exception ex, WebRequest request) {
-		return new ResponseEntity<>(handleException(ex), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(handleExceptionWithoutLog(ex), HttpStatus.NOT_FOUND);
 	}
 	
 	/**
@@ -52,7 +62,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(UsernameNotFoundException.class)
 	public final ResponseEntity<?> usernameNotFoundException(final Exception ex, WebRequest request) {
-		return new ResponseEntity<>(handleException(ex), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(handleExceptionWithoutLog(ex), HttpStatus.NOT_FOUND);
 	}
 	
 	/**

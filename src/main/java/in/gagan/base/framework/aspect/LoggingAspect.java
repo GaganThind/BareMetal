@@ -1,6 +1,7 @@
 package in.gagan.base.framework.aspect;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -11,7 +12,10 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+
+import in.gagan.base.framework.exception.UsernameExistException;
 
 /**
  * This class provides the logging functionality by using spring AOP
@@ -91,10 +95,14 @@ public class LoggingAspect {
 	 */
 	@AfterThrowing(pointcut = "baseFrameworkPointcut() || applicationPointcut()", throwing = "ex")
 	public void logAfterThrowing(JoinPoint joinPoint, Throwable ex) {
-		logger.error("Exception in {}.{}() with cause = {}", 
-				joinPoint.getSignature().getDeclaringTypeName(),
-				joinPoint.getSignature().getName(), 
-				null != ex.toString() ? ex.toString() : "Unknown");
+		List<String> exceptionNotToLog = Arrays.asList(UsernameNotFoundException.class.getName(), UsernameExistException.class.getName());
+
+		if (!exceptionNotToLog.contains(ex.getClass().getName())) {
+			logger.error("Exception in {}.{}() with cause = {}", 
+					joinPoint.getSignature().getDeclaringTypeName(),
+					joinPoint.getSignature().getName(), 
+					null != ex.toString() ? ex.toString() : "Unknown");
+		}
 	}
 	
 }
