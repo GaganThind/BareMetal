@@ -43,7 +43,7 @@ public class UserRegisterationService {
 	}
 	
 	public String registerNewUser(UserDTO user) throws UsernameExistException {
-		this.userValidationSvc.validateIfProvidedUserIsCorrectlyFormed(user);
+		this.userValidationSvc.validateUserDTO(user);
 		
 		UserSecurity userSecurity = UserHelperUtil.convertToUserSecurity(user);
 		userSecurity.setPassword(this.passwordEncoder.encode(userSecurity.getPassword()));

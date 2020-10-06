@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static in.gagan.base.framework.enums.Permissions.*;
+import static in.gagan.base.framework.enums.UserPermissions.*;
 
-public enum Roles {
+public enum UserRoles {
 	
 	// Admin
 	ADMIN(new HashSet<>(Arrays.asList(ADMIN_WRITE, ADMIN_READ, USER_WRITE, USER_READ))),
@@ -19,13 +19,13 @@ public enum Roles {
 	// Empty
 	EMPTY(null);
 	
-	private final Set<Permissions> permissions;
+	private final Set<UserPermissions> permissions;
 	
-	Roles(Set<Permissions> permissions) {
+	UserRoles(Set<UserPermissions> permissions) {
 		this.permissions = permissions; 
 	}
 	
-	public Set<Permissions> getPermissions() {
+	public Set<UserPermissions> getPermissions() {
 		return this.permissions;
 	}
 }

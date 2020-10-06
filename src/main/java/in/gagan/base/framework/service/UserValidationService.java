@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import in.gagan.base.framework.dao.UserDAO;
 import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.dto.UserRoleDTO;
-import in.gagan.base.framework.enums.Roles;
+import in.gagan.base.framework.enums.UserRoles;
 import in.gagan.base.framework.exception.UsernameExistException;
 
 @Transactional
@@ -25,7 +25,7 @@ public class UserValidationService {
 		this.userDAO = userDAO;
 	}
 	
-	public boolean validateIfProvidedUserIsCorrectlyFormed(UserDTO user) throws UsernameExistException {
+	public boolean validateUserDTO(UserDTO user) throws UsernameExistException {
 		Objects.requireNonNull(user, "User Details not provided");
 		Objects.requireNonNull(user.getEmail(), "Email id is mandatory");
 		Objects.requireNonNull(user.getFirstName(), "First Name is mandatory");
@@ -51,16 +51,16 @@ public class UserValidationService {
 	private boolean validateIfCorrectRolesAreAssigned(Set<UserRoleDTO> userRoles) {
 		return userRoles.stream()
 				.map(this::convertToRoles)
-				.noneMatch(role -> Roles.EMPTY == role);
+				.noneMatch(role -> UserRoles.EMPTY == role);
 	}
 	
-	private Roles convertToRoles(UserRoleDTO userRole) {
+	private UserRoles convertToRoles(UserRoleDTO userRole) {
 		String role = userRole.getRoleName();
-		Roles value = Roles.EMPTY;
+		UserRoles value = UserRoles.EMPTY;
 		try {
-			value = Roles.valueOf(role);
+			value = UserRoles.valueOf(role);
 		} catch (IllegalArgumentException | NullPointerException ex) {
-			value = Roles.EMPTY;
+			// No value with the specified string exists in Roles enum
 		}
 		return value;
 	}

@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static in.gagan.base.framework.enums.Roles.*;
+import static in.gagan.base.framework.enums.UserRoles.*;
 import in.gagan.base.framework.service.CustomUserDetailsService;
 
 @Configuration

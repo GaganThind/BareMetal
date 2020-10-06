@@ -10,7 +10,7 @@ import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.entity.Role;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.entity.UserSecurity;
-import static in.gagan.base.framework.enums.Roles.*;
+import static in.gagan.base.framework.enums.UserRoles.*;
 
 @Component
 public class AdminAccount {

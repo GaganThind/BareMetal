@@ -25,3 +25,7 @@ hs_err_pid*
 
 # Logs folder
 Logs/
+
+# Files
+todo.txt
+Input.txt

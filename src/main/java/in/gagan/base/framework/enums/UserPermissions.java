@@ -1,6 +1,6 @@
 package in.gagan.base.framework.enums;
 
-public enum Permissions {
+public enum UserPermissions {
 	ADMIN_WRITE,
 	ADMIN_READ,
 	USER_WRITE,
