@@ -38,7 +38,8 @@ public class UserDataService {
 	}
 	
 	public List<UserDTO> fetchAllUsers() {
-		List<UserSecurity> userSecurity = (List<UserSecurity>) this.userSecurityDAO.findAll().orElse(Collections.emptyList());
+		List<UserSecurity> userSecurity = (List<UserSecurity>) this.userSecurityDAO.findAll()
+																					.orElse(Collections.emptyList());
 		return userSecurity.stream()
 							.map(UserHelperUtil::convertToUserDTO)
 							.collect(Collectors.toList());

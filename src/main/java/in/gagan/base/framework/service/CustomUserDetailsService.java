@@ -33,12 +33,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 		Set<UserRoleDTO> roles = userDetails.getUserRole();
 
 		Set<GrantedAuthority> authorities = roles.stream()
-												.map(role -> role.getRoleName())
+												.map(this::convertRoleName)
 												.map(SimpleGrantedAuthority::new)
 												.collect(Collectors.toSet());
 		
 		return new User(userDetails.getEmail(), userDetails.getPassword(), userDetails.isActive(), true, 
 				!userDetails.isPasswordExpired(), !userDetails.isAccountLocked(), authorities);
+	}
+	
+	private String convertRoleName(UserRoleDTO role) {
+		return new StringBuilder("ROLE_").append(role.getRoleName()).toString();
 	}
 
 }

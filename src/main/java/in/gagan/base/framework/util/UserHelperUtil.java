@@ -54,12 +54,12 @@ public final class UserHelperUtil {
 		if (null == inputDate) {
 			return 0;
 		}
-		return Period.between(LocalDate.now(), inputDate).getYears();
+		return Period.between(inputDate, LocalDate.now()).getYears();
 	}
 	
 	public static UserDTO convertToUserDTO(UserSecurity userSecurity) {
 		UserDTO userDTO = new UserDTO();
-		User user = new User();
+		User user = userSecurity.getUser();
 		BeanUtils.copyProperties(user, userDTO);
 		BeanUtils.copyProperties(userSecurity, userDTO,"password", "userRole");
 		userDTO.setUsername(new StringBuilder(user.getFirstName()).append(ApplicationConstants.BLANK).append(user.getLastName()).toString());

@@ -43,6 +43,11 @@ public class UserController {
 		return this.userDataSvc.fetchUserDetailsByEmail(email);
 	}
 	
+	@GetMapping(value = "/admin/{email}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public UserDTO fetchAdminByEmail(@PathVariable String email) {
+		return this.userDataSvc.fetchUserDetailsByEmail(email);
+	}
+	
 	@PreAuthorize(value = "hasRole('ROLE_ADMIN')")
 	@GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<UserDTO> fetchAllUsers() {
