@@ -14,10 +14,10 @@ public enum UserRoles {
 	
 	// User
 	USER(new HashSet<>(Arrays.asList(USER_WRITE, USER_READ))),
-	USER_READ_ONLY(new HashSet<>(Arrays.asList(USER_READ))),
+	USER_BASIC(new HashSet<>(Arrays.asList(USER_READ))),
 	
 	// Empty
-	EMPTY(null);
+	EMPTY(new HashSet<>());
 	
 	private final Set<UserPermissions> permissions;
 	

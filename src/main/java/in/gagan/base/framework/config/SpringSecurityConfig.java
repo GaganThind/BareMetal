@@ -35,7 +35,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 		.authorizeRequests()
             .antMatchers("/v1/register", "/h2-console/**").permitAll()
-            .antMatchers(HttpMethod.GET, "/v1/user/**").hasAnyRole(ADMIN_BASIC.name(), USER_READ_ONLY.name(), ADMIN.name(), USER.name())
+            .antMatchers(HttpMethod.GET, "/v1/user/**").hasAnyRole(ADMIN_BASIC.name(), USER_BASIC.name(), ADMIN.name(), USER.name())
             .antMatchers("/v1/user/**").hasAnyRole(ADMIN.name(), USER.name())
             .antMatchers(HttpMethod.GET,"/v1/admin/**").hasAnyRole(ADMIN.name(), ADMIN_BASIC.name())
             .antMatchers("/v1/admin/**").hasRole(ADMIN.name())
