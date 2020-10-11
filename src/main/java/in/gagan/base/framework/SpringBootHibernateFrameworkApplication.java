@@ -1,4 +1,4 @@
-package in.gagan;
+package in.gagan.base.framework;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

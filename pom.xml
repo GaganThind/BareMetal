@@ -9,7 +9,7 @@
 		<version>2.1.8.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>in.gagan</groupId>
+	<groupId>in.gagan.base.framework</groupId>
 	<artifactId>spring-boot-hibernate-framework</artifactId>
 	<version>1.0.0</version>
 	<name>BaseFramework</name>
