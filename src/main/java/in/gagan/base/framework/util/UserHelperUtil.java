@@ -19,21 +19,18 @@ public final class UserHelperUtil {
 	
 	private UserHelperUtil() { }
 	
-	public static User convertToUser(UserDTO user) {
-		return new User(user.getFirstName(), 
-				user.getLastName(), 
-				user.getEmail(), 
-				user.getDob(), 
-				user.getGender());
-	}
-	
-	public static UserSecurity convertToUserSecurity(UserDTO user) {
-		return new UserSecurity(user.getPassword(), 
-				LocalDateTime.now().plusDays(ApplicationConstants.PASSWORD_EXPIRE_DAYS), 
-				ApplicationConstants.DEFAULT_FAILED_LOGIN_ATTEMPTS, 
-				ApplicationConstants.CHAR_N, 
-				convertDTOToRole(user.getUserRole()), 
-				convertToUser(user));
+	public static UserSecurity convertUserDTOToUserSecurity(UserDTO userDTO, UserSecurity userSecurity) {
+		User user = new User();
+		BeanUtils.copyProperties(userDTO, user);
+		BeanUtils.copyProperties(userDTO, userSecurity);
+		
+		userSecurity.setPasswordExpireDate(LocalDateTime.now().plusDays(ApplicationConstants.PASSWORD_EXPIRE_DAYS));
+		userSecurity.setFailedLoginAttempts(ApplicationConstants.DEFAULT_FAILED_LOGIN_ATTEMPTS);
+		userSecurity.setAccountLocked(ApplicationConstants.CHAR_N);
+		userSecurity.setUserRole(convertDTOToRole(userDTO.getUserRole()));
+		userSecurity.setUser(user);
+		
+		return userSecurity;
 	}
 	
 	public static Set<UserRoleDTO> convertRoleToDTO(Set<Role> roles) {
@@ -57,18 +54,11 @@ public final class UserHelperUtil {
 		return Period.between(inputDate, LocalDate.now()).getYears();
 	}
 	
-	public static UserDTO convertToUserDTO(UserSecurity userSecurity) {
-		UserDTO userDTO = new UserDTO();
+	public static void convertUserSecurityToUserDTO(UserSecurity userSecurity, UserDTO userDTO) {
 		User user = userSecurity.getUser();
 		BeanUtils.copyProperties(user, userDTO);
 		BeanUtils.copyProperties(userSecurity, userDTO,"password", "userRole");
-		userDTO.setUsername(new StringBuilder(user.getFirstName()).append(ApplicationConstants.BLANK).append(user.getLastName()).toString());
 		userDTO.setUserRole(convertRoleToDTO(userSecurity.getUserRole()));
-		return userDTO;
-	}
-	
-	public static UserRoleDTO converToUserRoleDTO(Role role) {
-		return new UserRoleDTO(role.getRoleName()); 
 	}
 	
 }

@@ -13,23 +13,36 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import in.gagan.base.framework.dao.UserDAO;
+import in.gagan.base.framework.dao.UserSecurityDAO;
 import in.gagan.base.framework.dto.UserDetailsDTO;
 import in.gagan.base.framework.dto.UserRoleDTO;
+import in.gagan.base.framework.entity.UserSecurity;
+import in.gagan.base.framework.util.ExceptionHelperUtil;
 
 @Transactional
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 	
-	private final UserAuthenticationService userAuthSvc;
+	private final UserDAO userDAO;
 	
-	public CustomUserDetailsService(UserAuthenticationService userAuthSvc) {
-		this.userAuthSvc = userAuthSvc;
+	private final UserSecurityDAO userSecurityDAO;
+	
+	public CustomUserDetailsService(UserSecurityDAO userSecurityDAO, UserDAO userDAO) {
+		this.userSecurityDAO = userSecurityDAO;
+		this.userDAO = userDAO;
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		
+		in.gagan.base.framework.entity.User user = this.userDAO.findUserByEmail(email)
+				.orElseThrow(() -> ExceptionHelperUtil.throwUserNotFound(email));
+		
+		UserSecurity userSecurity = this.userSecurityDAO.findById(user.getUserId())
+										.orElseThrow(() -> ExceptionHelperUtil.throwUserNotFound(email));
 
-		UserDetailsDTO userDetails = this.userAuthSvc.fetchUserDetailsForAuthByEmail(email);
+		UserDetailsDTO userDetails = new UserDetailsDTO(userSecurity.getUser(), userSecurity);
 		Set<UserRoleDTO> roles = userDetails.getUserRole();
 
 		Set<GrantedAuthority> authorities = roles.stream()

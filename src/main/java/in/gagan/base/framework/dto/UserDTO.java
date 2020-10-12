@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.util.UserHelperUtil;
 
 public class UserDTO implements Serializable {
@@ -17,8 +18,6 @@ public class UserDTO implements Serializable {
 	private String firstName;
 
 	private String lastName;
-	
-	private String username;
 	
 	private String email;
 	
@@ -36,11 +35,10 @@ public class UserDTO implements Serializable {
 	
 	public UserDTO() { super(); }
 	
-	public UserDTO(String firstName, String lastName, String username, String email, String password, LocalDate dob, char gender,
+	public UserDTO(String firstName, String lastName, String email, String password, LocalDate dob, char gender,
 			Set<UserRoleDTO> userRole) {
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.dob = dob;
@@ -66,11 +64,7 @@ public class UserDTO implements Serializable {
 	}
 
 	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
+		return new StringBuilder(firstName).append(ApplicationConstants.BLANK).append(lastName).toString();
 	}
 
 	public String getEmail() {

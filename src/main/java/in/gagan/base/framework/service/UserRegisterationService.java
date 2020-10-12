@@ -3,11 +3,9 @@ package in.gagan.base.framework.service;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import in.gagan.base.framework.component.AdminAccount;
-import in.gagan.base.framework.dao.UserSecurityDAO;
 import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.entity.UserSecurity;
 import in.gagan.base.framework.exception.UsernameExistException;
@@ -19,37 +17,74 @@ public class UserRegisterationService {
 	
 	private final AdminAccount adminAccount;
 	
-	private final UserValidationService userValidationSvc;
-	
-	private final PasswordEncoder passwordEncoder;
-	
-	private final UserSecurityDAO userSecurityDAO;
+	private final UserDataService userDataService;
 	
 	@Autowired
-	public UserRegisterationService(UserValidationService userValidationSvc, AdminAccount adminAccount
-			, PasswordEncoder passwordEncoder, UserSecurityDAO userSecurityDAO) {
-		this.userValidationSvc = userValidationSvc;
+	public UserRegisterationService(AdminAccount adminAccount, UserDataService userDataService) {
 		this.adminAccount = adminAccount;
-		this.passwordEncoder = passwordEncoder;
-		this.userSecurityDAO = userSecurityDAO;
+		this.userDataService = userDataService;
 	}
 	
 	public void createAdminUser() {
 		UserSecurity userSecurity = this.adminAccount.getAdminDetails();
-		if (!this.userValidationSvc.validateIfUserExists(userSecurity.getUser().getEmail())) {
-			userSecurity.setPassword(this.passwordEncoder.encode(userSecurity.getPassword()));
-			this.userSecurityDAO.save(userSecurity);
+		
+		if (!this.userDataService.isUserPresent(userSecurity.getUser().getEmail())) {
+			this.userDataService.saveUser(userSecurity);
 		}
 	}
 	
 	public String registerNewUser(UserDTO user) throws UsernameExistException {
-		this.userValidationSvc.validateUserDTO(user);
+		UserDataValidator.validateUserDTO(user);
 		
-		UserSecurity userSecurity = UserHelperUtil.convertToUserSecurity(user);
-		userSecurity.setPassword(this.passwordEncoder.encode(userSecurity.getPassword()));
+		if (this.userDataService.isUserPresent(user.getEmail())) {
+			throw new UsernameExistException(user.getEmail());
+		}
 		
-		this.userSecurityDAO.save(userSecurity);
+		insertUser(user);
+		
 		return user.getUsername();
 	}
-
+	
+	public UserDTO fetchUser(String email) {
+		UserDataValidator.validateEmail(email);
+		UserDTO user = new UserDTO();
+		UserSecurity userSecurity = this.userDataService.fetchUserSecurityByEmail(email);
+		UserHelperUtil.convertUserSecurityToUserDTO(userSecurity, user);
+		return user;
+	}
+	
+	public UserDTO updateOrCreateUser(UserDTO user) {
+		if (this.userDataService.isUserPresent(user.getEmail())) {
+			UserDataValidator.validateUserDTOforUpdate(user);
+			updateUser(user);
+		} else {
+			UserDataValidator.validateUserDTO(user);
+			insertUser(user);
+		}
+		
+		return user;
+	}
+	
+	public void deleteUser(String email) {
+		UserDataValidator.validateEmail(email);
+		this.userDataService.deleteUser(email);
+	}
+	
+	public void hardDeleteUser(String email) {
+		UserDataValidator.validateEmail(email);
+		this.userDataService.hardDeleteUser(email);
+	}
+	
+	private void insertUser(UserDTO user) {
+		UserSecurity userSecurity = new UserSecurity();
+		UserHelperUtil.convertUserDTOToUserSecurity(user, userSecurity);
+		this.userDataService.saveUser(userSecurity);
+	}
+	
+	private void updateUser(UserDTO user) {
+		UserSecurity userSecurity = new UserSecurity();
+		UserHelperUtil.convertUserDTOToUserSecurity(user, userSecurity);
+		this.userDataService.updateUser(userSecurity);
+	}
+	
 }

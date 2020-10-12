@@ -1,57 +1,55 @@
 package in.gagan.base.framework.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.exception.UsernameExistException;
 import in.gagan.base.framework.service.UserRegisterationService;
-import in.gagan.base.framework.service.UserDataService;
 
 @RestController
-@RequestMapping(value = "/v1")
+@RequestMapping(value = "/v1/users")
 public class UserController {
-	
-	private final UserDataService userDataSvc;
 	
 	private final UserRegisterationService userRegistrationSvc;
 	
 	@Autowired
-	public UserController(UserDataService userDataSvc, UserRegisterationService userRegistrationSvc) {
-		this.userDataSvc = userDataSvc;
+	public UserController(UserRegisterationService userRegistrationSvc) {
 		this.userRegistrationSvc = userRegistrationSvc;
 	}
 	
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	@ResponseBody
-	public String registerUser(@RequestBody UserDTO user) throws UsernameExistException {
-		return this.userRegistrationSvc.registerNewUser(user);
+	public ResponseEntity<String> registerUser(@RequestBody UserDTO user) throws UsernameExistException {
+		String userName = this.userRegistrationSvc.registerNewUser(user);
+		return new ResponseEntity<String>(userName + ": user Registration Successfull!!!", HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/user/{email}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserDTO fetchUserByEmail(@PathVariable String email) {
-		return this.userDataSvc.fetchUserDetailsByEmail(email);
+	@GetMapping(value = "/{email}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UserDTO> fetchUser(@PathVariable String email) {
+		UserDTO userDTO = this.userRegistrationSvc.fetchUser(email);
+		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/admin/{email}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserDTO fetchAdminByEmail(@PathVariable String email) {
-		return this.userDataSvc.fetchUserDetailsByEmail(email);
+	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO user) {
+		UserDTO userDTO = this.userRegistrationSvc.updateOrCreateUser(user);
+		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 	}
 	
-	@PreAuthorize(value = "hasRole('ROLE_ADMIN')")
-	@GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<UserDTO> fetchAllUsers() {
-		return this.userDataSvc.fetchAllUsers();
+	@DeleteMapping(value = "/{email}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> deleteUser(@PathVariable String email) {
+		this.userRegistrationSvc.deleteUser(email);
+		return new ResponseEntity<String>("Deleted Successfully!!!", HttpStatus.OK);
 	}
 	
 }
