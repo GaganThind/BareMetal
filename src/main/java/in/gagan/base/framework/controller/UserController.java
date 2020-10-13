@@ -40,6 +40,12 @@ public class UserController {
 		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 	}
 	
+	@GetMapping(consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UserDTO> fetchUserWithRequestBody(@RequestBody String email) {
+		UserDTO userDTO = this.userRegistrationSvc.fetchUser(email);
+		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
+	}
+	
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO user) {
 		UserDTO userDTO = this.userRegistrationSvc.updateOrCreateUser(user);
@@ -48,6 +54,12 @@ public class UserController {
 	
 	@DeleteMapping(value = "/{email}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> deleteUser(@PathVariable String email) {
+		this.userRegistrationSvc.deleteUser(email);
+		return new ResponseEntity<String>("Deleted Successfully!!!", HttpStatus.OK);
+	}
+	
+	@DeleteMapping(consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> deleteUserWithRequestBody(@RequestBody String email) {
 		this.userRegistrationSvc.deleteUser(email);
 		return new ResponseEntity<String>("Deleted Successfully!!!", HttpStatus.OK);
 	}

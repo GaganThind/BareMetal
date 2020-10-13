@@ -14,10 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import in.gagan.base.framework.dao.UserDAO;
-import in.gagan.base.framework.dao.UserSecurityDAO;
 import in.gagan.base.framework.dto.UserDetailsDTO;
 import in.gagan.base.framework.dto.UserRoleDTO;
-import in.gagan.base.framework.entity.UserSecurity;
 import in.gagan.base.framework.util.ExceptionHelperUtil;
 
 @Transactional
@@ -26,10 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	private final UserDAO userDAO;
 	
-	private final UserSecurityDAO userSecurityDAO;
-	
-	public CustomUserDetailsService(UserSecurityDAO userSecurityDAO, UserDAO userDAO) {
-		this.userSecurityDAO = userSecurityDAO;
+	public CustomUserDetailsService(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
 
@@ -39,10 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		in.gagan.base.framework.entity.User user = this.userDAO.findUserByEmail(email)
 				.orElseThrow(() -> ExceptionHelperUtil.throwUserNotFound(email));
 		
-		UserSecurity userSecurity = this.userSecurityDAO.findById(user.getUserId())
-										.orElseThrow(() -> ExceptionHelperUtil.throwUserNotFound(email));
-
-		UserDetailsDTO userDetails = new UserDetailsDTO(userSecurity.getUser(), userSecurity);
+		UserDetailsDTO userDetails = new UserDetailsDTO(user);
 		Set<UserRoleDTO> roles = userDetails.getUserRole();
 
 		Set<GrantedAuthority> authorities = roles.stream()

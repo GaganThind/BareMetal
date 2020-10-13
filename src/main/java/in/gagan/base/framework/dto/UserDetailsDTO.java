@@ -7,7 +7,6 @@ import java.util.Set;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.entity.User;
-import in.gagan.base.framework.entity.UserSecurity;
 import in.gagan.base.framework.util.UserHelperUtil;
 
 public class UserDetailsDTO implements Serializable {
@@ -31,13 +30,13 @@ public class UserDetailsDTO implements Serializable {
 	
 	public UserDetailsDTO() { }
 	
-	public UserDetailsDTO(User user, UserSecurity userSecurity) {
-		this.password = userSecurity.getPassword();
-		this.passwordExpired = checkIfPasswordExpired(userSecurity);
+	public UserDetailsDTO(User user) {
+		this.password = user.getPassword();
+		this.passwordExpired = checkIfPasswordExpired(user);
 		this.email = user.getEmail();
-		this.accountLocked = userSecurity.isAccountLocked() == ApplicationConstants.CHAR_Y;
+		this.accountLocked = user.isAccountLocked() == ApplicationConstants.CHAR_Y;
 		this.activeSw = user.isActive() == ApplicationConstants.CHAR_Y;
-		this.userRole = UserHelperUtil.convertRoleToDTO(userSecurity.getUserRole());
+		this.userRole = UserHelperUtil.convertRoleToDTO(user.getUserRole());
 	}
 
 	public String getPassword() {
@@ -64,8 +63,8 @@ public class UserDetailsDTO implements Serializable {
 		return userRole;
 	}
 	
-	private boolean checkIfPasswordExpired(UserSecurity userSecurity) {
-		return LocalDateTime.now().isAfter(userSecurity.getPasswordExpireDate());
+	private boolean checkIfPasswordExpired(User user) {
+		return LocalDateTime.now().isAfter(user.getPasswordExpireDate());
 	}
 
 	@Override

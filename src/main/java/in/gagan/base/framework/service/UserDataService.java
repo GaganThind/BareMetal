@@ -1,5 +1,7 @@
 package in.gagan.base.framework.service;
 
+import java.time.LocalDateTime;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,54 +9,51 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dao.UserDAO;
-import in.gagan.base.framework.dao.UserSecurityDAO;
 import in.gagan.base.framework.entity.User;
-import in.gagan.base.framework.entity.UserSecurity;
 import in.gagan.base.framework.util.ExceptionHelperUtil;
 
 @Transactional
 @Service
 public class UserDataService {
 	
-	private final UserSecurityDAO userSecurityDAO;
-	
 	private final UserDAO userDAO;
 	
 	private final PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public UserDataService(UserSecurityDAO userSecurityDAO, UserDAO userDAO, PasswordEncoder passwordEncoder) {
-		this.userSecurityDAO = userSecurityDAO;
+	public UserDataService(UserDAO userDAO, PasswordEncoder passwordEncoder) {
 		this.userDAO = userDAO;
 		this.passwordEncoder = passwordEncoder;
 	}
 	
-	public UserSecurity fetchUserSecurityByEmail(String email) throws UsernameNotFoundException {
+	public User fetchUserByEmail(String email) throws UsernameNotFoundException {
 		User user = this.userDAO.findUserByEmail(email)
 								.orElseThrow(() -> ExceptionHelperUtil.throwUserNotFound(email));
-		UserSecurity userSecurity = this.userSecurityDAO.findById(user.getUserId())
-														.orElseThrow(() -> ExceptionHelperUtil.throwUserNotFound(email));
-		return userSecurity;
+		return user;
 	}
 	
-	public void saveUser(UserSecurity userSecurity) {
-		userSecurity.setPassword(this.passwordEncoder.encode(userSecurity.getPassword()));
-		this.userSecurityDAO.save(userSecurity);
+	public void saveUser(User user) {
+		user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+		if (null == user.getPasswordExpireDate()) {
+			user.setPasswordExpireDate(LocalDateTime.now().plusDays(ApplicationConstants.PASSWORD_EXPIRE_DAYS));
+		}
+		this.userDAO.save(user);
 	}
 	
-	public void updateUser(UserSecurity userSecurity) {
-		this.userSecurityDAO.save(userSecurity);
+	public void updateUser(User user) {
+		this.userDAO.save(user);
 	}
 	
 	public void deleteUser(String email) {
-		UserSecurity userSecurity = fetchUserSecurityByEmail(email);
-		this.userSecurityDAO.delete(userSecurity);
+		User user = fetchUserByEmail(email);
+		this.userDAO.delete(user);
 	}
 	
 	public void hardDeleteUser(String email) {
-		UserSecurity userSecurity = fetchUserSecurityByEmail(email);
-		this.userSecurityDAO.hardDelete(userSecurity);
+		User user = fetchUserByEmail(email);
+		this.userDAO.hardDelete(user);
 	}
 	
 	public boolean isUserPresent(String email) {

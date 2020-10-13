@@ -1,13 +1,23 @@
 package in.gagan.base.framework.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.util.UserHelperUtil;
@@ -29,13 +39,14 @@ public class User extends AbstractBaseEntity {
 	
 	public User() { super(); }
 	
-	public User(String firstName, String lastName, String email, LocalDate dob, char gender) {
+	public User(String firstName, String lastName, String email, LocalDate dob, char gender, String password) {
 		super(ApplicationConstants.CHAR_Y);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.dob = dob;
 		this.gender = gender;
+		this.password = password;
 	}
 
 	@Id
@@ -57,6 +68,23 @@ public class User extends AbstractBaseEntity {
 	
 	@Column(name = "GENDER", nullable = true)
 	private char gender;
+	
+	@Column(name = "PASSWORD", nullable = false, length = 100)
+	private String password;
+	
+	@Column(name = "PASSWORD_EXPIRE_DATE", nullable = false)
+	private LocalDateTime passwordExpireDate;
+
+	@Column(name = "FAILED_LOGIN_ATTEMPTS", nullable = false)
+	private short failedLoginAttempts = 0;
+
+	@Column(name = "ACCOUNT_LOCKED", nullable = false)
+	private char accountLocked = ApplicationConstants.CHAR_N;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JoinColumn(name="USER_ID", nullable = false)
+	@Fetch(FetchMode.SELECT)
+	private Set<Role> userRole = new HashSet<>();
 	
 	public long getUserId() {
 		return userId;
@@ -104,6 +132,50 @@ public class User extends AbstractBaseEntity {
 
 	public void setGender(char gender) {
 		this.gender = gender;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public LocalDateTime getPasswordExpireDate() {
+		return passwordExpireDate;
+	}
+
+	public void setPasswordExpireDate(LocalDateTime passwordExpireDate) {
+		this.passwordExpireDate = passwordExpireDate;
+	}
+
+	public short getFailedLoginAttempts() {
+		return failedLoginAttempts;
+	}
+
+	public void setFailedLoginAttempts(short failedLoginAttempts) {
+		this.failedLoginAttempts = failedLoginAttempts;
+	}
+
+	public char isAccountLocked() {
+		return accountLocked;
+	}
+
+	public void setAccountLocked(char accountLocked) {
+		this.accountLocked = accountLocked;
+	}
+
+	public Set<Role> getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(Set<Role> userRole) {
+		this.userRole = userRole;
+	}
+	
+	public void addRole(Role role) {
+		this.userRole.add(role);
 	}
 	
 	public int getAge() {

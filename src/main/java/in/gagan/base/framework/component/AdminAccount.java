@@ -1,16 +1,15 @@
 package in.gagan.base.framework.component;
 
+import static in.gagan.base.framework.enums.UserRoles.ADMIN;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.entity.Role;
 import in.gagan.base.framework.entity.User;
-import in.gagan.base.framework.entity.UserSecurity;
-import static in.gagan.base.framework.enums.UserRoles.*;
 
 @Component
 public class AdminAccount {
@@ -36,13 +35,10 @@ public class AdminAccount {
 	@Value("${application.admin.password.expiry}")
 	private String passwordExp;
 	
-	public UserSecurity getAdminDetails() {
-		User user = new User(firstName, lastName, email, LocalDate.parse(dob), gender.charAt(0));
-		
-		UserSecurity userSecurity = new UserSecurity(password, LocalDateTime.now().plusDays(Integer.valueOf(passwordExp)), 
-				(short) 0, ApplicationConstants.CHAR_N, null, user);
-		userSecurity.addRole(new Role(ADMIN.name()));
-		
-		return userSecurity;
+	public User getAdminDetails() {
+		User user = new User(firstName, lastName, email, LocalDate.parse(dob), gender.charAt(0), password);
+		user.setPasswordExpireDate(LocalDateTime.now().plusDays(Integer.valueOf(passwordExp)));
+		user.addRole(new Role(ADMIN.name()));
+		return user;
 	}
 }

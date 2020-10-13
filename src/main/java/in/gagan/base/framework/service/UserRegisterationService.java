@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import in.gagan.base.framework.component.AdminAccount;
 import in.gagan.base.framework.dto.UserDTO;
-import in.gagan.base.framework.entity.UserSecurity;
+import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.exception.UsernameExistException;
 import in.gagan.base.framework.util.UserHelperUtil;
 
@@ -26,10 +26,10 @@ public class UserRegisterationService {
 	}
 	
 	public void createAdminUser() {
-		UserSecurity userSecurity = this.adminAccount.getAdminDetails();
+		User user = this.adminAccount.getAdminDetails();
 		
-		if (!this.userDataService.isUserPresent(userSecurity.getUser().getEmail())) {
-			this.userDataService.saveUser(userSecurity);
+		if (!this.userDataService.isUserPresent(user.getEmail())) {
+			this.userDataService.saveUser(user);
 		}
 	}
 	
@@ -47,10 +47,10 @@ public class UserRegisterationService {
 	
 	public UserDTO fetchUser(String email) {
 		UserDataValidator.validateEmail(email);
-		UserDTO user = new UserDTO();
-		UserSecurity userSecurity = this.userDataService.fetchUserSecurityByEmail(email);
-		UserHelperUtil.convertUserSecurityToUserDTO(userSecurity, user);
-		return user;
+		UserDTO userDTO = new UserDTO();
+		User user = this.userDataService.fetchUserByEmail(email);
+		UserHelperUtil.convertUserToUserDTO(user, userDTO);
+		return userDTO;
 	}
 	
 	public UserDTO updateOrCreateUser(UserDTO user) {
@@ -75,16 +75,16 @@ public class UserRegisterationService {
 		this.userDataService.hardDeleteUser(email);
 	}
 	
-	private void insertUser(UserDTO user) {
-		UserSecurity userSecurity = new UserSecurity();
-		UserHelperUtil.convertUserDTOToUserSecurity(user, userSecurity);
-		this.userDataService.saveUser(userSecurity);
+	private void insertUser(UserDTO userDTO) {
+		User user = new User();
+		UserHelperUtil.convertUserDTOToUser(userDTO, user);
+		this.userDataService.saveUser(user);
 	}
 	
-	private void updateUser(UserDTO user) {
-		UserSecurity userSecurity = new UserSecurity();
-		UserHelperUtil.convertUserDTOToUserSecurity(user, userSecurity);
-		this.userDataService.updateUser(userSecurity);
+	private void updateUser(UserDTO userDTO) {
+		User user = new User();
+		UserHelperUtil.convertUserDTOToUser(userDTO, user);
+		this.userDataService.updateUser(user);
 	}
 	
 }
