@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import in.gagan.base.framework.entity.Role;
 import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.enums.Gender;
 
 @Component
 public class AdminAccount {
@@ -36,9 +37,9 @@ public class AdminAccount {
 	private String passwordExp;
 	
 	public User getAdminDetails() {
-		User user = new User(firstName, lastName, email, LocalDate.parse(dob), gender.charAt(0), password);
+		User user = new User(firstName, lastName, email, LocalDate.parse(dob), Gender.valueOf(gender), password);
 		user.setPasswordExpireDate(LocalDateTime.now().plusDays(Integer.valueOf(passwordExp)));
-		user.addRole(new Role(ADMIN.name()));
+		user.addRole(new Role(ADMIN));
 		return user;
 	}
 }

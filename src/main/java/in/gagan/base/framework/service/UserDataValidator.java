@@ -1,12 +1,12 @@
 package in.gagan.base.framework.service;
 
+import static in.gagan.base.framework.enums.UserRoles.EMPTY;
+
 import java.util.Objects;
 import java.util.Set;
 
 import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.dto.UserRoleDTO;
-import in.gagan.base.framework.enums.UserRoles;
-import static in.gagan.base.framework.enums.UserRoles.*;
 
 public class UserDataValidator {
 	
@@ -25,19 +25,8 @@ public class UserDataValidator {
 	
 	private static boolean validateIfCorrectRolesAreAssigned(Set<UserRoleDTO> userRoles) {
 		return userRoles.stream()
-				.map(UserDataValidator::convertToRoles)
+				.map(role -> role.getRoleName())
 				.noneMatch(role -> EMPTY == role);
-	}
-	
-	private static UserRoles convertToRoles(UserRoleDTO userRole) {
-		String role = userRole.getRoleName();
-		UserRoles value = EMPTY;
-		try {
-			value = UserRoles.valueOf(role);
-		} catch (IllegalArgumentException | NullPointerException ex) {
-			// No value with the specified string exists in Roles enum
-		}
-		return value;
 	}
 	
 	public static void validateUserDTOforUpdate(UserDTO user) {
@@ -48,7 +37,6 @@ public class UserDataValidator {
 		}
 	} 
 	
-	// TODO Add email validation. Regex
 	public static void validateEmail(String email) {
 		Objects.requireNonNull(email, "Email id cannot be null");
 	}

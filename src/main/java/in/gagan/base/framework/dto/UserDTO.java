@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
+import in.gagan.base.framework.enums.Gender;
 import in.gagan.base.framework.util.UserHelperUtil;
 
 public class UserDTO implements Serializable {
@@ -27,7 +28,7 @@ public class UserDTO implements Serializable {
 	
 	private int age;
 
-	private char gender;
+	private Gender gender;
 	
 	private boolean activeSw = true;
 	
@@ -35,7 +36,7 @@ public class UserDTO implements Serializable {
 	
 	public UserDTO() { super(); }
 	
-	public UserDTO(String firstName, String lastName, String email, String password, LocalDate dob, char gender,
+	public UserDTO(String firstName, String lastName, String email, String password, LocalDate dob, Gender gender,
 			Set<UserRoleDTO> userRole) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -91,11 +92,11 @@ public class UserDTO implements Serializable {
 		this.dob = dob;
 	}
 
-	public char getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
-	public void setGender(char gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 

@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +22,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
+import in.gagan.base.framework.enums.Gender;
 import in.gagan.base.framework.util.UserHelperUtil;
 
 /**
@@ -39,7 +42,7 @@ public class User extends AbstractBaseEntity {
 	
 	public User() { super(); }
 	
-	public User(String firstName, String lastName, String email, LocalDate dob, char gender, String password) {
+	public User(String firstName, String lastName, String email, LocalDate dob, Gender gender, String password) {
 		super(ApplicationConstants.CHAR_Y);
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -66,8 +69,9 @@ public class User extends AbstractBaseEntity {
 	@Column(name = "DOB", nullable = true)
 	private LocalDate dob;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "GENDER", nullable = true)
-	private char gender;
+	private Gender gender;
 	
 	@Column(name = "PASSWORD", nullable = false, length = 100)
 	private String password;
@@ -126,11 +130,11 @@ public class User extends AbstractBaseEntity {
 		this.dob = dob;
 	}
 
-	public char getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
-	public void setGender(char gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 	

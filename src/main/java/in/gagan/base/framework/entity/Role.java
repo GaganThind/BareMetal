@@ -2,12 +2,15 @@ package in.gagan.base.framework.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
+import in.gagan.base.framework.enums.UserRoles;
 
 /**
  * Entity representing the Role table 
@@ -26,7 +29,7 @@ public class Role extends AbstractBaseEntity {
 	
 	public Role() { super(); }
 	
-	public Role(String roleName) {
+	public Role(UserRoles roleName) {
 		super(ApplicationConstants.CHAR_Y);
 		this.roleName = roleName;
 	}
@@ -36,8 +39,9 @@ public class Role extends AbstractBaseEntity {
 	@Column(name="ROLE_ID", nullable = false, unique = true, length = 10)
 	private long roleId;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "ROLE_NAME", nullable = false)
-	private String roleName;
+	private UserRoles roleName;
 	
 	public long getRoleId() {
 		return roleId;
@@ -47,11 +51,11 @@ public class Role extends AbstractBaseEntity {
 		this.roleId = roleId;
 	}
 
-	public String getRoleName() {
+	public UserRoles getRoleName() {
 		return roleName;
 	}
 
-	public void setRoleName(String roleName) {
+	public void setRoleName(UserRoles roleName) {
 		this.roleName = roleName;
 	}
 
