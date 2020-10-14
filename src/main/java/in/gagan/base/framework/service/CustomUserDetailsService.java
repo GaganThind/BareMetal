@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -24,6 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	private final UserDAO userDAO;
 	
+	@Autowired
 	public CustomUserDetailsService(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
@@ -32,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		
 		in.gagan.base.framework.entity.User user = this.userDAO.findUserByEmail(email)
-				.orElseThrow(() -> ExceptionHelperUtil.throwUserNotFound(email));
+																.orElseThrow(() -> ExceptionHelperUtil.throwUserNotFound(email));
 		
 		UserDetailsDTO userDetails = new UserDetailsDTO(user);
 		Set<UserRoleDTO> roles = userDetails.getUserRole();
