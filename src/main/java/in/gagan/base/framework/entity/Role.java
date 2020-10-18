@@ -27,13 +27,6 @@ public class Role extends AbstractBaseEntity {
 	 */
 	private static final long serialVersionUID = 994388367262603543L;
 	
-	public Role() { super(); }
-	
-	public Role(UserRoles roleName) {
-		super(ApplicationConstants.CHAR_Y);
-		this.roleName = roleName;
-	}
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="ROLE_ID", nullable = false, unique = true, length = 10)
@@ -42,6 +35,13 @@ public class Role extends AbstractBaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "ROLE_NAME", nullable = false)
 	private UserRoles roleName;
+	
+	public Role() { super(); }
+	
+	public Role(UserRoles roleName) {
+		super(ApplicationConstants.CHAR_Y);
+		this.roleName = roleName;
+	}
 	
 	public long getRoleId() {
 		return roleId;

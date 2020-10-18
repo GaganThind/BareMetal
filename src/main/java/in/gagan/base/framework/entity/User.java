@@ -40,18 +40,6 @@ public class User extends AbstractBaseEntity {
 	 */
 	private static final long serialVersionUID = -2144175799559542686L;
 	
-	public User() { super(); }
-	
-	public User(String firstName, String lastName, String email, LocalDate dob, Gender gender, String password) {
-		super(ApplicationConstants.CHAR_Y);
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.dob = dob;
-		this.gender = gender;
-		this.password = password;
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "USER_ID", nullable = false, unique = true, length = 10)
@@ -89,6 +77,18 @@ public class User extends AbstractBaseEntity {
 	@JoinColumn(name="USER_ID", nullable = false)
 	@Fetch(FetchMode.SELECT)
 	private Set<Role> userRole = new HashSet<>();
+	
+	public User() { super(); }
+	
+	public User(String firstName, String lastName, String email, LocalDate dob, Gender gender, String password) {
+		super(ApplicationConstants.CHAR_Y);
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.dob = dob;
+		this.gender = gender;
+		this.password = password;
+	}
 	
 	public long getUserId() {
 		return userId;
