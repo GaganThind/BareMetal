@@ -1,4 +1,4 @@
-package in.gagan.base.framework.listener;
+package in.gagan.base.framework.service;
 
 import javax.transaction.Transactional;
 

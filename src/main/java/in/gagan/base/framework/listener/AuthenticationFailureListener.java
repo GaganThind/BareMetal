@@ -6,6 +6,8 @@ import org.springframework.security.authentication.event.AuthenticationFailureBa
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import in.gagan.base.framework.service.LoginAttemptService;
+
 @Component
 public class AuthenticationFailureListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
 	
