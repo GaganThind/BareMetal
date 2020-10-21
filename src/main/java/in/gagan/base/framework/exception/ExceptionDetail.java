@@ -1,6 +1,7 @@
 package in.gagan.base.framework.exception;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 /**
  * This class captures the exception details and rethrows them in default format. 
@@ -18,6 +19,9 @@ public class ExceptionDetail {
 
 	// Exception message
 	private final String exceptionMessage;
+	
+	// StackTrace
+	private final String stackTrace;
 
 	/**
 	 * Param constructor
@@ -28,18 +32,23 @@ public class ExceptionDetail {
 		this.createDt = LocalDateTime.now();
 		this.exceptionDetails = ex.toString();
 		this.exceptionMessage = null != ex.getMessage() ? ex.getMessage() : "NULL";
+		this.stackTrace = Arrays.toString(ex.getStackTrace()).substring(0, 500);
 	}
 
 	public LocalDateTime getCreateDt() {
-		return createDt;
+		return this.createDt;
 	}
 
 	public String getExceptionDetails() {
-		return exceptionDetails;
+		return this.exceptionDetails;
 	}
 
 	public String getExceptionMessage() {
-		return exceptionMessage;
+		return this.exceptionMessage;
+	}
+	
+	public String getStackTrace() {
+		return this.stackTrace;
 	}
 
 }

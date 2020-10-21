@@ -2,12 +2,15 @@ package in.gagan.base.framework.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+
+import in.gagan.base.framework.service.ExceptionMonitoringService;
 
 /**
  * This class is a used to provide support for global exception handling
@@ -18,6 +21,13 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	
+	private final ExceptionMonitoringService exceptionMonitoringSvc;
+	
+	@Autowired
+	public GlobalExceptionHandler(ExceptionMonitoringService exceptionMonitoringSvc) {
+		this.exceptionMonitoringSvc = exceptionMonitoringSvc;
+	}
+
 	Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 	
 	/**
@@ -28,7 +38,7 @@ public class GlobalExceptionHandler {
 	 */
 	private final ExceptionDetail handleException(final Exception ex) {
 		logger.error("Exception with cause = {}", null != ex.toString() ? ex.toString() : "Unknown");
-		return new ExceptionDetail(ex);
+		return handleExceptionWithoutLog(ex);
 	}
 	
 	/**
@@ -38,7 +48,9 @@ public class GlobalExceptionHandler {
 	 * @return
 	 */
 	private final ExceptionDetail handleExceptionWithoutLog(final Exception ex) {
-		return new ExceptionDetail(ex);
+		ExceptionDetail exceptionDetail = new ExceptionDetail(ex);
+		this.exceptionMonitoringSvc.insertException(exceptionDetail);
+		return exceptionDetail;
 	}
 	
 	/**
