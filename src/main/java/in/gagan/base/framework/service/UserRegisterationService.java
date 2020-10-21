@@ -9,6 +9,7 @@ import in.gagan.base.framework.component.AdminAccount;
 import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.exception.UsernameExistException;
+import in.gagan.base.framework.util.UserDataValidator;
 import in.gagan.base.framework.util.UserHelperUtil;
 
 @Transactional

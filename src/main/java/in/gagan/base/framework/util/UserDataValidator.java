@@ -1,4 +1,4 @@
-package in.gagan.base.framework.service;
+package in.gagan.base.framework.util;
 
 import static in.gagan.base.framework.enums.UserRoles.EMPTY;
 
