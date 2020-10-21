@@ -1,15 +1,14 @@
-package in.gagan.base.framework.exception;
+package in.gagan.base.framework.dto;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 /**
- * This class captures the exception details and rethrows them in default format. 
+ * This DTO captures the exception details and rethrows them in default format. 
  * 
  * @author gaganthind
  *
  */
-public class ExceptionDetail {
+public class ExceptionDetailDTO {
 
 	// Create date
 	private final LocalDateTime createDt;
@@ -20,19 +19,15 @@ public class ExceptionDetail {
 	// Exception message
 	private final String exceptionMessage;
 	
-	// StackTrace
-	private final String stackTrace;
-
 	/**
 	 * Param constructor
 	 * 
 	 * @param ex
 	 */
-	public ExceptionDetail(Exception ex) {
+	public ExceptionDetailDTO(Exception ex) {
 		this.createDt = LocalDateTime.now();
 		this.exceptionDetails = ex.toString();
-		this.exceptionMessage = null != ex.getMessage() ? ex.getMessage() : "NULL";
-		this.stackTrace = Arrays.toString(ex.getStackTrace()).substring(0, 500);
+		this.exceptionMessage = null != ex.getMessage() ? ex.getMessage() : "No Message";
 	}
 
 	public LocalDateTime getCreateDt() {
@@ -47,8 +42,10 @@ public class ExceptionDetail {
 		return this.exceptionMessage;
 	}
 	
-	public String getStackTrace() {
-		return this.stackTrace;
+	@Override
+	public String toString() {
+		return "ExceptionDetail [createDt=" + createDt + ", exceptionDetails=" + exceptionDetails
+				+ ", exceptionMessage=" + exceptionMessage + "]";
 	}
-
+	
 }

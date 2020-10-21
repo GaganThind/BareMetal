@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import in.gagan.base.framework.dto.ExceptionDetailDTO;
+import in.gagan.base.framework.dto.ExceptionMonitorDTO;
 import in.gagan.base.framework.service.ExceptionMonitoringService;
 
 /**
@@ -36,21 +38,26 @@ public class GlobalExceptionHandler {
 	 * @param ex
 	 * @return
 	 */
-	private final ExceptionDetail handleException(final Exception ex) {
-		logger.error("Exception with cause = {}", null != ex.toString() ? ex.toString() : "Unknown");
-		return handleExceptionWithoutLog(ex);
+	private final ExceptionDetailDTO handleException(final Exception ex, boolean enableLogging) {
+		ExceptionDetailDTO exceptionDetailDTO = new ExceptionDetailDTO(ex);
+		
+		if (enableLogging) {
+			ExceptionMonitorDTO exceptionMonitorDTO = new ExceptionMonitorDTO(ex);
+			this.exceptionMonitoringSvc.insertException(exceptionMonitorDTO);
+			logger.error("Exception with cause = {}", exceptionMonitorDTO.toString());
+		}
+		
+		return exceptionDetailDTO;
 	}
 	
 	/**
-	 * Convert the thrown exception into custom format using the Exception details class
+	 * Convert the thrown exception into custom format using the Exception details class and log it
 	 * 
 	 * @param ex
 	 * @return
 	 */
-	private final ExceptionDetail handleExceptionWithoutLog(final Exception ex) {
-		ExceptionDetail exceptionDetail = new ExceptionDetail(ex);
-		this.exceptionMonitoringSvc.insertException(exceptionDetail);
-		return exceptionDetail;
+	private final ExceptionDetailDTO handleException(final Exception ex) {
+		return handleException(ex, true);
 	}
 	
 	/**
@@ -62,7 +69,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(UsernameExistException.class)
 	public final ResponseEntity<?> usernameExistExceptionHandler(final Exception ex, WebRequest request) {
-		return new ResponseEntity<>(handleExceptionWithoutLog(ex), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(handleException(ex, true), HttpStatus.FOUND);
 	}
 	
 	/**
@@ -74,19 +81,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(UsernameNotFoundException.class)
 	public final ResponseEntity<?> usernameNotFoundException(final Exception ex, WebRequest request) {
-		return new ResponseEntity<>(handleExceptionWithoutLog(ex), HttpStatus.NOT_FOUND);
-	}
-	
-	/**
-	 * Global exception handler for NullPointerException
-	 * 
-	 * @param ex
-	 * @param request
-	 * @return
-	 */
-	@ExceptionHandler(NullPointerException.class)
-	public final ResponseEntity<?> nullPointerException(final Exception ex, WebRequest request) {
-		return new ResponseEntity<>(handleException(ex), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(handleException(ex, false), HttpStatus.NOT_FOUND);
 	}
 	
 	/**
