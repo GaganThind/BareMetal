@@ -7,7 +7,7 @@ import in.gagan.base.framework.entity.User;
 /**
  * User Data service interface defines the basic CRUD operations on a User table.
  * 
- * @author thindgagan
+ * @author gaganthind
  *
  */
 public interface UserDataService {

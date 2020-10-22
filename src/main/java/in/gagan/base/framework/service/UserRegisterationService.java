@@ -6,7 +6,7 @@ import in.gagan.base.framework.exception.UsernameExistException;
 /**
  * User Registration service interface defines the basic actions that a user can perform.
  * 
- * @author thindgagan
+ * @author gaganthind
  *
  */
 public interface UserRegisterationService {
