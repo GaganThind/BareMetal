@@ -7,7 +7,7 @@ import in.gagan.base.framework.entity.User;
 /**
  * This DAO interface provides the CRUD operations for USER table 
  * 
- * @author thindgagan
+ * @author gaganthind
  *
  */
 public interface UserDAO extends BaseDAO<User, Long> {
