@@ -55,6 +55,17 @@ public class LoginAttemptServiceImpl implements LoginAttemptService {
 		// WebAuthenticationDetails webAuthenticationDetails = (WebAuthenticationDetails) auth.getDetails();
 		// String ipAddress = webAuthenticationDetails.getRemoteAddress();
 		
+		String email = auth.getName();
+		User user = this.userDAO.findUserByEmail(email).get();
+		
+		short failedLoginAttempts = user.getFailedLoginAttempts();
+		
+		if (0 != failedLoginAttempts) {
+			user.setFailedLoginAttempts((short) 0);
+			user.setAccountLocked(ApplicationConstants.CHAR_N);
+			this.userDAO.save(user);
+		}
+		
 	}
 
 }
