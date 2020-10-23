@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.entity.Role;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.enums.Gender;
@@ -39,6 +40,7 @@ public class AdminAccount {
 	public User getAdminDetails() {
 		User user = new User(firstName, lastName, email, LocalDate.parse(dob), Gender.valueOf(gender), password);
 		user.setPasswordExpireDate(LocalDateTime.now().plusDays(Integer.valueOf(passwordExp)));
+		user.setActiveSw(ApplicationConstants.CHAR_Y);
 		user.addRole(new Role(ADMIN));
 		return user;
 	}

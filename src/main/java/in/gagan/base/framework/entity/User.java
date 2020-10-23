@@ -72,7 +72,7 @@ public class User extends AbstractBaseEntity {
 
 	@Column(name = "ACCOUNT_LOCKED", nullable = false)
 	private char accountLocked = ApplicationConstants.CHAR_N;
-
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name="USER_ID", nullable = false)
 	@Fetch(FetchMode.SELECT)
@@ -81,7 +81,7 @@ public class User extends AbstractBaseEntity {
 	public User() { super(); }
 	
 	public User(String firstName, String lastName, String email, LocalDate dob, Gender gender, String password) {
-		super(ApplicationConstants.CHAR_Y);
+		super(ApplicationConstants.CHAR_N);
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;

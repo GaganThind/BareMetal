@@ -18,11 +18,14 @@ import in.gagan.base.framework.enums.Gender;
 @Service
 public class DummyDataServiceImpl implements DummyDataService {
 	
-	private final UserDataService userDataService;
+	private final UserDataService userDataSvc;
+	
+	private final VerificationTokenService verificationTokenSvc;
 	
 	@Autowired
-	public DummyDataServiceImpl(UserDataService userDataService) {
-		this.userDataService = userDataService;
+	public DummyDataServiceImpl(UserDataService userDataSvc, VerificationTokenService verificationTokenSvc) {
+		this.userDataSvc = userDataSvc;
+		this.verificationTokenSvc = verificationTokenSvc;
 	}
 	
 	@Override
@@ -42,9 +45,16 @@ public class DummyDataServiceImpl implements DummyDataService {
 		User user3 = new User("A3", "B3", "Test4@e.com", null, Gender.M, "T");
 		user3.addRole(new Role(USER_BASIC));
 		
-		this.userDataService.saveUser(user);
-		this.userDataService.saveUser(user1);
-		this.userDataService.saveUser(user2);
-		this.userDataService.saveUser(user3);
+		this.userDataSvc.saveUser(user);
+		this.verificationTokenSvc.generateTokenForUser(user);
+		
+		this.userDataSvc.saveUser(user1);
+		this.verificationTokenSvc.generateTokenForUser(user1);
+		
+		this.userDataSvc.saveUser(user2);
+		this.verificationTokenSvc.generateTokenForUser(user2);
+		
+		this.userDataSvc.saveUser(user3);
+		this.verificationTokenSvc.generateTokenForUser(user3);
 	}
 }

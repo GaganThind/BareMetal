@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import in.gagan.base.framework.component.AdminAccount;
+import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.entity.VerificationToken;
 import in.gagan.base.framework.exception.UsernameExistException;
 import in.gagan.base.framework.util.UserDataValidator;
 import in.gagan.base.framework.util.UserHelperUtil;
@@ -18,19 +20,25 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	
 	private final AdminAccount adminAccount;
 	
-	private final UserDataService userDataService;
+	private final UserDataService userDataSvc;
+	
+	private final VerificationTokenService verificationTokenSvc;
+	
+	private final EmailService emailSvc;
 	
 	@Autowired
-	public UserRegisterationServiceImpl(AdminAccount adminAccount, UserDataService userDataService) {
+	public UserRegisterationServiceImpl(AdminAccount adminAccount, UserDataService userDataSvc, VerificationTokenService verificationTokenSvc, EmailService emailSvc) {
 		this.adminAccount = adminAccount;
-		this.userDataService = userDataService;
+		this.userDataSvc = userDataSvc;
+		this.verificationTokenSvc = verificationTokenSvc;
+		this.emailSvc = emailSvc;
 	}
 	
 	public void createAdminUser() {
 		User user = this.adminAccount.getAdminDetails();
 		
-		if (!this.userDataService.isUserPresent(user.getEmail())) {
-			this.userDataService.saveUser(user);
+		if (!this.userDataSvc.isUserPresent(user.getEmail())) {
+			this.userDataSvc.saveUser(user);
 		}
 	}
 	
@@ -38,7 +46,7 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	public String registerNewUser(UserDTO user) throws UsernameExistException {
 		UserDataValidator.validateUserDTO(user);
 		
-		if (this.userDataService.isUserPresent(user.getEmail())) {
+		if (this.userDataSvc.isUserPresent(user.getEmail())) {
 			throw new UsernameExistException(user.getEmail());
 		}
 		
@@ -51,14 +59,14 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	public UserDTO fetchUser(String email) {
 		UserDataValidator.validateEmail(email);
 		UserDTO userDTO = new UserDTO();
-		User user = this.userDataService.fetchUserByEmail(email);
+		User user = this.userDataSvc.fetchUserByEmail(email);
 		UserHelperUtil.convertUserToUserDTO(user, userDTO);
 		return userDTO;
 	}
 	
 	@Override
 	public UserDTO updateOrCreateUser(UserDTO user) {
-		if (this.userDataService.isUserPresent(user.getEmail())) {
+		if (this.userDataSvc.isUserPresent(user.getEmail())) {
 			UserDataValidator.validateUserDTOforUpdate(user);
 			updateUser(user);
 		} else {
@@ -72,25 +80,56 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	@Override
 	public void deleteUser(String email) {
 		UserDataValidator.validateEmail(email);
-		this.userDataService.deleteUser(email);
+		this.userDataSvc.deleteUser(email);
 	}
 	
 	@Override
 	public void hardDeleteUser(String email) {
 		UserDataValidator.validateEmail(email);
-		this.userDataService.hardDeleteUser(email);
+		this.userDataSvc.hardDeleteUser(email);
 	}
 	
 	private void insertUser(UserDTO userDTO) {
 		User user = new User();
 		UserHelperUtil.convertUserDTOToUser(userDTO, user);
-		this.userDataService.saveUser(user);
+		this.userDataSvc.saveUser(user);
+		
+		// Generate random verification token
+		String token = this.verificationTokenSvc.generateTokenForUser(user);
+		
+		// Send verification email
+		sendAccountVerificationEmail(user.getEmail(), token);
+	}
+	
+	@Override
+	public void confirmUserRegisteration(String token) {
+		VerificationToken verificationToken = this.verificationTokenSvc.fetchByToken(token);
+		User user = verificationToken.getUser();
+		user.setActiveSw(ApplicationConstants.CHAR_Y);
+		this.userDataSvc.saveUser(user);
+		
+		// Send confirmation email
+		sendSuccessfullAccountVerificationEmail(user.getEmail());
+	}
+	
+	@Override
+	public void sendAccountVerificationEmail(String email, String token) {
+		String subject = "Account Verification email";
+		String message = "";
+		this.emailSvc.sendEmail(email, subject, message);
+	}
+
+	@Override
+	public void sendSuccessfullAccountVerificationEmail(String email) {
+		String subject = "Account Successfully Verified";
+		String message = "";
+		this.emailSvc.sendEmail(email, subject, message);
 	}
 	
 	private void updateUser(UserDTO userDTO) {
 		User user = new User();
 		UserHelperUtil.convertUserDTOToUser(userDTO, user);
-		this.userDataService.updateUser(user);
+		this.userDataSvc.updateUser(user);
 	}
-	
+
 }

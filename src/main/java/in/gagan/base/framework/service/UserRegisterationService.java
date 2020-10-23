@@ -22,5 +22,11 @@ public interface UserRegisterationService {
 	public void hardDeleteUser(String email);
 
 	public void createAdminUser();
+	
+	public void confirmUserRegisteration(String token);
+
+	public void sendAccountVerificationEmail(String email, String token);
+
+	public void sendSuccessfullAccountVerificationEmail(String email);
 
 }

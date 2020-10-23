@@ -64,4 +64,10 @@ public class UserController {
 		return new ResponseEntity<String>("Deleted Successfully!!!", HttpStatus.OK);
 	}
 	
+	@PutMapping(value = "/register/verify/{token}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> verifyUser(@PathVariable String token) {
+		this.userRegistrationSvc.confirmUserRegisteration(token);
+		return new ResponseEntity<String>("User Verified Successfully!!!", HttpStatus.OK);
+	}
+	
 }

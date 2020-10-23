@@ -9,8 +9,6 @@ import javax.persistence.MappedSuperclass;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import in.gagan.base.framework.constant.ApplicationConstants;
-
 /**
  * Abstract Base entity for all entity classes. This abstract implementation of base entity will have common columns.
  * 
@@ -33,7 +31,7 @@ public abstract class AbstractBaseEntity implements Serializable, BaseEntity {
 	}
 
 	@Column(name="ACTIVE_SW", nullable = false, length = 1)
-	private char activeSw = ApplicationConstants.CHAR_Y;
+	private char activeSw;
 	
 	/**
 	 * Record create date
