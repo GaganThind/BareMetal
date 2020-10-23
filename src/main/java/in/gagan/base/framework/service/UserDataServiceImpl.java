@@ -1,6 +1,8 @@
 package in.gagan.base.framework.service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -36,6 +38,11 @@ public class UserDataServiceImpl implements UserDataService {
 		User user = this.userDAO.findUserByEmail(email)
 								.orElseThrow(() -> ExceptionHelperUtil.throwUserNotFound(email));
 		return user;
+	}
+	
+	@Override
+	public List<User> fetchAllUsers() {
+		return (List<User>) this.userDAO.findAll().orElse(Collections.emptyList());
 	}
 	
 	@Override

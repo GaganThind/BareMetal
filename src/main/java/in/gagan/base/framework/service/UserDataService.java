@@ -1,5 +1,7 @@
 package in.gagan.base.framework.service;
 
+import java.util.List;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import in.gagan.base.framework.entity.User;
@@ -13,6 +15,8 @@ import in.gagan.base.framework.entity.User;
 public interface UserDataService {
 	
 	public User fetchUserByEmail(String email) throws UsernameNotFoundException;
+	
+	public List<User> fetchAllUsers();
 	
 	public void saveUser(User user);
 	

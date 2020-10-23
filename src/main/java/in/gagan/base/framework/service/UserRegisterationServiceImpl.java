@@ -5,7 +5,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import in.gagan.base.framework.component.AdminAccount;
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.entity.User;
@@ -18,8 +17,6 @@ import in.gagan.base.framework.util.UserHelperUtil;
 @Service
 public class UserRegisterationServiceImpl implements UserRegisterationService {
 	
-	private final AdminAccount adminAccount;
-	
 	private final UserDataService userDataSvc;
 	
 	private final VerificationTokenService verificationTokenSvc;
@@ -27,19 +24,10 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	private final EmailService emailSvc;
 	
 	@Autowired
-	public UserRegisterationServiceImpl(AdminAccount adminAccount, UserDataService userDataSvc, VerificationTokenService verificationTokenSvc, EmailService emailSvc) {
-		this.adminAccount = adminAccount;
+	public UserRegisterationServiceImpl(UserDataService userDataSvc, VerificationTokenService verificationTokenSvc, EmailService emailSvc) {
 		this.userDataSvc = userDataSvc;
 		this.verificationTokenSvc = verificationTokenSvc;
 		this.emailSvc = emailSvc;
-	}
-	
-	public void createAdminUser() {
-		User user = this.adminAccount.getAdminDetails();
-		
-		if (!this.userDataSvc.isUserPresent(user.getEmail())) {
-			this.userDataSvc.saveUser(user);
-		}
 	}
 	
 	@Override

@@ -48,4 +48,11 @@ public final class UserHelperUtil {
 		userDTO.setUserRole(convertRoleToDTO(user.getUserRole()));
 	}
 	
+	public static UserDTO convertUserToUserDTO(User user) {
+		UserDTO userDTO = new UserDTO();
+		BeanUtils.copyProperties(user, userDTO,"password", "userRole");
+		userDTO.setUserRole(convertRoleToDTO(user.getUserRole()));
+		return userDTO;
+	}
+	
 }

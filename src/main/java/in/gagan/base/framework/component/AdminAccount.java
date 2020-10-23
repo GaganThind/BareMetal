@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
@@ -14,27 +15,28 @@ import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.enums.Gender;
 
 @Component
+@PropertySource(value = { "classpath:admin.properties" })
 public class AdminAccount {
 	
-	@Value("${application.admin.email}")
+	@Value("${email}")
 	private String email;
 	
-	@Value("${application.admin.first.name}")
+	@Value("${first.name}")
 	private String firstName;
 	
-	@Value("${application.admin.last.name}")
+	@Value("${last.name}")
 	private String lastName;
 	
-	@Value("${application.admin.dob}")
+	@Value("${dob}")
 	private String dob;
 	
-	@Value("${application.admin.gender}")
+	@Value("${gender}")
 	private String gender;
 	
-	@Value("${application.admin.password}")
+	@Value("${password}")
 	private String password;
 	
-	@Value("${application.admin.password.expiry}")
+	@Value("${password.expiry}")
 	private String passwordExp;
 	
 	public User getAdminDetails() {

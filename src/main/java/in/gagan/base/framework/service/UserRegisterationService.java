@@ -16,13 +16,11 @@ public interface UserRegisterationService {
 	public UserDTO fetchUser(String email);
 	
 	public UserDTO updateOrCreateUser(UserDTO user);
-	
+
 	public void deleteUser(String email);
 	
 	public void hardDeleteUser(String email);
 
-	public void createAdminUser();
-	
 	public void confirmUserRegisteration(String token);
 
 	public void sendAccountVerificationEmail(String email, String token);
