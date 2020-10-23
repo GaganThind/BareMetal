@@ -1,15 +1,17 @@
 package in.gagan.base.framework.component;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
+@PropertySource(value = { "classpath:password.properties" })
 public class PasswordSettings {
 	
-	@Value("${application.user.password.attempts.maxfailed}")
+	@Value("${attempts.maxfailed}")
 	private short MAX_FAILED_LOGIN_ATTEMPTS;
 	
-	@Value("${application.user.password.expiry}")
+	@Value("${expiry}")
 	private int PASSWORD_EXPIRE_DAYS;
 	
 	public short getMaxFailedLoginAttempts() {
