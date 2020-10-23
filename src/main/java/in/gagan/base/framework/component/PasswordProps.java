@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @PropertySource(value = { "classpath:password.properties" })
-public class PasswordSettings {
+public class PasswordProps {
 	
 	@Value("${attempts.maxfailed}")
 	private short MAX_FAILED_LOGIN_ATTEMPTS;

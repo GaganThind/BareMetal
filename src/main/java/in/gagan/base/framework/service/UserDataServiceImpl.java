@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import in.gagan.base.framework.component.PasswordSettings;
+import in.gagan.base.framework.component.PasswordProps;
 import in.gagan.base.framework.dao.UserDAO;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.util.ExceptionHelperUtil;
@@ -24,13 +24,13 @@ public class UserDataServiceImpl implements UserDataService {
 	
 	private final PasswordEncoder passwordEncoder;
 	
-	private final PasswordSettings passwordSettings;
+	private final PasswordProps passwordProps;
 	
 	@Autowired
-	public UserDataServiceImpl(UserDAO userDAO, PasswordEncoder passwordEncoder, PasswordSettings passwordSettings) {
+	public UserDataServiceImpl(UserDAO userDAO, PasswordEncoder passwordEncoder, PasswordProps passwordProps) {
 		this.userDAO = userDAO;
 		this.passwordEncoder = passwordEncoder;
-		this.passwordSettings = passwordSettings;
+		this.passwordProps = passwordProps;
 	}
 	
 	@Override
@@ -49,7 +49,7 @@ public class UserDataServiceImpl implements UserDataService {
 	public void saveUser(User user) {
 		user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 		if (null == user.getPasswordExpireDate()) {
-			user.setPasswordExpireDate(LocalDateTime.now().plusDays(this.passwordSettings.getPasswordExpireDays()));
+			user.setPasswordExpireDate(LocalDateTime.now().plusDays(this.passwordProps.getPasswordExpireDays()));
 		}
 		this.userDAO.save(user);
 	}

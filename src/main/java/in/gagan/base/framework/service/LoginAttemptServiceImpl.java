@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import in.gagan.base.framework.component.PasswordSettings;
+import in.gagan.base.framework.component.PasswordProps;
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dao.UserDAO;
 import in.gagan.base.framework.entity.User;
@@ -17,12 +17,12 @@ public class LoginAttemptServiceImpl implements LoginAttemptService {
 	
 	private final UserDAO userDAO;
 	
-	private final PasswordSettings passwordSettings;
+	private final PasswordProps passwordProps;
 	
 	@Autowired
-	public LoginAttemptServiceImpl(UserDAO userDAO, PasswordSettings passwordSettings) {
+	public LoginAttemptServiceImpl(UserDAO userDAO, PasswordProps passwordProps) {
 		this.userDAO = userDAO;
-		this.passwordSettings = passwordSettings;
+		this.passwordProps = passwordProps;
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class LoginAttemptServiceImpl implements LoginAttemptService {
 		User user = this.userDAO.findUserByEmail(email).get();
 		
 		short failedLoginAttempts = user.getFailedLoginAttempts();
-		short maxFailedLoginAttempts = this.passwordSettings.getMaxFailedLoginAttempts();
+		short maxFailedLoginAttempts = this.passwordProps.getMaxFailedLoginAttempts();
 		short currentFailedLoginAttempts = failedLoginAttempts < maxFailedLoginAttempts ? (short)(failedLoginAttempts + 1) : maxFailedLoginAttempts;
 		
 		if (currentFailedLoginAttempts == maxFailedLoginAttempts) {
