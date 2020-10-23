@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -25,6 +26,7 @@ import in.gagan.base.framework.constant.PersistenceConstants;
  */
 @Configuration
 @EnableTransactionManagement
+@PropertySource(value = { "classpath:jpaConfiguration.properties" })
 public class JPAPersistenceConf {
 
 	/**
