@@ -7,7 +7,11 @@ public final class ExceptionHelperUtil {
 	private ExceptionHelperUtil() { }
 	
 	public static UsernameNotFoundException throwUserNotFound(String email) {
-		return new UsernameNotFoundException("Username/Email: " + email + " not found");
+		StringBuilder message = new StringBuilder();
+		message.append("Username/Email: ")
+		  .append(email)
+		  .append(" not found");
+		return new UsernameNotFoundException(message.toString());
 	}
 
 }
