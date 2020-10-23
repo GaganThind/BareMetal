@@ -1,16 +1,13 @@
 package in.gagan.base.framework.dao;
 
-import org.springframework.stereotype.Repository;
-
 import in.gagan.base.framework.entity.ExceptionMonitor;
 
 /**
- * This class is used to CRUD operations on the Exception_Monitor table using DAO pattern
+ * This DAO interface provides the CRUD operations for EXCEPTION_MONITORING table  
  * 
  * @author gaganthind
  *
  */
-@Repository
-public class ExceptionMonitorDAO extends AbstractBaseDAO<ExceptionMonitor, Long> {
-	
+public interface ExceptionMonitorDAO extends BaseDAO<ExceptionMonitor, Long> {
+
 }
