@@ -6,6 +6,12 @@ import java.util.Set;
 
 import static in.gagan.base.framework.enums.UserPermissions.*;
 
+/**
+ * This enum is used to represent the user Roles.
+ * 
+ * @author gaganthind
+ *
+ */
 public enum UserRoles {
 	
 	// Admin

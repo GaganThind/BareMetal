@@ -4,6 +4,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+/**
+ * This class provides the verification token properties 
+ * and the data is loaded from the properties file (verificationToken.properties)
+ * 
+ * @author gaganthind
+ *
+ */
 @Component
 @PropertySource(value = "classpath:verificationToken.properties")
 public class VerificationTokenProps {

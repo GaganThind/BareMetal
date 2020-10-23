@@ -9,6 +9,12 @@ import javax.persistence.Table;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
 
+/**
+ * Entity representing the EXCEPTION_MONITORING table 
+ * 
+ * @author gaganthind
+ *
+ */
 @Entity
 @Table(name = "EXCEPTION_MONITOR")
 public class ExceptionMonitor extends AbstractBaseEntity {

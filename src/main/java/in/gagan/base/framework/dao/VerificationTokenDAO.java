@@ -5,7 +5,7 @@ import java.util.Optional;
 import in.gagan.base.framework.entity.VerificationToken;
 
 /**
- * This DAO interface provides the CRUD operations for VERIFICATION_TOKEN table 
+ * This DAO interface provides the CRUD operations for VERIFICATION_TOKEN table.
  * 
  * @author gaganthind
  *

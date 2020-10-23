@@ -15,6 +15,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static in.gagan.base.framework.enums.UserRoles.*;
 import in.gagan.base.framework.service.CustomUserDetailsService;
 
+/**
+ * This class provides the spring security configurations.
+ * 
+ * @author gaganthind
+ *
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

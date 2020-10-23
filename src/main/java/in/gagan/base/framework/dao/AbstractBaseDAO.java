@@ -22,8 +22,8 @@ import in.gagan.base.framework.entity.AbstractBaseEntity;
  * 
  * @author gaganthind
  *
- * @param <E>
- * @param <K>
+ * @param <E> - Entity
+ * @param <K> - Key
  */
 @Repository
 public abstract class AbstractBaseDAO<E extends AbstractBaseEntity, K extends Serializable> implements BaseDAO<E, K> {

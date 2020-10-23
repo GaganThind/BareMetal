@@ -13,7 +13,7 @@ import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.enums.UserRoles;
 
 /**
- * Entity representing the Role table 
+ * Entity representing the ROLES table 
  * 
  * @author gaganthind
  *

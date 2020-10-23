@@ -15,7 +15,7 @@ import in.gagan.base.framework.dto.ExceptionMonitorDTO;
 import in.gagan.base.framework.service.ExceptionMonitoringService;
 
 /**
- * This class is a used to provide support for global exception handling
+ * This class is a used to provide support for global exception handling.
  * 
  * @author gaganthind
  *

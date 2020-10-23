@@ -5,7 +5,7 @@ import java.util.Optional;
 import in.gagan.base.framework.entity.User;
 
 /**
- * This DAO interface provides the CRUD operations for USER table 
+ * This DAO interface provides the CRUD operations for USERS table.
  * 
  * @author gaganthind
  *

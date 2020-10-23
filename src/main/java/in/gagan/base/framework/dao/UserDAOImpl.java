@@ -9,7 +9,7 @@ import org.springframework.util.CollectionUtils;
 import in.gagan.base.framework.entity.User;
 
 /**
- * This class provides CRUD operations on the User table using DAO pattern
+ * This class provides CRUD operations on the USERS table using DAO pattern.
  * 
  * @author gaganthind
  *

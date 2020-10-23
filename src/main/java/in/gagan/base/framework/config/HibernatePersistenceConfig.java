@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import in.gagan.base.framework.constant.PersistenceConstants;
 
 /**
- * Hibernate persistence config file.
+ * This class has the Hibernate persistence configurations needed for the persistence to work.
  * 
  * @author gaganthind
  *

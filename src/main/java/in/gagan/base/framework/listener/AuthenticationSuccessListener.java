@@ -8,6 +8,12 @@ import org.springframework.stereotype.Component;
 
 import in.gagan.base.framework.service.LoginAttemptService;
 
+/**
+ * This listener class is used to provide functionality for authentication success.
+ * 
+ * @author gaganthind
+ *
+ */
 @Component
 public class AuthenticationSuccessListener implements ApplicationListener<AuthenticationSuccessEvent> {
 	

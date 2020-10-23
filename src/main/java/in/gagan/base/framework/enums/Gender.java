@@ -1,5 +1,11 @@
 package in.gagan.base.framework.enums;
 
+/**
+ * This enum is used to represent the genders.
+ * 
+ * @author gaganthind
+ *
+ */
 public enum Gender {
 	
 	M("Male"),

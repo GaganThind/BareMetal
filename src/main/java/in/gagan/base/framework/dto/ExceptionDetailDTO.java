@@ -3,7 +3,7 @@ package in.gagan.base.framework.dto;
 import java.time.LocalDateTime;
 
 /**
- * This DTO captures the exception details and rethrows them in default format. 
+ * This DTO captures the exception details and re-throws them in default format. 
  * 
  * @author gaganthind
  *

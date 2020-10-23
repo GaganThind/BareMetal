@@ -4,6 +4,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+/**
+ * This class provides the password related properties 
+ * and the data is loaded from the properties file (password.properties)
+ * 
+ * @author gaganthind
+ *
+ */
 @Component
 @PropertySource(value = { "classpath:password.properties" })
 public class PasswordProps {

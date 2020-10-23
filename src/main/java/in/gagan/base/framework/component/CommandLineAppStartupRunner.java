@@ -7,6 +7,14 @@ import org.springframework.stereotype.Component;
 import in.gagan.base.framework.service.AdminService;
 import in.gagan.base.framework.service.DummyDataService;
 
+/**
+ * This class is the implementation of CommandLineRunner interface and provides a way to perform operations
+ * on application startup.
+ * Here we have leveraged this class to create admin account and some dummy users on application startup
+ * 
+ * @author gaganthind
+ *
+ */
 @Component
 public class CommandLineAppStartupRunner implements CommandLineRunner {
 	

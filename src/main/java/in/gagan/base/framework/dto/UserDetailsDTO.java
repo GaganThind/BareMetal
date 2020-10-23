@@ -9,6 +9,12 @@ import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.util.UserHelperUtil;
 
+/**
+ * This DTO captures the user details from the user entity object to be used to authentication by the spring security.
+ * 
+ * @author gaganthind
+ *
+ */
 public class UserDetailsDTO implements Serializable {
 
 	/**

@@ -26,7 +26,7 @@ import in.gagan.base.framework.enums.Gender;
 import in.gagan.base.framework.util.UserHelperUtil;
 
 /**
- * Entity representing the User table 
+ * Entity representing the USERS table 
  * 
  * @author gaganthind
  *

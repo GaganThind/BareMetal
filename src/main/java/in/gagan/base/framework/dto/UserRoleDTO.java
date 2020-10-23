@@ -2,6 +2,12 @@ package in.gagan.base.framework.dto;
 
 import in.gagan.base.framework.enums.UserRoles;
 
+/**
+ * This DTO captures the user role details from role entity and is used for internal data transfer.
+ * 
+ * @author gaganthind
+ *
+ */
 public class UserRoleDTO {
 	
 	private UserRoles roleName;

@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
- * Entity representing the VerificationToken table 
+ * Entity representing the VERIFICATION_TOKEN table 
  * 
  * @author gaganthind
  *

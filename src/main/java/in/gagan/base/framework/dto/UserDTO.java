@@ -9,6 +9,12 @@ import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.enums.Gender;
 import in.gagan.base.framework.util.UserHelperUtil;
 
+/**
+ * This DTO captures the user details from user entity and is used for internal data transfer.
+ * 
+ * @author gaganthind
+ *
+ */
 public class UserDTO implements Serializable {
 	
 	/**

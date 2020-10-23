@@ -9,7 +9,7 @@ import org.springframework.util.CollectionUtils;
 import in.gagan.base.framework.entity.VerificationToken;
 
 /**
- * This class provides CRUD operations on the VERIFICATION_TOKEN table using DAO pattern
+ * This class provides CRUD operations on the VERIFICATION_TOKEN table using DAO pattern.
  * 
  * @author gaganthind
  *

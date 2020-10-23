@@ -14,6 +14,15 @@ import in.gagan.base.framework.entity.Role;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.enums.Gender;
 
+/**
+ * This class provides the admin account details 
+ * and data is loaded from properties file (admin.properties).
+ * 
+ * The admin account is created during application startup
+ * 
+ * @author gaganthind
+ *
+ */
 @Component
 @PropertySource(value = { "classpath:admin.properties" })
 public class AdminAccount {
@@ -39,6 +48,9 @@ public class AdminAccount {
 	@Value("${password.expiry}")
 	private String passwordExp;
 	
+	/**
+	 * @return User - The user entity object for admin to be persisted
+	 */
 	public User getAdminDetails() {
 		User user = new User(firstName, lastName, email, LocalDate.parse(dob), Gender.valueOf(gender), password);
 		user.setPasswordExpireDate(LocalDateTime.now().plusDays(Integer.valueOf(passwordExp)));
