@@ -1,57 +1,95 @@
 package in.gagan.base.framework.config;
-/*
+
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import in.gagan.base.framework.constant.PersistenceConstants;
 
 /**
- * Hibernate persistence config file.
+ * JPA persistence config file
  * 
  * @author gaganthind
  *
- */ /*
+ */
 @Configuration
 @EnableTransactionManagement
 @PropertySource(value = { "classpath:jpaConfiguration.properties" })
-public class HibernatePersistenceConf {
+public class JPAPersistenceConfig {
 
+	/**
+	 * Default Spring data source
+	 */
 	private final DataSource dataSource;
 
+	/**
+	 * Environment variable
+	 */
 	private final Environment environment;
 	
 	@Autowired
-	public HibernatePersistenceConf(DataSource dataSource, Environment environment) {
+	public JPAPersistenceConfig(Environment environment, DataSource dataSource) {
 		this.dataSource = dataSource;
 		this.environment = environment;
 	}
 
-	@Autowired
-	@Bean(name = "sessionFactory")
-	public LocalSessionFactoryBean getSessionFactory() {
-		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-		sessionFactory.setDataSource(dataSource);
-		sessionFactory.setPackagesToScan(PersistenceConstants.BASE_ENTITY_PATH);
-		sessionFactory.setHibernateProperties(additionalProperties());
-		return sessionFactory;
+	/**
+	 * Default Entity Manager instance
+	 * 
+	 * @return LocalContainerEntityManagerFactoryBean
+	 */
+	@Bean
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+		em.setDataSource(dataSource);
+		em.setPackagesToScan(PersistenceConstants.BASE_ENTITY_PATH, 
+				PersistenceConstants.APPLICATION_ENTITY_PATH);
+		em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+		em.setJpaProperties(additionalProperties());
+
+		return em;
+	}
+
+	/**
+	 * Transaction Manager
+	 * 
+	 * @return PlatformTransactionManager
+	 */
+	@Bean
+	public PlatformTransactionManager transactionManager() {
+		JpaTransactionManager transactionManager = new JpaTransactionManager();
+		transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+
+		return transactionManager;
+	}
+
+	/**
+	 * Exception post processor
+	 * 
+	 * @return PersistenceExceptionTranslationPostProcessor
+	 */
+	@Bean
+	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+		return new PersistenceExceptionTranslationPostProcessor();
 	}
 
 	/**
 	 * Hibernate specific properties
 	 * 
 	 * @return Properties
-	 */ /*
+	 */
 	public final Properties additionalProperties() {
 		Properties properties = new Properties();
 		properties.put(PersistenceConstants.HIBERNATE_CONF_DIALECT,
@@ -71,9 +109,4 @@ public class HibernatePersistenceConf {
 		return properties;
 	}
 
-	@Autowired
-	@Bean(name = "transactionManager")
-	public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
-		return new HibernateTransactionManager(sessionFactory);
-	}
-} */
+}
