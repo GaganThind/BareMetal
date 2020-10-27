@@ -14,6 +14,12 @@ import in.gagan.base.framework.dao.VerificationTokenDAO;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.entity.VerificationToken;
 
+/**
+ * This class provides the implementation of VerificationTokenService interface and provides operations for Account Verification functionality.
+ * 
+ * @author gaganthind
+ *
+ */
 @Transactional
 @Service
 public class VerificationTokenServiceImpl extends AbstractBaseDAO<VerificationToken, Long> implements VerificationTokenService {
@@ -28,6 +34,13 @@ public class VerificationTokenServiceImpl extends AbstractBaseDAO<VerificationTo
 		this.verificationTokenProps = verificationTokenProps;
 	}
 	
+	/**
+	 * This method generates random token for account verification.
+	 * 
+	 * @param user - User record to insert
+	 * @return String - Random verification token
+	 */
+	@Override
 	public String generateTokenForUser(User user) {
 		String token = UUID.randomUUID().toString();
 		VerificationToken verificationToken = new VerificationToken(token);
@@ -41,6 +54,13 @@ public class VerificationTokenServiceImpl extends AbstractBaseDAO<VerificationTo
 		return token;
 	}
 	
+	/**
+	 * This method is used to fetch the provided token in the system.
+	 * 
+	 * @param token - Random verification token already sent in email
+	 * @return VerificationToken - Verification_Token record from database
+	 */
+	@Override
 	public VerificationToken fetchByToken(String token) {
 		VerificationToken verificationToken = 
 				this.verificationTokenDAO.fetchByToken(token).orElseThrow(() -> new IllegalArgumentException("Invalid token!!!"));

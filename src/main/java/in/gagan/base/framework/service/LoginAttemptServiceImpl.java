@@ -11,6 +11,12 @@ import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dao.UserDAO;
 import in.gagan.base.framework.entity.User;
 
+/**
+ * This class provides the implementation of LoginAttemptService interface and provides operations for Login Attempt functionality.
+ * 
+ * @author gaganthind
+ *
+ */
 @Transactional
 @Service
 public class LoginAttemptServiceImpl implements LoginAttemptService {
@@ -25,6 +31,11 @@ public class LoginAttemptServiceImpl implements LoginAttemptService {
 		this.passwordProps = passwordProps;
 	}
 
+	/**
+	 * This method is used to perform some operation when user authentication fails.
+	 * 
+	 * @param auth - Authentication object containing user info
+	 */
 	@Override
 	public void loginFailed(Authentication auth) {
 		
@@ -49,6 +60,11 @@ public class LoginAttemptServiceImpl implements LoginAttemptService {
 		
 	}
 
+	/**
+	 * This method is used to perform some operation when user authentication succeeds.
+	 * 
+	 * @param auth - Authentication object containing user info
+	 */
 	@Override
 	public void loginSucceeded(Authentication auth) {
 		// TODO Check if IP address tracking is needed

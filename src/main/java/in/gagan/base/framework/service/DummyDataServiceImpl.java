@@ -14,6 +14,12 @@ import in.gagan.base.framework.entity.Role;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.enums.Gender;
 
+/**
+ * This class provides the implementation of DummyDataServide interface and provides operations for creating dummy data.
+ * 
+ * @author gaganthind
+ *
+ */
 @Transactional
 @Service
 public class DummyDataServiceImpl implements DummyDataService {
@@ -28,6 +34,9 @@ public class DummyDataServiceImpl implements DummyDataService {
 		this.verificationTokenSvc = verificationTokenSvc;
 	}
 	
+	/**
+	 * This method creates the dummy users on application startup.
+	 */
 	@Override
 	public void createDummyData() {
 		User user = new User("A", "B", "Test1@e.com", null, Gender.M, "T");

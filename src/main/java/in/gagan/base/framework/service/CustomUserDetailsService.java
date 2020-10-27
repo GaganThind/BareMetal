@@ -19,6 +19,12 @@ import in.gagan.base.framework.dto.UserDetailsDTO;
 import in.gagan.base.framework.dto.UserRoleDTO;
 import in.gagan.base.framework.util.ExceptionHelperUtil;
 
+/**
+ * This class provides the implementation of UserDetailsService interface and provides the functionality of user Authentication.
+ * 
+ * @author gaganthind
+ *
+ */
 @Transactional
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -29,7 +35,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public CustomUserDetailsService(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
-
+	
+	/**
+	 * This method is used to authenticate user. This is done by fetching details from User table and authenticating.
+	 * 
+	 * @param email - user email for authentication
+	 * @return UserDetails - User details object of spring
+	 * @throws UsernameNotFoundException - Provided email isn't registered in the system
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		

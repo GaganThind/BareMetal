@@ -13,6 +13,12 @@ import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.util.UserHelperUtil;
 
+/**
+ * This class provides the implementation of AdminService interface and provides operations for Admin functionality.
+ * 
+ * @author gaganthind
+ *
+ */
 @Transactional
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -27,6 +33,9 @@ public class AdminServiceImpl implements AdminService {
 		this.userDataService = userDataService;
 	}
 
+	/**
+	 * Method used to create Admin account on application startup.
+	 */
 	@Override
 	public void createAdminUser() {
 		User user = this.adminAccount.getAdminDetails();
@@ -36,6 +45,11 @@ public class AdminServiceImpl implements AdminService {
 		}
 	}
 	
+	/**
+	 * Method used to fetch all the users of the application.
+	 * 
+	 * @return List<UserDTO> - list of all users
+	 */
 	@Override
 	public List<UserDTO> fetchAllUsers() {
 		List<User> users = this.userDataService.fetchAllUsers();

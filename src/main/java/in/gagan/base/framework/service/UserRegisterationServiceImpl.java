@@ -13,6 +13,12 @@ import in.gagan.base.framework.exception.UsernameExistException;
 import in.gagan.base.framework.util.UserDataValidator;
 import in.gagan.base.framework.util.UserHelperUtil;
 
+/**
+ * This class provides the implementation of UserRegisterationService interface and provides operations for User Registeration functionality.
+ * 
+ * @author gaganthind
+ *
+ */
 @Transactional
 @Service
 public class UserRegisterationServiceImpl implements UserRegisterationService {
@@ -30,6 +36,13 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 		this.emailSvc = emailSvc;
 	}
 	
+	/**
+	 * This method is used to register a new user in the system.
+	 * 
+	 * @param user - User DTO object with mandatory details
+	 * @return String - username is returned
+	 * @throws UsernameExistException - If User with email already present
+	 */
 	@Override
 	public String registerNewUser(UserDTO user) throws UsernameExistException {
 		UserDataValidator.validateUserDTO(user);
@@ -43,6 +56,12 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 		return user.getUsername();
 	}
 	
+	/**
+	 * This method returns the user data from provided email.
+	 * 
+	 * @param email - User email address
+	 * @return UserDTO - User DTO object with user details
+	 */
 	@Override
 	public UserDTO fetchUser(String email) {
 		UserDataValidator.validateEmail(email);
@@ -52,6 +71,12 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 		return userDTO;
 	}
 	
+	/**
+	 * This method is used to either update the record(if present) or insert the record.
+	 * 
+	 * @param user - User DTO object with user details to update
+	 * @return UserDTO - User DTO object with user details
+	 */
 	@Override
 	public UserDTO updateOrCreateUser(UserDTO user) {
 		if (this.userDataSvc.isUserPresent(user.getEmail())) {
@@ -65,18 +90,33 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 		return user;
 	}
 	
+	/**
+	 * This method is used to soft delete the user record using provided email.
+	 * 
+	 * @param email - Email address of user
+	 */
 	@Override
 	public void deleteUser(String email) {
 		UserDataValidator.validateEmail(email);
 		this.userDataSvc.deleteUser(email);
 	}
 	
+	/**
+	 * This method is used to hard delete the user record using provided email.
+	 * 
+	 * @param email - Email address of user
+	 */
 	@Override
 	public void hardDeleteUser(String email) {
 		UserDataValidator.validateEmail(email);
 		this.userDataSvc.hardDeleteUser(email);
 	}
 	
+	/**
+	 * This method is used to register a new user in the system.
+	 * 
+	 * @param userDTO - User DTO object with user details to insert
+	 */
 	private void insertUser(UserDTO userDTO) {
 		User user = new User();
 		UserHelperUtil.convertUserDTOToUser(userDTO, user);
@@ -89,6 +129,11 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 		sendAccountVerificationEmail(user.getEmail(), token);
 	}
 	
+	/**
+	 * This method is used to confirm the user registration by accepting a token.
+	 * 
+	 * @param token - Random token generated for activating user
+	 */
 	@Override
 	public void confirmUserRegisteration(String token) {
 		VerificationToken verificationToken = this.verificationTokenSvc.fetchByToken(token);
@@ -100,6 +145,12 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 		sendSuccessfullAccountVerificationEmail(user.getEmail());
 	}
 	
+	/**
+	 * This method is used to send account verification email with random token for user verification.
+	 * 
+	 * @param email - Email address of user
+	 * @param token - Random token generated for activating user
+	 */
 	@Override
 	public void sendAccountVerificationEmail(String email, String token) {
 		String subject = "Account Verification email";
@@ -107,6 +158,11 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 		this.emailSvc.sendEmail(email, subject, message);
 	}
 
+	/**
+	 * This method is used to send account successfully verified email.
+	 * 
+	 * @param email - Email address of user
+	 */
 	@Override
 	public void sendSuccessfullAccountVerificationEmail(String email) {
 		String subject = "Account Successfully Verified";
@@ -114,6 +170,11 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 		this.emailSvc.sendEmail(email, subject, message);
 	}
 	
+	/**
+	 * This method is used to update the record.
+	 * 
+	 * @param userDTO - User DTO object with user details to update
+	 */
 	private void updateUser(UserDTO userDTO) {
 		User user = new User();
 		UserHelperUtil.convertUserDTOToUser(userDTO, user);

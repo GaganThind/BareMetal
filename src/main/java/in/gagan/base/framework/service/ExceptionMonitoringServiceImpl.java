@@ -10,6 +10,12 @@ import in.gagan.base.framework.dao.ExceptionMonitorDAO;
 import in.gagan.base.framework.dto.ExceptionMonitorDTO;
 import in.gagan.base.framework.entity.ExceptionMonitor;
 
+/**
+ * This class provides the implementation of ExceptionMonitoringService interface and provides operations for Exception Monitoring functionality.
+ * 
+ * @author gaganthind
+ *
+ */
 @Transactional
 @Service
 public class ExceptionMonitoringServiceImpl implements ExceptionMonitoringService {
@@ -21,6 +27,11 @@ public class ExceptionMonitoringServiceImpl implements ExceptionMonitoringServic
 		this.exceptionMonitorDAO = exceptionMonitorDAO;
 	}
 	
+	/**
+	 * This method creates a new record in EXCEPTION_MONITORING table and captures exception details.
+	 * 
+	 * @param exceptionMonitorDTO - Exception DTO
+	 */
 	@Override
 	public void insertException(ExceptionMonitorDTO exceptionMonitorDTO) {
 		ExceptionMonitor exceptionMonitor = new ExceptionMonitor();

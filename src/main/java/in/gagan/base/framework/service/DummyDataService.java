@@ -1,13 +1,16 @@
 package in.gagan.base.framework.service;
 
 /**
- * This service interfaces is used to create dummy data on server startup  
+ * This Service interface is used to create dummy data on server startup. 
  * 
- * @author thindgagan
+ * @author gaganthind
  *
  */
 public interface DummyDataService {
-
+	
+	/**
+	 * This method creates the dummy users on application startup.
+	 */
 	void createDummyData();
 
 }
