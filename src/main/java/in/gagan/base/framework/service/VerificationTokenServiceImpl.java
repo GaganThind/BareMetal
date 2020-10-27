@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import in.gagan.base.framework.component.VerificationTokenProps;
-import in.gagan.base.framework.dao.AbstractBaseDAO;
 import in.gagan.base.framework.dao.VerificationTokenDAO;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.entity.VerificationToken;
@@ -22,7 +21,7 @@ import in.gagan.base.framework.entity.VerificationToken;
  */
 @Transactional
 @Service
-public class VerificationTokenServiceImpl extends AbstractBaseDAO<VerificationToken, Long> implements VerificationTokenService {
+public class VerificationTokenServiceImpl implements VerificationTokenService {
 	
 	private final VerificationTokenDAO verificationTokenDAO;
 	
@@ -48,9 +47,6 @@ public class VerificationTokenServiceImpl extends AbstractBaseDAO<VerificationTo
 		verificationToken.setExpiryDate(LocalDateTime.now().plusDays(this.verificationTokenProps.getVerificationTokenExpiryDays()));
 		this.verificationTokenDAO.save(verificationToken);
 		
-		// Testign only
-		System.err.println("User: " + user.getEmail() + " with token as: " + token);
-		
 		return token;
 	}
 	
@@ -70,6 +66,7 @@ public class VerificationTokenServiceImpl extends AbstractBaseDAO<VerificationTo
 			verificationToken.setToken(newToken);
 			this.verificationTokenDAO.save(verificationToken);
 		}
+		
 		return verificationToken;
 	}
 	
