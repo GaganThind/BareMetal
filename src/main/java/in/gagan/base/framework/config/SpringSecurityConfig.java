@@ -9,10 +9,15 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static in.gagan.base.framework.enums.UserRoles.*;
+
+import in.gagan.base.framework.component.JWTProps;
+import in.gagan.base.framework.filter.JWTTokenAuthenticationFilter;
+import in.gagan.base.framework.filter.JWTUsernamePasswordAuthFilter;
 import in.gagan.base.framework.service.CustomUserDetailsService;
 
 /**
@@ -27,10 +32,12 @@ import in.gagan.base.framework.service.CustomUserDetailsService;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final CustomUserDetailsService userDetailsSvc;
+	private final JWTProps jwtProps;
 	
 	@Autowired
-	public SpringSecurityConfig(CustomUserDetailsService userDetailsSvc) {
+	public SpringSecurityConfig(CustomUserDetailsService userDetailsSvc, JWTProps jwtProps) {
 		this.userDetailsSvc = userDetailsSvc;
+		this.jwtProps = jwtProps;
 	}
 	
 	@Autowired
@@ -41,20 +48,20 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		.authorizeRequests()
-            .antMatchers("/v1/users/register/**", "/h2/**").permitAll()
-            .antMatchers(HttpMethod.GET, "/v1/users/**").hasAnyRole(ADMIN_BASIC.name(), USER_BASIC.name(), ADMIN.name(), USER.name())
-            .antMatchers("/v1/users/**").hasAnyRole(ADMIN.name(), USER.name())
-            .antMatchers(HttpMethod.GET,"/v1/admin/**").hasAnyRole(ADMIN.name(), ADMIN_BASIC.name())
-            .antMatchers("/v1/admin/**").hasRole(ADMIN.name())
-			.antMatchers("/**").authenticated()
-			.anyRequest().authenticated()
+		.csrf().disable()
+		.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and()
-			.httpBasic()
-		.and()
-			.logout().permitAll()
-		.and()
-			.csrf().disable();
+			.addFilter(new JWTUsernamePasswordAuthFilter(authenticationManager(), jwtProps))
+			.addFilterAfter(new JWTTokenAuthenticationFilter(jwtProps), JWTUsernamePasswordAuthFilter.class)
+			.authorizeRequests()
+	            .antMatchers("/v1/users/register/**", "/h2/**").permitAll()
+	            .antMatchers(HttpMethod.GET, "/v1/users/**").hasAnyRole(ADMIN_BASIC.name(), USER_BASIC.name(), ADMIN.name(), USER.name())
+	            .antMatchers("/v1/users/**").hasAnyRole(ADMIN.name(), USER.name())
+	            .antMatchers(HttpMethod.GET,"/v1/admin/**").hasAnyRole(ADMIN.name(), ADMIN_BASIC.name())
+	            .antMatchers("/v1/admin/**").hasRole(ADMIN.name())
+				.antMatchers("/**").authenticated()
+				.anyRequest().authenticated();
 		
 		http.headers().frameOptions().disable(); // Makes h2-console to work 
 	}
