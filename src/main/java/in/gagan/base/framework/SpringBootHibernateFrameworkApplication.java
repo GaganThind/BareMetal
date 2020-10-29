@@ -3,6 +3,7 @@ package in.gagan.base.framework;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * Spring boot starter file
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  *
  */
 @EnableAspectJAutoProxy
+@EnableAsync
 @SpringBootApplication
 public class SpringBootHibernateFrameworkApplication {
 

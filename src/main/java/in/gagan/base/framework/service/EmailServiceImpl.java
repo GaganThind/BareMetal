@@ -10,6 +10,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
@@ -36,6 +37,7 @@ public class EmailServiceImpl implements EmailService {
 	 * @param subject - Subject of email
 	 * @param message - Message inside the email
 	 */
+	@Async
 	@Override
 	public void sendEmail(String toAddress, String subject, String message) {
 		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
@@ -55,6 +57,7 @@ public class EmailServiceImpl implements EmailService {
 	 * @throws MessagingException - if multipart creation failed
 	 * @throws FileNotFoundException - if the resource cannot be resolved to a file in the file system
 	 */
+	@Async
 	@Override
 	public void sendAttachmentEmail(String toAddress, String subject, String message, String attachment) 
 			throws MessagingException, FileNotFoundException {
