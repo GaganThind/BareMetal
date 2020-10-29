@@ -141,6 +141,9 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 		user.setActiveSw(ApplicationConstants.CHAR_Y);
 		this.userDataSvc.saveUser(user);
 		
+		// Remove the token from database
+		this.verificationTokenSvc.deleteToken(verificationToken);
+		
 		// Send confirmation email
 		sendSuccessfullAccountVerificationEmail(user.getEmail());
 	}

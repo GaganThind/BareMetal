@@ -70,4 +70,14 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 		return verificationToken;
 	}
 	
+	/**
+	 * This method is used to delete the token once successfully verified.
+	 * 
+	 * @param verificationToken - Verification_Token record from database
+	 */
+	@Override
+	public void deleteToken(VerificationToken verificationToken) {
+		this.verificationTokenDAO.hardDelete(verificationToken);
+	}
+	
 }
