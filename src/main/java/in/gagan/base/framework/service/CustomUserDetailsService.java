@@ -55,7 +55,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		Set<GrantedAuthority> authorities = roles.stream()
 												.map(this::convertRoleName)
 												.map(SimpleGrantedAuthority::new)
-												.collect(Collectors.toSet());
+												.collect(Collectors.toUnmodifiableSet());
 		
 		return new User(userDetails.getEmail(), userDetails.getPassword(), userDetails.isActive(), true, 
 				!userDetails.isPasswordExpired(), !userDetails.isAccountLocked(), authorities);
