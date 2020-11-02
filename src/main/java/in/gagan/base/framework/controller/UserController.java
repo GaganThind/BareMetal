@@ -1,5 +1,7 @@
 package in.gagan.base.framework.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -42,7 +44,7 @@ public class UserController {
 	 * @throws UsernameExistException - If the username/email already exists
 	 */
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> registerUser(@RequestBody UserDTO userDTO) throws UsernameExistException {
+	public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO userDTO) throws UsernameExistException {
 		String userName = this.userRegistrationSvc.registerNewUser(userDTO);
 		return new ResponseEntity<String>(userName + ": user Registration Successfull!!!", HttpStatus.OK);
 	}
@@ -78,7 +80,7 @@ public class UserController {
 	 * @return ResponseEntity<UserDTO> - User details from database
 	 */
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
+	public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
 		UserDTO updatedUserDTO = this.userRegistrationSvc.updateOrCreateUser(userDTO);
 		return new ResponseEntity<UserDTO>(updatedUserDTO, HttpStatus.OK);
 	}
