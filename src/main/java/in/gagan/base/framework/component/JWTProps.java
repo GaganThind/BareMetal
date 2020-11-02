@@ -1,5 +1,7 @@
 package in.gagan.base.framework.component;
 
+import static in.gagan.base.framework.constant.JWTSecurityConstants.SINGLE_SPACE;
+
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -8,6 +10,13 @@ import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.security.Keys;
 
+/**
+ * This class provides the jwt token details
+ * and data is loaded from properties file (jwtToken.properties).
+ * 
+ * @author gaganthind
+ *
+ */
 @Component
 @PropertySource(value = { "classpath:jwtToken.properties" })
 public class JWTProps {
@@ -30,7 +39,7 @@ public class JWTProps {
 	}
 
 	public String getTokenPrefix() {
-		return tokenPrefix;
+		return new StringBuilder(tokenPrefix).append(SINGLE_SPACE).toString();
 	}
 	
 }

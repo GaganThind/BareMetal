@@ -53,7 +53,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and()
 			.addFilter(new JWTUsernamePasswordAuthFilter(authenticationManager(), jwtProps))
-			.addFilterAfter(new JWTTokenAuthenticationFilter(jwtProps), JWTUsernamePasswordAuthFilter.class)
+			.addFilter(new JWTTokenAuthenticationFilter(authenticationManager(), jwtProps))
 			.authorizeRequests()
 	            .antMatchers("/v1/users/register/**", "/h2/**").permitAll()
 	            .antMatchers(HttpMethod.GET, "/v1/users/**").hasAnyRole(ADMIN_BASIC.name(), USER_BASIC.name(), ADMIN.name(), USER.name())

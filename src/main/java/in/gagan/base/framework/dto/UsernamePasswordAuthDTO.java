@@ -1,13 +1,13 @@
 package in.gagan.base.framework.dto;
 
-public class UsernameAndPasswordAuthDTO {
+public class UsernamePasswordAuthDTO {
 	
 	private String username;
 	private String password;
 	
-	public UsernameAndPasswordAuthDTO() { }
+	public UsernamePasswordAuthDTO() { }
 	
-	public UsernameAndPasswordAuthDTO(String username, String password) {
+	public UsernamePasswordAuthDTO(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}
