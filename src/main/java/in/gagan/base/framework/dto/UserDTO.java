@@ -5,9 +5,13 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.enums.Gender;
 import in.gagan.base.framework.util.UserHelperUtil;
+import in.gagan.base.framework.validator.ExtendedEmailValidator;
 
 /**
  * This DTO captures the user details from user entity and is used for internal data transfer.
@@ -22,13 +26,26 @@ public class UserDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = -5722242821192312914L;
 
+	@NotNull
+	@Size(min = 1, message = "${message.registration.first.name}")
 	private String firstName;
 
+	@NotNull 
+	@Size(min = 1, message = "${message.registration.last.name}")
 	private String lastName;
 	
+	@NotNull
+	@Size(min = 1, message = "${message.registration.email}")
+	@ExtendedEmailValidator
 	private String email;
 	
+	@NotNull
+	@Size(min = 1, message = "${message.registration.password}")
 	private String password;
+	
+	@NotNull
+	@Size(min = 1, message = "${message.registration.password}")
+	private String matchingPassword;
 
 	private LocalDate dob;
 	
@@ -38,6 +55,8 @@ public class UserDTO implements Serializable {
 	
 	private boolean activeSw = true;
 	
+	@NotNull
+	@Size(min = 1, message = "${message.registration.roles}")
 	private Set<UserRoleDTO> userRole = new HashSet<>();
 	
 	public UserDTO() { super(); }
@@ -88,6 +107,14 @@ public class UserDTO implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getMatchingPassword() {
+		return matchingPassword;
+	}
+
+	public void setMatchingPassword(String matchingPassword) {
+		this.matchingPassword = matchingPassword;
 	}
 
 	public LocalDate getDob() {
