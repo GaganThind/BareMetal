@@ -16,7 +16,12 @@ import javax.validation.Payload;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
-
+/**
+ * This annotation is used for validating the email address.
+ * 
+ * @author gaganthind
+ *
+ */
 @Email(message = "${message.registration.email.invalid}")
 @Pattern(regexp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
 @Target({ METHOD, PARAMETER, TYPE, FIELD, ANNOTATION_TYPE })
@@ -26,7 +31,9 @@ import javax.validation.constraints.Pattern;
 public @interface ExtendedEmailValidator {
 	
 	String message() default "${message.registration.email.invalid}";
+	
     Class<?>[] groups() default {};
+    
     Class<? extends Payload>[] payload() default {};
 
 }
