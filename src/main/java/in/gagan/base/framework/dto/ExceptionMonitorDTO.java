@@ -31,9 +31,9 @@ public class ExceptionMonitorDTO implements Serializable {
 
 	public ExceptionMonitorDTO(Exception ex) {
 		this.createDt = LocalDateTime.now();
-		this.exceptionDetails = ex.toString();
-		this.exceptionMessage = null != ex.getMessage() ? ex.getMessage() : "No Message";
-		this.stackTrace = Arrays.toString(ex.getStackTrace()).substring(0, 500);
+		this.exceptionDetails = ex.toString().substring(0, 499);
+		this.exceptionMessage = null != ex.getMessage() ? ex.getMessage().substring(0, 499) : "No Message";
+		this.stackTrace = Arrays.toString(ex.getStackTrace()).substring(0, 499);
 	}
 
 	public LocalDateTime getCreateDt() {
