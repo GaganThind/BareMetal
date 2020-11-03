@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
@@ -47,6 +48,7 @@ public class UserDTO implements Serializable {
 	@Size(min = 1, message = "${message.registration.password}")
 	private String matchingPassword;
 
+	@Past
 	private LocalDate dob;
 	
 	private int age;
