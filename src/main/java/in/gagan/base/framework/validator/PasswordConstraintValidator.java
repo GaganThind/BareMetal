@@ -5,6 +5,8 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
+import org.passay.EnglishSequenceData;
+import org.passay.IllegalSequenceRule;
 import org.passay.LengthRule;
 import org.passay.PasswordData;
 import org.passay.PasswordValidator;
@@ -28,7 +30,8 @@ public class PasswordConstraintValidator implements ConstraintValidator<Password
 															new CharacterRule(EnglishCharacterData.LowerCase, 3),
 															new CharacterRule(EnglishCharacterData.Special),
 															new CharacterRule(EnglishCharacterData.Digit),
-															new UsernameRule());
+															new UsernameRule(),
+															new IllegalSequenceRule(EnglishSequenceData.USQwerty));
 
 		RuleResult result = validator.validate(new PasswordData(password));
 
