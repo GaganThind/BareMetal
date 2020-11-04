@@ -10,7 +10,6 @@ import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.entity.VerificationToken;
 import in.gagan.base.framework.exception.UsernameExistException;
-import in.gagan.base.framework.util.UserDataValidator;
 import in.gagan.base.framework.util.UserHelperUtil;
 
 /**
@@ -45,8 +44,6 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	 */
 	@Override
 	public String registerNewUser(UserDTO user) throws UsernameExistException {
-		UserDataValidator.validateUserDTO(user);
-		
 		if (this.userDataSvc.isUserPresent(user.getEmail())) {
 			throw new UsernameExistException(user.getEmail());
 		}
@@ -64,9 +61,8 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	 */
 	@Override
 	public UserDTO fetchUser(String email) {
-		UserDataValidator.validateEmail(email);
 		UserDTO userDTO = new UserDTO();
-		User user = this.userDataSvc.fetchUserByEmail(email);
+		User user = this.userDataSvc.fetchUserByEmail(email.toLowerCase());
 		UserHelperUtil.convertUserToUserDTO(user, userDTO);
 		return userDTO;
 	}
@@ -80,10 +76,8 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	@Override
 	public UserDTO updateOrCreateUser(UserDTO user) {
 		if (this.userDataSvc.isUserPresent(user.getEmail())) {
-			UserDataValidator.validateUserDTOforUpdate(user);
 			updateUser(user);
 		} else {
-			UserDataValidator.validateUserDTO(user);
 			insertUser(user);
 		}
 		
@@ -97,8 +91,7 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	 */
 	@Override
 	public void deleteUser(String email) {
-		UserDataValidator.validateEmail(email);
-		this.userDataSvc.deleteUser(email);
+		this.userDataSvc.deleteUser(email.toLowerCase());
 	}
 	
 	/**
@@ -108,8 +101,7 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	 */
 	@Override
 	public void hardDeleteUser(String email) {
-		UserDataValidator.validateEmail(email);
-		this.userDataSvc.hardDeleteUser(email);
+		this.userDataSvc.hardDeleteUser(email.toLowerCase());
 	}
 	
 	/**

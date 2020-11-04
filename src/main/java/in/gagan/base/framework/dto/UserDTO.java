@@ -5,9 +5,16 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.enums.Gender;
 import in.gagan.base.framework.util.UserHelperUtil;
+import in.gagan.base.framework.validator.EmailValidator;
+import in.gagan.base.framework.validator.Password;
+import in.gagan.base.framework.validator.PasswordMatches;
 
 /**
  * This DTO captures the user details from user entity and is used for internal data transfer.
@@ -15,6 +22,7 @@ import in.gagan.base.framework.util.UserHelperUtil;
  * @author gaganthind
  *
  */
+@PasswordMatches
 public class UserDTO implements Serializable {
 	
 	/**
@@ -22,14 +30,29 @@ public class UserDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = -5722242821192312914L;
 
+	@NotNull(message = "{message.registration.first.name}")
+	@Size(min = 1, max = 25, message = "{message.registration.first.name.length}")
 	private String firstName;
 
+	@NotNull(message = "{message.registration.last.name}")
+	@Size(min = 1, max = 25, message = "{message.registration.last.name.length}")
 	private String lastName;
 	
+	@NotNull(message = "{message.registration.email}")
+	@Size(min = 4, message = "{message.registration.email}")
+	@EmailValidator
 	private String email;
 	
+	@Password
+	@NotNull(message = "{message.registration.password}")
+	@Size(min = 8, message = "{message.registration.password}")
 	private String password;
+	
+	@NotNull(message = "{message.registration.password}")
+	@Size(min = 1, message = "{message.registration.password}")
+	private String matchingPassword;
 
+	@Past(message = "{message.registration.dob.invalid}")
 	private LocalDate dob;
 	
 	private int age;
@@ -38,6 +61,8 @@ public class UserDTO implements Serializable {
 	
 	private boolean activeSw = true;
 	
+	@NotNull(message = "{message.registration.roles}")
+	@Size(min = 1, message = "{message.registration.roles}")
 	private Set<UserRoleDTO> userRole = new HashSet<>();
 	
 	public UserDTO() { super(); }
@@ -75,7 +100,7 @@ public class UserDTO implements Serializable {
 	}
 
 	public String getEmail() {
-		return email;
+		return email.toLowerCase();
 	}
 
 	public void setEmail(String email) {
@@ -88,6 +113,14 @@ public class UserDTO implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getMatchingPassword() {
+		return matchingPassword;
+	}
+
+	public void setMatchingPassword(String matchingPassword) {
+		this.matchingPassword = matchingPassword;
 	}
 
 	public LocalDate getDob() {
