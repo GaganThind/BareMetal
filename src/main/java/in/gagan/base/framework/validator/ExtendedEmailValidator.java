@@ -14,7 +14,6 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
 
 /**
  * This annotation is used for validating the email address.
@@ -22,8 +21,7 @@ import javax.validation.constraints.Pattern;
  * @author gaganthind
  *
  */
-@Email(message = "${message.registration.email.invalid}")
-@Pattern(regexp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
+@Email(regexp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
 @Target({ METHOD, PARAMETER, TYPE, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
