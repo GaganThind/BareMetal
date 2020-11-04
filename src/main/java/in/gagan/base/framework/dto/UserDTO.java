@@ -27,28 +27,28 @@ public class UserDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = -5722242821192312914L;
 
-	@NotNull
-	@Size(min = 1, message = "${message.registration.first.name}")
+	@NotNull(message = "{message.registration.first.name}")
+	@Size(min = 1, max = 25, message = "{message.registration.first.name.length}")
 	private String firstName;
 
-	@NotNull 
-	@Size(min = 1, message = "${message.registration.last.name}")
+	@NotNull(message = "{message.registration.last.name}")
+	@Size(min = 1, max = 25, message = "{message.registration.last.name.length}")
 	private String lastName;
 	
-	@NotNull
-	@Size(min = 1, message = "${message.registration.email}")
+	@NotNull(message = "{message.registration.email}")
+	@Size(min = 4, message = "{message.registration.email}")
 	@ExtendedEmailValidator
 	private String email;
 	
-	@NotNull
-	@Size(min = 1, message = "${message.registration.password}")
+	@NotNull(message = "{message.registration.password}")
+	@Size(min = 8, message = "{message.registration.password}")
 	private String password;
 	
-	@NotNull
-	@Size(min = 1, message = "${message.registration.password}")
+	@NotNull(message = "{message.registration.password}")
+	@Size(min = 1, message = "{message.registration.password}")
 	private String matchingPassword;
 
-	@Past
+	@Past(message = "{message.registration.dob.invalid}")
 	private LocalDate dob;
 	
 	private int age;
@@ -57,8 +57,8 @@ public class UserDTO implements Serializable {
 	
 	private boolean activeSw = true;
 	
-	@NotNull
-	@Size(min = 1, message = "${message.registration.roles}")
+	@NotNull(message = "{message.registration.roles}")
+	@Size(min = 1, message = "{message.registration.roles}")
 	private Set<UserRoleDTO> userRole = new HashSet<>();
 	
 	public UserDTO() { super(); }
@@ -96,7 +96,7 @@ public class UserDTO implements Serializable {
 	}
 
 	public String getEmail() {
-		return email;
+		return email.toLowerCase();
 	}
 
 	public void setEmail(String email) {
