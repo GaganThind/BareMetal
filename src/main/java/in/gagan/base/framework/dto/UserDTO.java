@@ -13,6 +13,8 @@ import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.enums.Gender;
 import in.gagan.base.framework.util.UserHelperUtil;
 import in.gagan.base.framework.validator.EmailValidator;
+import in.gagan.base.framework.validator.Password;
+import in.gagan.base.framework.validator.PasswordMatches;
 
 /**
  * This DTO captures the user details from user entity and is used for internal data transfer.
@@ -20,6 +22,7 @@ import in.gagan.base.framework.validator.EmailValidator;
  * @author gaganthind
  *
  */
+@PasswordMatches
 public class UserDTO implements Serializable {
 	
 	/**
@@ -40,6 +43,7 @@ public class UserDTO implements Serializable {
 	@EmailValidator
 	private String email;
 	
+	@Password
 	@NotNull(message = "{message.registration.password}")
 	@Size(min = 8, message = "{message.registration.password}")
 	private String password;

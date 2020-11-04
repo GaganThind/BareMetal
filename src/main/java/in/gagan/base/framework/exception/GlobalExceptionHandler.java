@@ -1,7 +1,6 @@
 package in.gagan.base.framework.exception;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -12,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -106,12 +105,12 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public final ResponseEntity<?> methodArgumentNotValidException(final MethodArgumentNotValidException ex, WebRequest request) {
 		BindingResult result = ex.getBindingResult();
-		List<FieldError> fieldErrors = result.getFieldErrors();
+		List<ObjectError> objectErrors = result.getAllErrors();
+		List<String> errorMessages = objectErrors.stream()
+														.map(ObjectError::getDefaultMessage)
+														.collect(Collectors.toUnmodifiableList());
 		
-		Map<String, String> fieldToErrorMessage = fieldErrors.stream()
-														.collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
-		
-		Exception exption = new IllegalArgumentException(fieldToErrorMessage.toString());
+		Exception exption = new IllegalArgumentException(errorMessages.toString());
 		
 		return new ResponseEntity<>(handleException(exption), HttpStatus.BAD_REQUEST);
 	}
