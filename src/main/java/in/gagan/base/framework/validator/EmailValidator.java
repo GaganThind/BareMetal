@@ -26,7 +26,7 @@ import javax.validation.constraints.Email;
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
-public @interface ExtendedEmailValidator {
+public @interface EmailValidator {
 	
 	String message() default "${message.registration.email.invalid}";
 	

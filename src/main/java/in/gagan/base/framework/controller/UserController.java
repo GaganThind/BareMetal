@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.exception.UsernameExistException;
 import in.gagan.base.framework.service.UserRegisterationService;
-import in.gagan.base.framework.validator.ExtendedEmailValidator;
+import in.gagan.base.framework.validator.EmailValidator;
 
 /**
  * This controller class provides the functionality for the user module.
@@ -59,7 +59,7 @@ public class UserController {
 	 * @return ResponseEntity<UserDTO> - User details from database
 	 */
 	@GetMapping(value = "/{email}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserDTO> fetchUser(@ExtendedEmailValidator @PathVariable String email) {
+	public ResponseEntity<UserDTO> fetchUser(@EmailValidator @PathVariable String email) {
 		UserDTO userDTO = this.userRegistrationSvc.fetchUser(email);
 		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 	}
@@ -71,7 +71,7 @@ public class UserController {
 	 * @return ResponseEntity<UserDTO> - User details from database
 	 */
 	@GetMapping(consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserDTO> fetchUserWithRequestBody(@ExtendedEmailValidator @RequestBody String email) {
+	public ResponseEntity<UserDTO> fetchUserWithRequestBody(@EmailValidator @RequestBody String email) {
 		UserDTO userDTO = this.userRegistrationSvc.fetchUser(email);
 		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 	}
@@ -95,7 +95,7 @@ public class UserController {
 	 * @return ResponseEntity<String> - Success message
 	 */
 	@DeleteMapping(value = "/{email}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> deleteUser(@ExtendedEmailValidator @PathVariable String email) {
+	public ResponseEntity<String> deleteUser(@EmailValidator @PathVariable String email) {
 		this.userRegistrationSvc.deleteUser(email);
 		return new ResponseEntity<String>("Deleted Successfully!!!", HttpStatus.OK);
 	}
@@ -107,7 +107,7 @@ public class UserController {
 	 * @return ResponseEntity<String> - Success message
 	 */
 	@DeleteMapping(consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> deleteUserWithRequestBody(@ExtendedEmailValidator @RequestBody String email) {
+	public ResponseEntity<String> deleteUserWithRequestBody(@EmailValidator @RequestBody String email) {
 		this.userRegistrationSvc.deleteUser(email);
 		return new ResponseEntity<String>("Deleted Successfully!!!", HttpStatus.OK);
 	}
@@ -119,7 +119,7 @@ public class UserController {
 	 * @return ResponseEntity<String> - Success message
 	 */
 	@PutMapping(value = "/register/verify/{token}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> verifyUser(@ExtendedEmailValidator @PathVariable String token) {
+	public ResponseEntity<String> verifyUser(@EmailValidator @PathVariable String token) {
 		this.userRegistrationSvc.confirmUserRegisteration(token);
 		return new ResponseEntity<String>("User Verified Successfully!!!", HttpStatus.OK);
 	}

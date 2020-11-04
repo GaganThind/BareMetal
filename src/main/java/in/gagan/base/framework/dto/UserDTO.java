@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.enums.Gender;
 import in.gagan.base.framework.util.UserHelperUtil;
-import in.gagan.base.framework.validator.ExtendedEmailValidator;
+import in.gagan.base.framework.validator.EmailValidator;
 
 /**
  * This DTO captures the user details from user entity and is used for internal data transfer.
@@ -37,7 +37,7 @@ public class UserDTO implements Serializable {
 	
 	@NotNull(message = "{message.registration.email}")
 	@Size(min = 4, message = "{message.registration.email}")
-	@ExtendedEmailValidator
+	@EmailValidator
 	private String email;
 	
 	@NotNull(message = "{message.registration.password}")
