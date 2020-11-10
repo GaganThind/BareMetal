@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -141,6 +142,18 @@ public class GlobalExceptionHandler {
 		}
 		
 		return new ResponseEntity<>(handleException(excption), HttpStatus.BAD_REQUEST);
+	}
+	
+	/**
+	 * Global exception handler for BadCredentialsException
+	 * 
+	 * @param ex - Exception thrown in application
+	 * @param request - Request Parameter to get details
+	 * @return ResponseEntity<?> - Response Entity object
+	 */
+	@ExceptionHandler(BadCredentialsException.class)
+	public final ResponseEntity<?> BadCredentialsException(final UsernameNotFoundException ex, WebRequest request) {
+		return new ResponseEntity<>(handleException(ex, false), HttpStatus.FORBIDDEN);
 	}
 	
 	

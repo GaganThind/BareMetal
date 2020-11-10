@@ -1,5 +1,10 @@
 package in.gagan.base.framework.config;
 
+import static in.gagan.base.framework.enums.UserRoles.ADMIN;
+import static in.gagan.base.framework.enums.UserRoles.ADMIN_BASIC;
+import static in.gagan.base.framework.enums.UserRoles.USER;
+import static in.gagan.base.framework.enums.UserRoles.USER_BASIC;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +18,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static in.gagan.base.framework.enums.UserRoles.*;
-
+import in.gagan.base.framework.component.JWTAuthenticationEntryPoint;
 import in.gagan.base.framework.component.JWTProps;
 import in.gagan.base.framework.filter.JWTTokenAuthenticationFilter;
 import in.gagan.base.framework.filter.JWTUsernamePasswordAuthFilter;
@@ -49,8 +53,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 		.csrf().disable()
-		.sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.exceptionHandling()
+			.authenticationEntryPoint(new JWTAuthenticationEntryPoint())
+		.and()
+			.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and()
 			.addFilter(new JWTUsernamePasswordAuthFilter(authenticationManager(), jwtProps))
 			.addFilter(new JWTTokenAuthenticationFilter(authenticationManager(), jwtProps))
