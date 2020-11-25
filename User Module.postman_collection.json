@@ -1,0 +1,333 @@
+{
+	"info": {
+		"_postman_id": "e650ec1e-189f-4292-8edd-217f99879b93",
+		"name": "User Module",
+		"description": "Register user",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Module",
+			"item": [
+				{
+					"name": "Get User Details",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJUZXN0NEBlLmNvbSIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX1VTRVJfQkFTSUMifV0sImlhdCI6MTYwNDMyMTMzNSwiZXhwIjoxNjA1NDY1MDAwfQ.av_bNwhiTbg0mbtZtZCXEINtSCVV60EPhDJes3fKprxizXjKyDrmozAiVycG49gk",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "text/plain",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8081/baseFw/api/v1/users/Test11@e.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"baseFw",
+								"api",
+								"v1",
+								"users",
+								"Test11@e.com"
+							]
+						},
+						"description": "Fetch User details"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Details Failure",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJUZXN0NEBlLmNvbSIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX1VTRVJfQkFTSUMifV0sImlhdCI6MTYwNDMyMTMzNSwiZXhwIjoxNjA1NDY1MDAwfQ.av_bNwhiTbg0mbtZtZCXEINtSCVV60EPhDJes3fKprxizXjKyDrmozAiVycG49gk"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "text/plain"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8081/baseFw/api/v1/users/Test1e.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"baseFw",
+								"api",
+								"v1",
+								"users",
+								"Test1e.com"
+							]
+						},
+						"description": "Fetch User details"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJUZXN0M0BlLmNvbSIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX1VTRVIifV0sImlhdCI6MTYwNDM4MTY4NCwiZXhwIjoxNjA1NTUxNDAwfQ.7bdfPHV0r1gGvtMi7U7zkmpvFCfEIy47223JkG34sUcqsWik0wKx1ckaVe7vPuDB",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Test\",\n    \"lastName\": \"Thinjd\",\n    \"email\": \"Test3@e.com\",\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8081/baseFw/api/v1/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"baseFw",
+								"api",
+								"v1",
+								"users",
+								""
+							]
+						},
+						"description": "Update User"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJUZXN0M0BlLmNvbSIsImF1dGhvcml0aWVzIjpbeyJhdXRob3JpdHkiOiJST0xFX1VTRVIifV0sImlhdCI6MTYwNDM4MTY4NCwiZXhwIjoxNjA1NTUxNDAwfQ.7bdfPHV0r1gGvtMi7U7zkmpvFCfEIy47223JkG34sUcqsWik0wKx1ckaVe7vPuDB",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "Test3@e.com"
+						},
+						"url": {
+							"raw": "http://localhost:8081/baseFw/api/v1/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"baseFw",
+								"api",
+								"v1",
+								"users"
+							]
+						},
+						"description": "Delete User"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Admin Module",
+			"item": [],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Register User",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Test\",\n    \"lastName\": \"Thind\",\n    \"email\": \"Test11@e.com\",\n    \"password\": \"Test@123\",\n    \"matchingPassword\": \"Test@123\",\n    \"dob\": \"1981-05-03\",\n    \"gender\": \"F\",\n    \"activeSw\": true,\n    \"userRole\": [\n        {\n            \"roleName\": \"USER\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/baseFw/api/v1/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"baseFw",
+						"api",
+						"v1",
+						"users",
+						"register"
+					]
+				},
+				"description": "Register User"
+			},
+			"response": []
+		},
+		{
+			"name": "Register User Failure",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Test\",\n    \"email\": \"Test15@e.com\",\n    \"password\": \"Test@1234\",\n    \"matchingPassword\": \"234\",\n    \"dob\": \"1981-05-03\",\n    \"gender\": \"F\",\n    \"userRole\": [\n        {\n            \"roleName\": \"USER\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/baseFw/api/v1/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"baseFw",
+						"api",
+						"v1",
+						"users",
+						"register"
+					]
+				},
+				"description": "Register User"
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"test1@e.com\",\n    \"password\": \"T\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/baseFw/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"baseFw",
+						"api",
+						"login"
+					]
+				},
+				"description": "Login"
+			},
+			"response": []
+		},
+		{
+			"name": "Login Failure",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"Test3@e.com\",\n    \"password\": \"T2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/baseFw/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"baseFw",
+						"api",
+						"login"
+					]
+				},
+				"description": "Login"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
