@@ -59,7 +59,7 @@ public class UserDTO implements Serializable {
 
 	private Gender gender;
 	
-	private boolean activeSw = true;
+	private boolean activeSw;
 	
 	@NotNull(message = "{message.registration.roles}")
 	@Size(min = 1, message = "{message.registration.roles}")
