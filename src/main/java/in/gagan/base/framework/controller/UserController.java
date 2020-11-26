@@ -80,12 +80,12 @@ public class UserController {
 	/**
 	 * This method is used to update the details in a user entity.
 	 * 
-	 * @param userDTO - the user data represented in form of a DTO
+	 * @param updateUserDTO - the user data represented in form of a DTO
 	 * @return ResponseEntity<UserDTO> - User details from database
 	 */
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UpdateUserDTO userDTO) {
-		UserDTO updatedUserDTO = this.userRegistrationSvc.updateUser(userDTO);
+	public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UpdateUserDTO updateUserDTO) {
+		UserDTO updatedUserDTO = this.userRegistrationSvc.updateUser(updateUserDTO);
 		return new ResponseEntity<UserDTO>(updatedUserDTO, HttpStatus.OK);
 	}
 	
