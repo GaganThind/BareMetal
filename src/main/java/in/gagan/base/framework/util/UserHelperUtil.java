@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 
+import in.gagan.base.framework.dto.UpdateUserDTO;
 import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.dto.UserRoleDTO;
 import in.gagan.base.framework.entity.Role;
@@ -94,6 +95,35 @@ public final class UserHelperUtil {
 		BeanUtils.copyProperties(user, userDTO,"password", "userRole");
 		userDTO.setUserRole(convertRoleToDTO(user.getUserRole()));
 		return userDTO;
+	}
+
+	/**
+	 * Update User entity object with UpdateUserDTO fields. 
+	 * 
+	 * @param updateUserDTO - User DTO for updating user details
+	 * @param user - User entity object
+	 */
+	public static void updateUserWithUpdateUserDTO(UpdateUserDTO updateUserDTO, User user) {
+		if (null != updateUserDTO.getFirstName()) {
+			user.setFirstName(updateUserDTO.getFirstName());
+		}
+		
+		if (null != updateUserDTO.getLastName()) {
+			user.setLastName(updateUserDTO.getLastName());
+		}
+		
+		if (null != updateUserDTO.getDob()) {
+			user.setDob(updateUserDTO.getDob());
+		}
+		
+		if (null != updateUserDTO.getGender()) {
+			user.setGender(updateUserDTO.getGender());
+		}
+		
+		if (null != updateUserDTO.getUserRole() && !updateUserDTO.getUserRole().isEmpty()) {
+			user.setUserRole(convertDTOToRole(updateUserDTO.getUserRole()));
+		}
+		
 	}
 	
 }

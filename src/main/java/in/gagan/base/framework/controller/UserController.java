@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import in.gagan.base.framework.dto.UpdateUserDTO;
 import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.exception.UsernameExistException;
 import in.gagan.base.framework.service.UserRegisterationService;
@@ -85,8 +86,8 @@ public class UserController {
 	 * @return ResponseEntity<UserDTO> - User details from database
 	 */
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
-		UserDTO updatedUserDTO = this.userRegistrationSvc.updateOrCreateUser(userDTO);
+	public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UpdateUserDTO userDTO) {
+		UserDTO updatedUserDTO = this.userRegistrationSvc.updateUser(userDTO);
 		return new ResponseEntity<UserDTO>(updatedUserDTO, HttpStatus.OK);
 	}
 	
