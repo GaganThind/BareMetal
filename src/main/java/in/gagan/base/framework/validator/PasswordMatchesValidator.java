@@ -5,6 +5,8 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.lang3.StringUtils;
 
+import in.gagan.base.framework.constant.ApplicationConstants;
+import in.gagan.base.framework.dto.PasswordResetDTO;
 import in.gagan.base.framework.dto.UserDTO;
 
 /**
@@ -14,12 +16,27 @@ import in.gagan.base.framework.dto.UserDTO;
  *
  */
 public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, Object> {
-
+	
 	@Override
     public boolean isValid(Object obj, ConstraintValidatorContext context) {
-        UserDTO userDTO = (UserDTO) obj;
-        boolean passwordNull = StringUtils.isEmpty(userDTO.getPassword()) || StringUtils.isEmpty(userDTO.getMatchingPassword());
-        boolean passwordEqual = !passwordNull ? userDTO.getPassword().equals(userDTO.getMatchingPassword()) : false;
+		
+		String password = ApplicationConstants.BLANK;
+		String matchingPassword = ApplicationConstants.BLANK;
+		
+		if (obj instanceof UserDTO) {
+			UserDTO userDTO = (UserDTO) obj;
+			password = userDTO.getPassword();
+			matchingPassword = userDTO.getMatchingPassword();
+		} else if (obj instanceof PasswordResetDTO) {
+			PasswordResetDTO passwordResetDTO = (PasswordResetDTO) obj;
+			password = passwordResetDTO.getPassword();
+			matchingPassword = passwordResetDTO.getMatchingPassword();
+		} else {
+			throw new IllegalArgumentException("@PasswordMatches not applicable for: " + obj.getClass());
+		}
+		
+        boolean passwordNull = StringUtils.isEmpty(password) || StringUtils.isEmpty(matchingPassword);
+        boolean passwordEqual = !passwordNull ? password.equals(matchingPassword) : false;
         return passwordEqual;
     }
 	
