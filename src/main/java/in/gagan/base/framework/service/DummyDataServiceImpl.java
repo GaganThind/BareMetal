@@ -40,19 +40,19 @@ public class DummyDataServiceImpl implements DummyDataService {
 	 */
 	@Override
 	public void createDummyData() {
-		User user = new User("A", "B", "Test1@e.com", null, Gender.M, "T");
+		User user = new User("A", "B", "test1@e.com", null, Gender.M, "T");
 		user.addRole(new Role(ADMIN));
 		user.setActiveSw(ApplicationConstants.CHAR_Y);
 		
-		User user1 = new User("A1", "B1", "Test2@e.com", null, Gender.F, "T");
+		User user1 = new User("A1", "B1", "test2@e.com", null, Gender.F, "T");
 		user1.addRole(new Role(ADMIN_BASIC));
 		user1.setActiveSw(ApplicationConstants.CHAR_Y);
 		
-		User user2 = new User("A2", "B2", "Test3@e.com", null, Gender.F, "T");
+		User user2 = new User("A2", "B2", "test3@e.com", null, Gender.F, "T");
 		user2.addRole(new Role(USER));
 		user2.setActiveSw(ApplicationConstants.CHAR_Y);
 		
-		User user3 = new User("A3", "B3", "Test4@e.com", null, Gender.M, "T");
+		User user3 = new User("A3", "B3", "test4@e.com", null, Gender.M, "T");
 		user3.addRole(new Role(USER_BASIC));
 		user3.setActiveSw(ApplicationConstants.CHAR_Y);
 		
