@@ -21,7 +21,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="VERIFICATION_TOKEN")
-public class VerificationToken extends AbstractBaseEntity {
+public class VerificationToken extends Auditable implements BaseEntity {
 
 	/**
 	 * Serial Version
@@ -36,7 +36,7 @@ public class VerificationToken extends AbstractBaseEntity {
 	@Column(name="TOKEN", nullable = false, unique = true)
 	private String token;
 	
-	@OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinColumn(name="USER_ID", nullable = false)
 	private User user;
 	

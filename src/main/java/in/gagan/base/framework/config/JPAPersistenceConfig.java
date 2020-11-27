@@ -10,12 +10,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import in.gagan.base.framework.component.AuditorAwareImpl;
 import in.gagan.base.framework.constant.PersistenceConstants;
 
 /**
@@ -26,6 +29,7 @@ import in.gagan.base.framework.constant.PersistenceConstants;
  */
 @Configuration
 @EnableTransactionManagement
+@EnableJpaAuditing
 @PropertySource(value = { "classpath:jpaConfiguration.properties" })
 public class JPAPersistenceConfig {
 
@@ -84,6 +88,16 @@ public class JPAPersistenceConfig {
 	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
+	
+	/**
+	 * Auditor Aware
+	 * 
+	 * @return AuditorAware<String> - AuditorAware logging
+	 */
+	@Bean
+    public AuditorAware<String> auditorAware() {
+        return new AuditorAwareImpl();
+    }
 
 	/**
 	 * Hibernate specific properties

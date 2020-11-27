@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
+import in.gagan.base.framework.dto.UpdateUserDTO;
 import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.entity.VerificationToken;
@@ -70,18 +71,20 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	/**
 	 * This method is used to either update the record(if present) or insert the record.
 	 * 
-	 * @param user - User DTO object with user details to update
+	 * @param updateUserDTO - User DTO object with user details to update
 	 * @return UserDTO - User DTO object with user details
 	 */
 	@Override
-	public UserDTO updateOrCreateUser(UserDTO user) {
-		if (this.userDataSvc.isUserPresent(user.getEmail())) {
-			updateUser(user);
-		} else {
-			insertUser(user);
-		}
+	public UserDTO updateUser(UpdateUserDTO updateUserDTO) {
+		String email = updateUserDTO.getEmail().toLowerCase();
 		
-		return user;
+		User user = this.userDataSvc.fetchUserByEmail(email);
+		UserHelperUtil.updateUserWithUpdateUserDTO(updateUserDTO, user);
+		this.userDataSvc.updateUser(user);
+		
+		UserDTO userDTO = new UserDTO();
+		UserHelperUtil.convertUserToUserDTO(user, userDTO);
+		return userDTO;
 	}
 	
 	/**
@@ -165,15 +168,4 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 		this.emailSvc.sendEmail(email, subject, message);
 	}
 	
-	/**
-	 * This method is used to update the record.
-	 * 
-	 * @param userDTO - User DTO object with user details to update
-	 */
-	private void updateUser(UserDTO userDTO) {
-		User user = new User();
-		UserHelperUtil.convertUserDTOToUser(userDTO, user);
-		this.userDataSvc.updateUser(user);
-	}
-
 }

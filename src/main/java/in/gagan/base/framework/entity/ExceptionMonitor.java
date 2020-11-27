@@ -17,7 +17,7 @@ import in.gagan.base.framework.constant.ApplicationConstants;
  */
 @Entity
 @Table(name = "EXCEPTION_MONITOR")
-public class ExceptionMonitor extends AbstractBaseEntity {
+public class ExceptionMonitor extends Auditable implements BaseEntity {
 
 	/**
 	 * Serial Version
