@@ -1,6 +1,8 @@
 package in.gagan.base.framework.controller;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -119,7 +121,7 @@ public class UserController {
 	 * @return ResponseEntity<String> - Success message
 	 */
 	@PutMapping(value = "/register/verify/{token}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> verifyUser(@EmailValidator @PathVariable String token) {
+	public ResponseEntity<String> verifyUser(@NotNull @NotEmpty @PathVariable String token) {
 		this.userRegistrationSvc.confirmUserRegisteration(token);
 		return new ResponseEntity<String>("User Verified Successfully!!!", HttpStatus.OK);
 	}
