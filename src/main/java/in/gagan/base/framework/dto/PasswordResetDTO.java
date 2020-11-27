@@ -8,6 +8,12 @@ import javax.validation.constraints.Size;
 import in.gagan.base.framework.validator.Password;
 import in.gagan.base.framework.validator.PasswordMatches;
 
+/**
+ * This DTO captures the password reset details.
+ * 
+ * @author gaganthind
+ *
+ */
 @PasswordMatches
 public class PasswordResetDTO implements Serializable {
 	
