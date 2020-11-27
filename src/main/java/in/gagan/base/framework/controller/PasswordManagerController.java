@@ -39,9 +39,10 @@ public class PasswordManagerController {
 	 * @param passwordResetDTO - Object to transfer password and confirm password
 	 * @param  email - User email address
 	 * @return ResponseEntity<String> - Success message
+	 * @throws IllegalAccessException 
 	 */
-	@PutMapping(value = "/reset", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> resetPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO, @EmailValidator @RequestBody String email) {
+	@PutMapping(value = "/reset/{email}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> resetPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO, @EmailValidator @PathVariable String email) throws IllegalAccessException {
 		this.passwordManagerService.resetPassword(passwordResetDTO, email);
 		return new ResponseEntity<String>("Password Reset Successfull!!!", HttpStatus.OK);
 	}
@@ -53,7 +54,7 @@ public class PasswordManagerController {
 	 * @param token - Unique token string 
 	 * @return ResponseEntity<String> - Success message
 	 */
-	@PutMapping(value = "/forgot/{token}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	@PutMapping(value = "/forgot/{token}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> forgotPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO, @PathVariable String token) {
 		this.passwordManagerService.forgotPassword(passwordResetDTO, token);
 		return new ResponseEntity<String>("Password Reset Successfull!!!", HttpStatus.OK);

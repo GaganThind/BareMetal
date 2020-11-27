@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import in.gagan.base.framework.dto.PasswordResetDTO;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.entity.VerificationToken;
+import in.gagan.base.framework.util.UserHelperUtil;
 
 /**
  * This class provides the implementation of PasswordManagerService interface and provides operations for Password reset functionality.
@@ -37,9 +38,16 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 	 * 
 	 * @param passwordResetDTO - Object to transfer password and confirm password
 	 * @param  email - User email address
+	 * @throws IllegalAccessException 
 	 */
 	@Override
-	public void resetPassword(PasswordResetDTO passwordResetDTO, String email) {
+	public void resetPassword(PasswordResetDTO passwordResetDTO, String email) throws IllegalAccessException {
+		String username = UserHelperUtil.loggedInUser();
+		
+		if (!username.equalsIgnoreCase(email)) {
+			throw new IllegalAccessException("User can only update own password.");
+		}
+		
 		User user = this.userDataSvc.fetchUserByEmail(email);
 		
 		user.setPassword(passwordResetDTO.getPassword());
