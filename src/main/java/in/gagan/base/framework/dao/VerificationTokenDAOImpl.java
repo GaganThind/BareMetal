@@ -3,6 +3,8 @@ package in.gagan.base.framework.dao;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
@@ -20,10 +22,11 @@ public class VerificationTokenDAOImpl extends AbstractBaseDAO<VerificationToken,
 	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<VerificationToken> fetchByToken(String token) {
-		List<VerificationToken> tokens = 
-				(List<VerificationToken>) entityManager.createQuery(ITERAL_FROM + getPersistentClass().getSimpleName() 
-						+ " where token = '" + token + "'").getResultList();
-		return !CollectionUtils.isEmpty(tokens) ? Optional.of(tokens.get(0)) : Optional.empty();
+		Query query = entityManager.createQuery("from " + getPersistentClass().getSimpleName() + " where token = :token ");
+		query.setParameter("token", token);
+		List<VerificationToken> verificationTokens = (List<VerificationToken>) query.getResultList();
+		
+		return !CollectionUtils.isEmpty(verificationTokens) ? Optional.of(verificationTokens.get(0)) : Optional.empty();
 	}
 	
 }

@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -61,7 +62,8 @@ public abstract class AbstractBaseDAO<E extends AbstractBaseEntity, K extends Se
 	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<Iterable<E>> findAll() {
-		return Optional.ofNullable(entityManager.createQuery(ITERAL_FROM + getPersistentClass().getSimpleName()).getResultList());
+		Query query = entityManager.createQuery(ITERAL_FROM + getPersistentClass().getSimpleName());
+		return Optional.ofNullable(query.getResultList());
 	}
 	
 	/**
