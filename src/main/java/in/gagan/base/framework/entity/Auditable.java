@@ -4,28 +4,33 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
- * Abstract Base entity for all entity classes. This abstract implementation of base entity will have common columns.
+ * This class enables auditing of persistence data.
  * 
  * @author gaganthind
  *
  */
 @MappedSuperclass
-public abstract class AbstractBaseEntity implements Serializable, BaseEntity {
+@EntityListeners(value = AuditingEntityListener.class)
+public abstract class Auditable implements Serializable {
 	
 	/**
 	 * Serial Version
 	 */
 	private static final long serialVersionUID = -1287823037715243132L;
 	
-	public AbstractBaseEntity() { }
+	public Auditable() { }
 	
-	public AbstractBaseEntity(char activeSw) {
+	public Auditable(char activeSw) {
 		super();
 		this.activeSw = activeSw;
 	}
@@ -36,26 +41,28 @@ public abstract class AbstractBaseEntity implements Serializable, BaseEntity {
 	/**
 	 * Record create date
 	 */
-	@CreationTimestamp
-	@Column(name="CREATE_DT", nullable = true)
+	@CreatedDate
+	@Column(name="CREATE_DT", updatable = false)
 	private LocalDateTime createDt;
 	
 	/**
 	 * Record update date
 	 */
-	@UpdateTimestamp
+	@LastModifiedDate
 	@Column(name="UPDATE_DT", nullable = true)
 	private LocalDateTime updateDt;
 	
 	/**
 	 * Record create user id
 	 */
-	@Column(name="CREATE_USER_ID", nullable = true)
+	@CreatedBy
+	@Column(name="CREATE_USER_ID", updatable = false)
 	private String createUserId;
 	
 	/**
 	 * Record update user id
 	 */
+	@LastModifiedBy
 	@Column(name="UPDATE_USER_ID", nullable = true)
 	private String updateUserId;
 	
@@ -98,4 +105,5 @@ public abstract class AbstractBaseEntity implements Serializable, BaseEntity {
 	public void setUpdateUserId(String updateUserId) {
 		this.updateUserId = updateUserId;
 	}
+	
 }

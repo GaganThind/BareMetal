@@ -21,7 +21,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="VERIFICATION_TOKEN")
-public class VerificationToken extends AbstractBaseEntity {
+public class VerificationToken extends Auditable implements BaseEntity {
 
 	/**
 	 * Serial Version
