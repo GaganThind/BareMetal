@@ -33,7 +33,7 @@ import in.gagan.base.framework.util.UserHelperUtil;
  */
 @Entity
 @Table(name="USERS")
-public class User extends AbstractBaseEntity {
+public class User extends Auditable implements BaseEntity {
 
 	/**
 	 * Serial Version
