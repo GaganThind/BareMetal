@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * This DTO captures the exception details and log them in database. 
  * 
@@ -31,9 +33,15 @@ public class ExceptionMonitorDTO implements Serializable {
 
 	public ExceptionMonitorDTO(Exception ex) {
 		this.createDt = LocalDateTime.now();
-		this.exceptionDetails = ex.toString().substring(0, 499);
-		this.exceptionMessage = null != ex.getMessage() ? ex.getMessage().substring(0, 499) : "No Message";
-		this.stackTrace = Arrays.toString(ex.getStackTrace()).substring(0, 499);
+		
+		String exDetails = StringUtils.defaultIfEmpty(ex.toString(), "No Message");
+		this.exceptionDetails = StringUtils.left(exDetails, 500);
+		
+		String exMessage = StringUtils.defaultIfEmpty(ex.getMessage(), "No Message");
+		this.exceptionMessage = StringUtils.left(exMessage, 500);
+		
+		String stacktrace = Arrays.toString(ex.getStackTrace());
+		this.stackTrace = StringUtils.left(stacktrace, 500);
 	}
 
 	public LocalDateTime getCreateDt() {
