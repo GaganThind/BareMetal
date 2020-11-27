@@ -6,7 +6,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dto.UpdateUserDTO;
 import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.dto.UserRoleDTO;
@@ -124,6 +127,22 @@ public final class UserHelperUtil {
 			user.setUserRole(convertDTOToRole(updateUserDTO.getUserRole()));
 		}
 		
+	}
+	
+	/**
+	 * This method returns the logged-in username.
+	 * 
+	 * @return String - username
+	 */
+	public static String loggedInUser() {
+		String username = ApplicationConstants.BLANK;
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if (null == auth) {
+			return username;
+		}
+		
+		return (String) auth.getPrincipal();
 	}
 	
 }
