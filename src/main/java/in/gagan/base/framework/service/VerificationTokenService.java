@@ -26,7 +26,6 @@ public interface VerificationTokenService {
 	 * @return VerificationToken - Verification_Token record from database
 	 */
 	public VerificationToken fetchByToken(String token);
-
 	
 	/**
 	 * This method is used to delete the token once successfully verified.
