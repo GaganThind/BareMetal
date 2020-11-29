@@ -15,9 +15,8 @@ public interface PasswordManagerService {
 	 * 
 	 * @param passwordResetDTO - Object to transfer password and confirm password
 	 * @param  email - User email address
-	 * @throws IllegalAccessException 
 	 */
-	public void resetPassword(PasswordResetDTO passwordResetDTO, String email) throws IllegalAccessException;
+	public void resetPassword(PasswordResetDTO passwordResetDTO, String email);
 	
 	/**
 	 * This method is used to reset password in case a user has forgotten the password.

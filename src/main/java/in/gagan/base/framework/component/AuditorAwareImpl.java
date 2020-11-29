@@ -22,7 +22,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
 	 */
 	@Override
 	public Optional<String> getCurrentAuditor() {
-		String principal = UserHelperUtil.loggedInUser();
+		String principal = UserHelperUtil.loggedInUsername();
 		String username = StringUtils.defaultIfBlank(principal, "System");
 		return Optional.of(username);
 	}

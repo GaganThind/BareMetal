@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import in.gagan.base.framework.dto.PasswordResetDTO;
 import in.gagan.base.framework.service.PasswordManagerService;
+import in.gagan.base.framework.util.UserHelperUtil;
 import in.gagan.base.framework.validator.EmailValidator;
 
 /**
@@ -42,7 +43,9 @@ public class PasswordManagerController {
 	 * @throws IllegalAccessException 
 	 */
 	@PutMapping(value = "/reset/{email}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> resetPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO, @EmailValidator @PathVariable String email) throws IllegalAccessException {
+	public ResponseEntity<String> resetPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO, @EmailValidator @PathVariable String email) 
+			throws IllegalAccessException {
+		UserHelperUtil.actionAllowed(email);
 		this.passwordManagerService.resetPassword(passwordResetDTO, email);
 		return new ResponseEntity<String>("Password Reset Successfull!!!", HttpStatus.OK);
 	}

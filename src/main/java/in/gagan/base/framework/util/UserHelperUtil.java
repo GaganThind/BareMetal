@@ -2,11 +2,15 @@ package in.gagan.base.framework.util;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
@@ -15,6 +19,7 @@ import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.dto.UserRoleDTO;
 import in.gagan.base.framework.entity.Role;
 import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.enums.UserRoles;
 
 /**
  * Utility class for user entity. This class contains methods for user to DTO conversions.
@@ -130,19 +135,53 @@ public final class UserHelperUtil {
 	}
 	
 	/**
+	 * This method returns the logged-in user.
+	 * 
+	 * @return Authentication - user authentication object
+	 */
+	public static Authentication loggedInUser() {
+		return SecurityContextHolder.getContext().getAuthentication();
+	}
+	
+	/**
 	 * This method returns the logged-in username.
 	 * 
 	 * @return String - username
 	 */
-	public static String loggedInUser() {
-		String username = ApplicationConstants.BLANK;
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	public static String loggedInUsername() {
+		Authentication auth = loggedInUser();
+		return null == auth ? ApplicationConstants.BLANK : (String) auth.getPrincipal();
+	}
+	
+	/**
+	 * Check if the logged-in user has admin role.
+	 * 
+	 * @return boolean - Is Logged-In user account admin
+	 */
+	@SuppressWarnings("unchecked")
+	public static boolean isAdminAccount() {
+		Authentication auth = loggedInUser();
+		String adminRoleName = new StringBuilder(ApplicationConstants.PREFIX_ROLE).append(UserRoles.ADMIN.name()).toString();
+		GrantedAuthority admin = new SimpleGrantedAuthority(adminRoleName);
 		
-		if (null == auth) {
-			return username;
+		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) auth.getAuthorities();
+		return null != authorities && authorities.contains(admin);
+	}
+	
+	/**
+	 * Check if the user is allowed to perform this action. 
+	 * This method checks if logged-in user and the user trying to perform the action are same. 
+	 * 
+	 * @param email - Username/Email id of user
+	 * @throws IllegalAccessException - Thrown if email and logged-in user are different
+	 */
+	public static void actionAllowed(String email) throws IllegalAccessException {
+		String username = loggedInUsername();
+		boolean isAdminAccount = isAdminAccount();
+		
+		if (!isAdminAccount && !StringUtils.equalsIgnoreCase(email, username)) {
+			throw new IllegalAccessException("User can only update own password.");
 		}
-		
-		return (String) auth.getPrincipal();
 	}
 	
 }

@@ -15,5 +15,6 @@ public final class ApplicationConstants {
 	public static final String String_Y = "Y";
 	public static final String String_N = "N";
 	public static final String BLANK = " ";
+	public static final String PREFIX_ROLE = "ROLE_";
 
 }

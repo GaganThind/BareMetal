@@ -22,6 +22,7 @@ import in.gagan.base.framework.dto.UpdateUserDTO;
 import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.exception.UsernameExistException;
 import in.gagan.base.framework.service.UserRegisterationService;
+import in.gagan.base.framework.util.UserHelperUtil;
 import in.gagan.base.framework.validator.EmailValidator;
 
 /**
@@ -84,9 +85,11 @@ public class UserController {
 	 * 
 	 * @param updateUserDTO - the user data represented in form of a DTO
 	 * @return ResponseEntity<UserDTO> - User details from database
+	 * @throws IllegalAccessException - Logged-In User is different from updation user 
 	 */
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UpdateUserDTO updateUserDTO) {
+	public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UpdateUserDTO updateUserDTO) throws IllegalAccessException {
+		UserHelperUtil.actionAllowed(updateUserDTO.getEmail());
 		UserDTO updatedUserDTO = this.userRegistrationSvc.updateUser(updateUserDTO);
 		return new ResponseEntity<UserDTO>(updatedUserDTO, HttpStatus.OK);
 	}
@@ -96,9 +99,11 @@ public class UserController {
 	 * 
 	 * @param email - Input email to delete the user
 	 * @return ResponseEntity<String> - Success message
+	 * @throws IllegalAccessException - Logged-In User is different from updation user 
 	 */
 	@DeleteMapping(value = "/{email}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> deleteUser(@EmailValidator @PathVariable String email) {
+	public ResponseEntity<String> deleteUser(@EmailValidator @PathVariable String email) throws IllegalAccessException {
+		UserHelperUtil.actionAllowed(email);
 		this.userRegistrationSvc.deleteUser(email);
 		return new ResponseEntity<String>("Deleted Successfully!!!", HttpStatus.OK);
 	}
@@ -108,9 +113,11 @@ public class UserController {
 	 * 
 	 * @param email - Input email to delete the user
 	 * @return ResponseEntity<String> - Success message
+	 * @throws IllegalAccessException - Logged-In User is different from updation user
 	 */
 	@DeleteMapping(consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> deleteUserWithRequestBody(@EmailValidator @RequestBody String email) {
+	public ResponseEntity<String> deleteUserWithRequestBody(@EmailValidator @RequestBody String email) throws IllegalAccessException {
+		UserHelperUtil.actionAllowed(email);
 		this.userRegistrationSvc.deleteUser(email);
 		return new ResponseEntity<String>("Deleted Successfully!!!", HttpStatus.OK);
 	}
