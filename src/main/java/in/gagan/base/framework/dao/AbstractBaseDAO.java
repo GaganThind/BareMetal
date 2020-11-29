@@ -29,16 +29,18 @@ import in.gagan.base.framework.entity.Auditable;
 @Repository
 public abstract class AbstractBaseDAO<E extends Auditable, K extends Serializable> implements BaseDAO<E, K> {
 	
-	protected static final String ITERAL_FROM = "from ";
+	protected static final String LITERAL_DELETE = "delete ";
+	protected static final String LITERAL_UPDATE = "update ";
+	protected static final String LITERAL_FROM = "from ";
 
 	@PersistenceContext
-	public EntityManager entityManager;
+	protected EntityManager entityManager;
 
 	/**
 	 * Persistence class. This variable store the model object class
 	 */
 	private Class<E> persistentClass;
-
+	
 	/**
 	 * AbstractBaseDAO Constructor
 	 */
@@ -50,8 +52,17 @@ public abstract class AbstractBaseDAO<E extends Auditable, K extends Serializabl
 	/**
 	 * Get the persistence class that called this DAO
 	 */
-	public Class<E> getPersistentClass() {
+	protected Class<E> getPersistentClass() {
 		return persistentClass;
+	}
+	
+	/**
+	 * Method used to get the table name.
+	 * 
+	 * @return String - table name
+	 */
+	protected String getTableName() {
+		return getPersistentClass().getSimpleName();
 	}
 
 	/**
@@ -62,7 +73,7 @@ public abstract class AbstractBaseDAO<E extends Auditable, K extends Serializabl
 	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<Iterable<E>> findAll() {
-		Query query = entityManager.createQuery(ITERAL_FROM + getPersistentClass().getSimpleName());
+		Query query = entityManager.createQuery(LITERAL_FROM + getPersistentClass().getSimpleName());
 		return Optional.ofNullable(query.getResultList());
 	}
 	
