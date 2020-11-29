@@ -143,6 +143,17 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(handleException(excption), HttpStatus.BAD_REQUEST);
 	}
 	
+	/**
+	 * Global exception handler for IllegalAccessException
+	 * 
+	 * @param ex - Exception thrown in application
+	 * @param request - Request Parameter to get details
+	 * @return ResponseEntity<?> - Response Entity object
+	 */
+	@ExceptionHandler(IllegalAccessException.class)
+	public final ResponseEntity<?> IllegalAccessException(final IllegalAccessException ex, WebRequest request) {
+		return new ResponseEntity<>(handleException(ex, false), HttpStatus.NOT_FOUND);
+	}
 	
 	/**
 	 * Global exception handler for Exception
