@@ -18,12 +18,22 @@ import in.gagan.base.framework.entity.VerificationToken;
  */
 @Repository
 public class VerificationTokenDAOImpl extends AbstractBaseDAO<VerificationToken, Long> implements VerificationTokenDAO {
+	
+	private final static String WHERE_TOKEN_CLAUSE = " where token = :token ";
+	private final static String TOKEN = "token";
 
+	/**
+	 * Method used to fetch a token record.
+	 * 
+	 * @param token - token to fetch record
+	 * @return Optional<VerificationToken> - VerificationToken record
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<VerificationToken> fetchByToken(String token) {
-		Query query = entityManager.createQuery("from " + getPersistentClass().getSimpleName() + " where token = :token ");
-		query.setParameter("token", token);
+		String selectQuery = new StringBuilder(LITERAL_FROM).append(getTableName()).append(WHERE_TOKEN_CLAUSE).toString();
+		Query query = entityManager.createQuery(selectQuery);
+		query.setParameter(TOKEN, token);
 		List<VerificationToken> verificationTokens = (List<VerificationToken>) query.getResultList();
 		
 		return !CollectionUtils.isEmpty(verificationTokens) ? Optional.of(verificationTokens.get(0)) : Optional.empty();
