@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,6 +42,24 @@ public class AdminController {
 	public ResponseEntity<List<UserDTO>> fetchAllUsers() {
 		List<UserDTO> userDTOs = this.adminSvc.fetchAllUsers();
 		return new ResponseEntity<List<UserDTO>>(userDTOs, HttpStatus.OK);
+	}
+	
+	@PutMapping(value = "/account/unlock", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> unlockUserAccounts(@RequestBody List<String> emails) {
+		this.adminSvc.unlockUserAccounts(emails);
+		return new ResponseEntity<String>("User Account(s) Unlocked Successfully!!!", HttpStatus.OK);
+	}
+	
+	@DeleteMapping(value = "/account/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> deleteUserAccounts(@RequestBody List<String> emails) {
+		this.adminSvc.deleteUsers(emails);
+		return new ResponseEntity<String>("User Accounts(s) Deleted Successfully!!!", HttpStatus.OK);
+	}
+	
+	@DeleteMapping(value = "/account/hardDelete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> hardDeleteUserAccounts(@RequestBody List<String> emails) {
+		this.adminSvc.hardDeleteUsers(emails);
+		return new ResponseEntity<String>("User Accounts(s) Hard Deleted Successfully!!!", HttpStatus.OK);
 	}
 
 }

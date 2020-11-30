@@ -1,5 +1,6 @@
 package in.gagan.base.framework.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import in.gagan.base.framework.component.AdminAccount;
+import in.gagan.base.framework.dao.UserDAO;
 import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.util.UserHelperUtil;
@@ -25,12 +27,12 @@ public class AdminServiceImpl implements AdminService {
 	
 	private final AdminAccount adminAccount;
 	
-	private final UserDataService userDataService;
+	private final UserDAO userDAO;
 	
 	@Autowired
-	public AdminServiceImpl(AdminAccount adminAccount, UserDataService userDataService) {
+	public AdminServiceImpl(AdminAccount adminAccount, UserDAO userDAO) {
 		this.adminAccount = adminAccount;
-		this.userDataService = userDataService;
+		this.userDAO = userDAO;
 	}
 
 	/**
@@ -40,8 +42,8 @@ public class AdminServiceImpl implements AdminService {
 	public void createAdminUser() {
 		User user = this.adminAccount.getAdminDetails();
 		
-		if (!this.userDataService.isUserPresent(user.getEmail())) {
-			this.userDataService.updateUser(user);
+		if (!this.userDAO.findUserByEmail(user.getEmail()).isPresent()) {
+			this.userDAO.save(user);
 		}
 	}
 	
@@ -52,10 +54,41 @@ public class AdminServiceImpl implements AdminService {
 	 */
 	@Override
 	public List<UserDTO> fetchAllUsers() {
-		List<User> users = this.userDataService.fetchAllUsers();
+		List<User> users = (List<User>) this.userDAO.findAll()
+													.orElse(Collections.emptyList());
 		return users.stream()
 					.map(UserHelperUtil::convertUserToUserDTO)
 					.collect(Collectors.toList());
 	}
-	
+
+	/**
+	 * Method used to unlock user account(s).
+	 * 
+	 * @param emails - User emails to unlock the account
+	 */
+	@Override
+	public void unlockUserAccounts(List<String> emails) {
+		this.userDAO.unlockUsers(emails);
+	}
+
+	/**
+	 * Method used to delete user account(s).
+	 * 
+	 * @param emails - User emails to soft delete the account
+	 */
+	@Override
+	public void deleteUsers(List<String> emails) {
+		this.userDAO.deleteUsers(emails);
+	}
+
+	/**
+	 * Method used to hard delete user account(s).
+	 * 
+	 * @param emails - User emails to hard delete the account
+	 */
+	@Override
+	public void hardDeleteUsers(List<String> emails) {
+		this.userDAO.hardDeleteUsers(emails);
+	}
+
 }

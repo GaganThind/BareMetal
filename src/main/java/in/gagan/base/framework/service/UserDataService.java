@@ -1,13 +1,11 @@
 package in.gagan.base.framework.service;
 
-import java.util.List;
-
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import in.gagan.base.framework.entity.User;
 
 /**
- * This Service interface provides the basic CRUD operations on a User table.
+ * This Service interface provides the basic CRUD operations on a User table from user account perspective.
  * 
  * @author gaganthind
  *
@@ -22,13 +20,6 @@ public interface UserDataService {
 	 * @throws UsernameNotFoundException - If user with the provided email doesn't exist 
 	 */
 	public User fetchUserByEmail(String email) throws UsernameNotFoundException;
-	
-	/**
-	 * This method is used to fetch the details of all the user existing in the system.
-	 * 
-	 * @return List<User> - list of users
-	 */
-	public List<User> fetchAllUsers();
 	
 	/**
 	 * This method is used to save the User record.
@@ -50,13 +41,6 @@ public interface UserDataService {
 	 * @param email - email address of user
 	 */
 	public void deleteUser(String email);
-	
-	/**
-	 * This method is used to hard delete the User record.
-	 * 
-	 * @param email - email address of user
-	 */
-	public void hardDeleteUser(String email);
 	
 	/**
 	 * This method is used to check if a User record exists with the provided email.

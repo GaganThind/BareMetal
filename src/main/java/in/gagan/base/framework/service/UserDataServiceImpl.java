@@ -1,8 +1,7 @@
 package in.gagan.base.framework.service;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
 import javax.transaction.Transactional;
 
@@ -54,16 +53,6 @@ public class UserDataServiceImpl implements UserDataService {
 	}
 	
 	/**
-	 * This method is used to fetch the details of all the user existing in the system.
-	 * 
-	 * @return List<User> - list of users
-	 */
-	@Override
-	public List<User> fetchAllUsers() {
-		return (List<User>) this.userDAO.findAll().orElse(Collections.emptyList());
-	}
-	
-	/**
 	 * This method is used to save the User record.
 	 * 
 	 * @param user - user record
@@ -94,19 +83,7 @@ public class UserDataServiceImpl implements UserDataService {
 	 */
 	@Override
 	public void deleteUser(String email) {
-		User user = fetchUserByEmail(email);
-		this.userDAO.delete(user);
-	}
-	
-	/**
-	 * This method is used to hard delete the User record.
-	 * 
-	 * @param email - email address of user
-	 */
-	@Override
-	public void hardDeleteUser(String email) {
-		User user = fetchUserByEmail(email);
-		this.userDAO.hardDelete(user);
+		this.userDAO.deleteUsers(Arrays.asList(email));
 	}
 	
 	/**
@@ -119,5 +96,5 @@ public class UserDataServiceImpl implements UserDataService {
 	public boolean isUserPresent(String email) {
 		return this.userDAO.findUserByEmail(email).isPresent();
 	}
-	
+
 }

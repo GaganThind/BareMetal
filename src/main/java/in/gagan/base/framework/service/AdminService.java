@@ -23,5 +23,26 @@ public interface AdminService {
 	 * @return List<UserDTO> - list of all users
 	 */
 	public List<UserDTO> fetchAllUsers();
+	
+	/**
+	 * Method used to unlock user account(s).
+	 * 
+	 * @param emails - User emails to unlock the account
+	 */
+	public void unlockUserAccounts(List<String> emails);
+	
+	/**
+	 * This method is used to soft delete the User record(s).
+	 * 
+	 * @param emails - email address of user(s)
+	 */
+	public void deleteUsers(List<String> emails);
+	
+	/**
+	 * This method is used to hard delete the User record(s).
+	 * 
+	 * @param emails - email address of user(s)
+	 */
+	public void hardDeleteUsers(List<String> emails);
 
 }
