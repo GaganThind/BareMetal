@@ -43,13 +43,6 @@ public interface UserRegisterationService {
 	 * @param email - Email address of user
 	 */
 	public void deleteUser(String email);
-	
-	/**
-	 * This method is used to hard delete the user record using provided email.
-	 * 
-	 * @param email - Email address of user
-	 */
-	public void hardDeleteUser(String email);
 
 	/**
 	 * This method is used to confirm the user registration by accepting a token.

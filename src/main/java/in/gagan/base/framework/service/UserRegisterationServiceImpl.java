@@ -98,16 +98,6 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	}
 	
 	/**
-	 * This method is used to hard delete the user record using provided email.
-	 * 
-	 * @param email - Email address of user
-	 */
-	@Override
-	public void hardDeleteUser(String email) {
-		this.userDataSvc.hardDeleteUser(email.toLowerCase());
-	}
-	
-	/**
 	 * This method is used to register a new user in the system.
 	 * 
 	 * @param userDTO - User DTO object with user details to insert
