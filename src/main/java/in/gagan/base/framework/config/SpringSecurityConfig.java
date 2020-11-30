@@ -19,6 +19,7 @@ import in.gagan.base.framework.component.JWTProps;
 import in.gagan.base.framework.filter.JWTTokenAuthenticationFilter;
 import in.gagan.base.framework.filter.JWTUsernamePasswordAuthFilter;
 import in.gagan.base.framework.service.CustomUserDetailsService;
+import in.gagan.base.framework.service.JWTService;
 
 /**
  * This class provides the spring security configurations.
@@ -33,11 +34,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final CustomUserDetailsService userDetailsSvc;
 	private final JWTProps jwtProps;
+	private final JWTService jwtSvc;
 	
 	@Autowired
-	public SpringSecurityConfig(CustomUserDetailsService userDetailsSvc, JWTProps jwtProps) {
+	public SpringSecurityConfig(CustomUserDetailsService userDetailsSvc, JWTProps jwtProps, JWTService jwtSvc) {
 		this.userDetailsSvc = userDetailsSvc;
 		this.jwtProps = jwtProps;
+		this.jwtSvc = jwtSvc;
 	}
 	
 	@Autowired
@@ -52,8 +55,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and()
-			.addFilter(new JWTUsernamePasswordAuthFilter(authenticationManager(), jwtProps))
-			.addFilter(new JWTTokenAuthenticationFilter(authenticationManager(), jwtProps))
+			.addFilter(new JWTUsernamePasswordAuthFilter(authenticationManager(), this.jwtProps, this.jwtSvc))
+			.addFilter(new JWTTokenAuthenticationFilter(authenticationManager(), this.jwtProps, this.jwtSvc))
 			.authorizeRequests()
 	            .antMatchers("/login", "/v1/users/register/**", "/h2/**", "/v1/password/forgot/**").permitAll()
 	            .antMatchers(HttpMethod.GET, "/v1/users/**").hasAnyRole(ADMIN_BASIC.name(), USER_BASIC.name(), ADMIN.name(), USER.name())

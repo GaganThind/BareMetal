@@ -1,17 +1,15 @@
 package in.gagan.base.framework.filter;
 
-import static in.gagan.base.framework.constant.JWTSecurityConstants.AUTHORITIES;
 import static in.gagan.base.framework.constant.JWTSecurityConstants.HEADER_STRING;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Date;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,8 +20,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import in.gagan.base.framework.component.JWTProps;
+import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dto.UsernamePasswordAuthDTO;
-import io.jsonwebtoken.Jwts;
+import in.gagan.base.framework.service.JWTService;
 
 /**
  * This filter class is used to provide authentication of credentials and creation of JWT token.
@@ -35,11 +34,13 @@ public class JWTUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
 	
 	private final AuthenticationManager authenticationmanager;
 	private final JWTProps jwtProps;
+	private final JWTService jwtSvc;
 	
 	@Autowired
-	public JWTUsernamePasswordAuthFilter(AuthenticationManager authenticationmanager, JWTProps jwtProps) {
+	public JWTUsernamePasswordAuthFilter(AuthenticationManager authenticationmanager, JWTProps jwtProps, JWTService jwtSvc) {
 		this.authenticationmanager = authenticationmanager;
 		this.jwtProps = jwtProps;
+		this.jwtSvc = jwtSvc;
 	}
 	
 	/**
@@ -80,7 +81,18 @@ public class JWTUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, 
 			FilterChain chain, Authentication authResult) throws IOException, ServletException {
 		
-		String token = buildToken(authResult);
+		String ipAddress = StringUtils.defaultIfBlank(request.getHeader("X-FORWARDED-FOR"), request.getRemoteAddr());
+		String userAgent = StringUtils.defaultIfBlank(request.getHeader("User-Agent"), ApplicationConstants.BLANK);
+		
+		if (StringUtils.isBlank(ipAddress)) {
+			throw new ServletException("Bad Request!! IP address not present");
+		}
+		
+		if (ApplicationConstants.BLANK.equals(userAgent)) {
+			throw new ServletException("Bad Request!! User-Agent not provided");
+		}
+		
+		String token = this.jwtSvc.buildTokenWithIpAndUserAgent(authResult, ipAddress, userAgent);
 		String tokenPrefix = this.jwtProps.getTokenPrefix();
 		String headerString = new StringBuilder(tokenPrefix).append(token).toString();
 		
@@ -102,24 +114,6 @@ public class JWTUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
 			throw new RuntimeException(e);
 		}
 		return usernamePasswordAuth;
-	}
-	
-	/**
-	 * This method is used to build a JWT token using authentication information.
-	 * 
-	 * @param authResult - Authentication object containing user details
-	 * @return String - JWT token
-	 * 
-	 */
-	private String buildToken(Authentication authResult) {
-		String token = Jwts.builder()
-							.setSubject(authResult.getName())
-							.claim(AUTHORITIES, authResult.getAuthorities())
-							.setIssuedAt(new Date())
-							.setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(this.jwtProps.getTokenExpirationInWeeks())))
-							.signWith(this.jwtProps.getSecretKey())
-							.compact();
-		return token;
 	}
 	
 }

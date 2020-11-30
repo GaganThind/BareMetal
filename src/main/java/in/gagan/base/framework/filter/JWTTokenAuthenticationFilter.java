@@ -4,10 +4,7 @@ import static in.gagan.base.framework.constant.JWTSecurityConstants.BLANK;
 import static in.gagan.base.framework.constant.JWTSecurityConstants.HEADER_STRING;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -24,10 +21,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import in.gagan.base.framework.component.JWTProps;
-import in.gagan.base.framework.constant.JWTSecurityConstants;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
+import in.gagan.base.framework.constant.ApplicationConstants;
+import in.gagan.base.framework.service.JWTService;
 
 /**
  * This filter class is used to validate JWT token on all requests.
@@ -38,11 +33,13 @@ import io.jsonwebtoken.Jwts;
 public class JWTTokenAuthenticationFilter extends BasicAuthenticationFilter {
 	
 	private final JWTProps jwtProps;
+	private final JWTService jwtSvc;
 	
 	@Autowired
-	public JWTTokenAuthenticationFilter(AuthenticationManager authenticationManager, JWTProps jwtProps) {
+	public JWTTokenAuthenticationFilter(AuthenticationManager authenticationManager, JWTProps jwtProps, JWTService jwtSvc) {
 		super(authenticationManager);
 		this.jwtProps = jwtProps;
+		this.jwtSvc = jwtSvc;
 	}
 
 	/**
@@ -67,10 +64,11 @@ public class JWTTokenAuthenticationFilter extends BasicAuthenticationFilter {
 		}
 
 		try {
-			Authentication authentication = getAuthentication(authHeader);
+			Authentication authentication = getAuthentication(authHeader, request);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		} catch (Exception ex) {
-			throw new IllegalStateException("Token cannot be trusted");
+			throw new IllegalStateException("Token cannot be trusted. Hence invalidating token.");
+			// TODO Add token to black list
 		}
 
 		filterChain.doFilter(request, response);
@@ -81,41 +79,32 @@ public class JWTTokenAuthenticationFilter extends BasicAuthenticationFilter {
 	 * This method is used to get the authentication object by verifying user details.
 	 * 
 	 * @param authHeader - authentication token with type
+	 * @param request - HttpRequest object
 	 * @return Authentication - Authentication object
+	 * @throws IllegalAccessException - If token is not valid, ip address has changed or user agent is different
 	 */
-	@SuppressWarnings("unchecked")
-	private Authentication getAuthentication(String authHeader) {
-		
-		Jws<Claims> claimsJws = getClaims(authHeader);
-		Claims body = claimsJws.getBody();
-		String username = body.getSubject();
-
-		List<Map<String, String>> authorities = (List<Map<String, String>>) body.get(JWTSecurityConstants.AUTHORITIES);
-
-		Set<SimpleGrantedAuthority> roles = authorities.stream()
-														.map(role -> role.get(JWTSecurityConstants.AUTHORITIY))
-														.map(SimpleGrantedAuthority::new)
-														.collect(Collectors.toUnmodifiableSet());
-
-		Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, roles);
-		return authentication;
-	}
-
-	/**
-	 * This method based on the JWT token gets the user details.
-	 * 
-	 * @param authHeader - JWT token with prefix
-	 * @return Jws<Claims> - Claims details
-	 */
-	private Jws<Claims> getClaims(String authHeader) {
+	private Authentication getAuthentication(String authHeader, HttpServletRequest request) throws IllegalAccessException {
 		
 		String token = authHeader.replace(this.jwtProps.getTokenPrefix(), BLANK);
 		
-		Jws<Claims> claimsJws = Jwts.parserBuilder()
-									.setSigningKey(this.jwtProps.getSecretKey())
-									.build()
-									.parseClaimsJws(token);
-		return claimsJws;
+		String username = this.jwtSvc.getUsername(token);
+		boolean isValidToken = this.jwtSvc.isValidToken(token);
+		
+		String ipAddressFromToken = this.jwtSvc.getIpAddress(token);
+		String ipAddressFromRequest = StringUtils.defaultIfBlank(request.getHeader("X-FORWARDED-FOR"), request.getRemoteAddr());
+		boolean isValidIpAddress = StringUtils.isNotBlank(ipAddressFromRequest) && StringUtils.equals(ipAddressFromToken, ipAddressFromRequest);
+		
+		String userAgentFromToken = this.jwtSvc.getUserAgent(token);
+		String userAgentFromRequest = StringUtils.defaultIfBlank(request.getHeader("User-Agent"), ApplicationConstants.BLANK);
+		boolean isValidUserAgent = StringUtils.isNotBlank(userAgentFromRequest) && StringUtils.equals(userAgentFromToken, userAgentFromRequest);
+		
+		if (!isValidToken || !isValidIpAddress || !isValidUserAgent) {
+			throw new IllegalAccessException();
+		}
+
+		Set<SimpleGrantedAuthority> roles = this.jwtSvc.getRoles(token);
+
+		return new UsernamePasswordAuthenticationToken(username, null, roles);
 	}
 
 }
