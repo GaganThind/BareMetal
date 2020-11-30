@@ -18,11 +18,6 @@ import in.gagan.base.framework.constant.ApplicationConstants;
 @Entity
 @Table(name = "EXCEPTION_MONITOR")
 public class ExceptionMonitor extends Auditable implements BaseEntity {
-
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = -7857559824139595351L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

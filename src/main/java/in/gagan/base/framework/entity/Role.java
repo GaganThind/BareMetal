@@ -21,11 +21,6 @@ import in.gagan.base.framework.enums.UserRoles;
 @Entity
 @Table(name="ROLES")
 public class Role extends Auditable implements BaseEntity {
-
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = 994388367262603543L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

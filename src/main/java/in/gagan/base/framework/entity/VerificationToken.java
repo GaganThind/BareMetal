@@ -22,11 +22,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name="VERIFICATION_TOKEN")
 public class VerificationToken extends Auditable implements BaseEntity {
-
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = -8653909583404953788L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

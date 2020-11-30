@@ -34,11 +34,6 @@ import in.gagan.base.framework.util.UserHelperUtil;
 @Entity
 @Table(name="USERS")
 public class User extends Auditable implements BaseEntity {
-
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = -2144175799559542686L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

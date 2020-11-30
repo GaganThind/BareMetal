@@ -1,6 +1,5 @@
 package in.gagan.base.framework.entity;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -21,12 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  */
 @MappedSuperclass
 @EntityListeners(value = AuditingEntityListener.class)
-public abstract class Auditable implements Serializable {
-	
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = -1287823037715243132L;
+public abstract class Auditable {
 	
 	public Auditable() { }
 	
