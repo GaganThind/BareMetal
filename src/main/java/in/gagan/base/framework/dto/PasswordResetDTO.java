@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import in.gagan.base.framework.validator.EmailValidator;
 import in.gagan.base.framework.validator.Password;
 import in.gagan.base.framework.validator.PasswordMatches;
 
@@ -30,6 +31,11 @@ public class PasswordResetDTO implements Serializable {
 	@NotNull(message = "{message.registration.password}")
 	@Size(min = 1, message = "{message.registration.password}")
 	private String matchingPassword;
+	
+	@NotNull(message = "{message.registration.email}")
+	@Size(min = 4, message = "{message.registration.email}")
+	@EmailValidator
+	private String email;
 
 	public String getPassword() {
 		return password;
@@ -46,5 +52,13 @@ public class PasswordResetDTO implements Serializable {
 	public void setMatchingPassword(String matchingPassword) {
 		this.matchingPassword = matchingPassword;
 	} 
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	
 }

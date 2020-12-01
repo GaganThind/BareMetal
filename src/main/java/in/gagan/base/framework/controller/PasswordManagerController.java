@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import in.gagan.base.framework.dto.PasswordResetDTO;
 import in.gagan.base.framework.service.PasswordManagerService;
 import in.gagan.base.framework.util.UserHelperUtil;
-import in.gagan.base.framework.validator.EmailValidator;
 
 /**
  * This controller class provides the functionality for the Password reset module.
@@ -40,13 +39,13 @@ public class PasswordManagerController {
 	 * This method is used to reset user password.
 	 * 
 	 * @param passwordResetDTO - Object to transfer password and confirm password
-	 * @param  email - User email address
 	 * @return ResponseEntity<String> - Success message
-	 * @throws IllegalAccessException 
+	 * @throws IllegalAccessException - If user is not the intended user
 	 */
-	@PutMapping(value = "/reset/{email}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> resetPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO, @EmailValidator @PathVariable String email) 
+	@PutMapping(value = "/reset", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> resetPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO) 
 			throws IllegalAccessException {
+		String email = passwordResetDTO.getEmail();
 		UserHelperUtil.actionAllowed(email);
 		this.passwordManagerService.resetPassword(passwordResetDTO, email);
 		return new ResponseEntity<String>("Password Reset Successfull!!!", HttpStatus.OK);
