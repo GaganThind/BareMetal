@@ -1,6 +1,5 @@
 package in.gagan.base.framework.service;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -44,7 +43,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 		String token = UUID.randomUUID().toString();
 		VerificationToken verificationToken = new VerificationToken(token);
 		verificationToken.setUser(user);
-		verificationToken.setExpiryDate(LocalDateTime.now().plusDays(this.verificationTokenProps.getVerificationTokenExpiryDays()));
+		verificationToken.setExpiryDate(this.verificationTokenProps.getExpiryTimeFromNow());
 		this.verificationTokenDAO.save(verificationToken);
 		
 		return token;

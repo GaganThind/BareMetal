@@ -1,5 +1,7 @@
 package in.gagan.base.framework.component;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,15 @@ public class VerificationTokenProps {
 	
 	public int getVerificationTokenExpiryDays() {
 		return this.VERIFICATION_TOKEN_EXPIRY_DAYS;
+	}
+	
+	/**
+	 * Method to get the expiry date for newly created token from current time.
+	 * 
+	 * @return
+	 */
+	public LocalDateTime getExpiryTimeFromNow() {
+		return LocalDateTime.now().plusDays(getVerificationTokenExpiryDays());
 	}
 	
 }
