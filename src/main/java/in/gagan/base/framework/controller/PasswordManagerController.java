@@ -1,6 +1,8 @@
 package in.gagan.base.framework.controller;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -58,7 +60,7 @@ public class PasswordManagerController {
 	 * @return ResponseEntity<String> - Success message
 	 */
 	@PutMapping(value = "/forgot/{token}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> forgotPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO, @PathVariable String token) {
+	public ResponseEntity<String> forgotPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO,@NotNull @NotEmpty @PathVariable String token) {
 		this.passwordManagerService.forgotPassword(passwordResetDTO, token);
 		return new ResponseEntity<String>("Password Reset Successfull!!!", HttpStatus.OK);
 	}
