@@ -1,5 +1,7 @@
 package in.gagan.base.framework.dto;
 
+import java.io.Serializable;
+
 import in.gagan.base.framework.enums.UserRoles;
 
 /**
@@ -8,8 +10,12 @@ import in.gagan.base.framework.enums.UserRoles;
  * @author gaganthind
  *
  */
-public class UserRoleDTO {
+public class UserRoleDTO implements Serializable {
 	
+	/**
+	 * Serial Version
+	 */
+	private static final long serialVersionUID = -807666354682392231L;
 	private UserRoles roleName;
 	
 	public UserRoleDTO() { }

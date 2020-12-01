@@ -1,5 +1,6 @@
 package in.gagan.base.framework.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -8,7 +9,12 @@ import java.time.LocalDateTime;
  * @author gaganthind
  *
  */
-public class ExceptionDetailDTO {
+public class ExceptionDetailDTO implements Serializable {
+
+	/**
+	 * Serial Version
+	 */
+	private static final long serialVersionUID = 360375444649679577L;
 
 	// Create date
 	private final LocalDateTime createDt;
