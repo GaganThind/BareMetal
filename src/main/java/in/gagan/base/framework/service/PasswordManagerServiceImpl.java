@@ -37,7 +37,6 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 	 * 
 	 * @param passwordResetDTO - Object to transfer password and confirm password
 	 * @param  email - User email address
-	 * @throws IllegalAccessException 
 	 */
 	@Override
 	public void resetPassword(PasswordResetDTO passwordResetDTO, String email) {
