@@ -10,7 +10,7 @@ import in.gagan.base.framework.entity.VerificationToken;
  * @author gaganthind
  *
  */
-public interface VerificationTokenDAO  extends BaseDAO<VerificationToken, Long> {
+public interface VerificationTokenDAO extends BaseDAO<VerificationToken, Long> {
 	
 	/**
 	 * Method used to fetch a token record.
