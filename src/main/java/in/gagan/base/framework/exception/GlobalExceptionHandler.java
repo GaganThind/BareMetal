@@ -49,14 +49,11 @@ public class GlobalExceptionHandler {
 	 * @param ex - Exception thrown in application
 	 * @return ExceptionDetailDTO - Exception Details object thrown to user
 	 */
-	private final <T extends Exception> ExceptionDetailDTO handleException(final T ex, boolean enableLogging) {
+	private final <T extends Exception> ExceptionDetailDTO handleException(final T ex) {
 		ExceptionDetailDTO exceptionDetailDTO = new ExceptionDetailDTO(ex);
-		
-		if (enableLogging) {
-			ExceptionMonitorDTO exceptionMonitorDTO = new ExceptionMonitorDTO(ex);
-			this.exceptionMonitoringSvc.insertException(exceptionMonitorDTO);
-			logger.error("Exception with cause = {}", exceptionMonitorDTO.toString());
-		}
+		ExceptionMonitorDTO exceptionMonitorDTO = new ExceptionMonitorDTO(ex);
+		this.exceptionMonitoringSvc.insertException(exceptionMonitorDTO);
+		logger.error("Exception with cause = {}", exceptionMonitorDTO.toString());
 		
 		return exceptionDetailDTO;
 	}
@@ -64,11 +61,12 @@ public class GlobalExceptionHandler {
 	/**
 	 * Convert the thrown exception into custom format using the Exception details class and log it
 	 * 
+	 * @param <T> - Generic type that extends Exception
 	 * @param ex - Exception thrown in application
 	 * @return ExceptionDetailDTO - Exception Details object thrown to user
 	 */
-	private final ExceptionDetailDTO handleException(final Exception ex) {
-		return handleException(ex, true);
+	private final <T extends Exception> ExceptionDetailDTO handleExceptionWithoutLogging(final T ex) {
+		return new ExceptionDetailDTO(ex);
 	}
 	
 	/**
@@ -92,7 +90,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(UsernameNotFoundException.class)
 	public final ResponseEntity<?> usernameNotFoundException(final UsernameNotFoundException ex, WebRequest request) {
-		return new ResponseEntity<>(handleException(ex, false), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(handleExceptionWithoutLogging(ex), HttpStatus.NOT_FOUND);
 	}
 	
 	/**
@@ -152,7 +150,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(IllegalAccessException.class)
 	public final ResponseEntity<?> IllegalAccessException(final IllegalAccessException ex, WebRequest request) {
-		return new ResponseEntity<>(handleException(ex, false), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(handleException(ex), HttpStatus.NOT_FOUND);
 	}
 	
 	/**
