@@ -92,7 +92,7 @@ public class JWTUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
 			throw new ServletException("Bad Request!! User-Agent not provided");
 		}
 		
-		String token = this.jwtSvc.buildTokenWithIpAndUserAgent(authResult, ipAddress, userAgent);
+		String token = this.jwtSvc.buildToken(authResult, ipAddress, userAgent);
 		String tokenPrefix = this.jwtProps.getTokenPrefix();
 		String headerString = new StringBuilder(tokenPrefix).append(token).toString();
 		

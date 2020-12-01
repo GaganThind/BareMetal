@@ -126,7 +126,7 @@ public class JWTServiceImpl implements JWTService {
 	 * 
 	 */
 	@Override
-	public String buildTokenWithIpAndUserAgent(Authentication authResult, String ipAddress, String userAgent) {
+	public String buildToken(Authentication authResult, String ipAddress, String userAgent) {
 		String token = Jwts.builder()
 				.setSubject(authResult.getName())
 				.claim(AUTHORITIES, authResult.getAuthorities())

@@ -73,7 +73,7 @@ public interface JWTService {
 	 * @return String - JWT token
 	 * 
 	 */
-	public String buildTokenWithIpAndUserAgent(Authentication authResult, String ipAddress, String userAgent);
+	public String buildToken(Authentication authResult, String ipAddress, String userAgent);
 	
 	/**
 	 * Method used to get the IP address from the JWT token.
