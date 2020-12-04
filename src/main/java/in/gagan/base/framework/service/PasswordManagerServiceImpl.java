@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import in.gagan.base.framework.dto.PasswordResetDTO;
+import in.gagan.base.framework.entity.ForgotPasswordToken;
 import in.gagan.base.framework.entity.User;
-import in.gagan.base.framework.entity.VerificationToken;
 
 /**
  * This class provides the implementation of PasswordManagerService interface and provides operations for Password reset functionality.
@@ -21,14 +21,14 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 	
 	private final UserDataService userDataSvc;
 	
-	private final VerificationTokenService verificationTokenSvc;
+	private final ForgotPasswordTokenService forgotPasswordTokenService;
 	
 	private final EmailService emailSvc;
 	
 	@Autowired
-	public PasswordManagerServiceImpl(UserDataService userDataSvc, VerificationTokenService verificationTokenSvc, EmailService emailSvc) {
+	public PasswordManagerServiceImpl(UserDataService userDataSvc, ForgotPasswordTokenService forgotPasswordTokenService, EmailService emailSvc) {
 		this.userDataSvc = userDataSvc;
-		this.verificationTokenSvc = verificationTokenSvc;
+		this.forgotPasswordTokenService = forgotPasswordTokenService;
 		this.emailSvc = emailSvc;
 	}
 
@@ -50,6 +50,18 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 		// Send password successfully reset email.
 		sendPasswordResetSuccessfulEmail(email);
 	}
+	
+	/**
+	 * This method is used to generate forgot password token for existing user.
+	 * 
+	 * @param email - User email address
+	 */
+	public void generateForgotPasswordToken(String email) {
+		User user = this.userDataSvc.fetchUserByEmail(email);
+		String token = this.forgotPasswordTokenService.generateForgotPasswordToken(user);
+		
+		sendPasswordResetEmail(email, token);
+	}
 
 	/**
 	 * This method is used to reset password in case a user has forgotten the password.
@@ -59,8 +71,8 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 	 */
 	@Override
 	public void forgotPassword(PasswordResetDTO passwordResetDTO, String token) {
-		VerificationToken verificationToken = this.verificationTokenSvc.fetchByToken(token);
-		User user = verificationToken.getUser();
+		ForgotPasswordToken forgotPasswordToken = this.forgotPasswordTokenService.fetchByToken(token);
+		User user = forgotPasswordToken.getUser();
 		
 		user.setPassword(passwordResetDTO.getPassword());
 		user.setPasswordExpireDate(null); // Let the system determine itself to add new password expiry date.
@@ -68,7 +80,7 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 		this.userDataSvc.saveUser(user);
 		
 		// Remove the token from database
-		this.verificationTokenSvc.deleteToken(verificationToken);
+		this.forgotPasswordTokenService.deleteToken(forgotPasswordToken);
 		
 		// Send password successfully reset email.
 		sendPasswordResetSuccessfulEmail(user.getEmail());
@@ -84,6 +96,19 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 	public void sendPasswordResetSuccessfulEmail(String email) {
 		String subject = "Password Successfully reset email";
 		String message = "";
+		this.emailSvc.sendEmail(email, subject, message);
+	}
+	
+	/**
+	 * This method is used to send password reset email to user with token.
+	 * 
+	 * @param email - Email address of user
+	 * @param token - Password reset token
+	 */
+	@Override
+	public void sendPasswordResetEmail(String email, String token) {
+		String subject = "Password reset request email";
+		String message = "" + token;
 		this.emailSvc.sendEmail(email, subject, message);
 	}
 
