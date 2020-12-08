@@ -53,7 +53,7 @@ public class UserController {
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO userDTO) throws UsernameExistException {
 		String userName = this.userRegistrationSvc.registerNewUser(userDTO);
-		return new ResponseEntity<String>(userName + ": user Registration Successfull!!!", HttpStatus.OK);
+		return new ResponseEntity<String>(userName + ": user Registration Successfull!!!", HttpStatus.CREATED);
 	}
 	
 	/**
