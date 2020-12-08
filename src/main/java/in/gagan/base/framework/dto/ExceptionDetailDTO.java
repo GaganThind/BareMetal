@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * @author gaganthind
  *
  */
-public class ExceptionDetailDTO implements Serializable {
+public final class ExceptionDetailDTO implements Serializable {
 
 	/**
 	 * Serial Version

@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author gaganthind
  *
  */
-public class ExceptionMonitorDTO implements Serializable {
+public final class ExceptionMonitorDTO implements Serializable {
 
 	/**
 	 * Serial Version
