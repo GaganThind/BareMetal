@@ -97,20 +97,6 @@ public class UserController {
 	}
 	
 	/**
-	 * This method is used to delete the user using the email.
-	 * 
-	 * @param email - Input email to delete the user
-	 * @return ResponseEntity<String> - Success message
-	 * @throws IllegalAccessException - Logged-In User is different from updation user
-	 */
-	@DeleteMapping(consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> deleteUserWithRequestBody(@EmailValidator @RequestBody String email) throws IllegalAccessException {
-		UserHelperUtil.actionAllowed(email);
-		this.userRegistrationSvc.deleteUser(email);
-		return new ResponseEntity<String>("Deleted Successfully!!!", HttpStatus.OK);
-	}
-	
-	/**
 	 * This method is used to activate a newly added user.
 	 * 
 	 * @param token - Unique token string 
