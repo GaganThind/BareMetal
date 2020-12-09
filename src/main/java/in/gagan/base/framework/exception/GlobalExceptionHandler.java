@@ -3,6 +3,8 @@ package in.gagan.base.framework.exception;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.ConstraintViolationException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,6 +141,18 @@ public class GlobalExceptionHandler {
 		}
 		
 		return new ResponseEntity<>(handleException(excption), HttpStatus.BAD_REQUEST);
+	}
+	
+	/**
+	 * Global exception handler for ConstraintViolationException
+	 * 
+	 * @param ex - Exception thrown in application
+	 * @param request - Request Parameter to get details
+	 * @return ResponseEntity<?> - Response Entity object
+	 */
+	@ExceptionHandler(ConstraintViolationException.class)
+	public final ResponseEntity<?> ConstraintViolationException(final ConstraintViolationException ex, WebRequest request) {
+		return new ResponseEntity<>(handleException(ex), HttpStatus.BAD_REQUEST);
 	}
 	
 	/**

@@ -40,6 +40,15 @@ public class DummyDataServiceImpl implements DummyDataService {
 	 */
 	@Override
 	public void createDummyData() {
+		
+		User testingUser = new User("Integration", "Testing", "integrationtesting@e.com", null, Gender.M, "TestUser@123");
+		testingUser.addRole(new Role(USER));
+		testingUser.setActiveSw(ApplicationConstants.CHAR_Y);
+		
+		User dummyFetchUser = new User("Dummy", "Testing", "dummytesting@e.com", null, Gender.F, "Test@123");
+		testingUser.addRole(new Role(USER_BASIC));
+		testingUser.setActiveSw(ApplicationConstants.CHAR_Y);
+		
 		User user = new User("A", "B", "test1@e.com", null, Gender.M, "T");
 		user.addRole(new Role(ADMIN));
 		user.setActiveSw(ApplicationConstants.CHAR_Y);
@@ -55,6 +64,10 @@ public class DummyDataServiceImpl implements DummyDataService {
 		User user3 = new User("A3", "B3", "test4@e.com", null, Gender.M, "T");
 		user3.addRole(new Role(USER_BASIC));
 		user3.setActiveSw(ApplicationConstants.CHAR_Y);
+		
+		this.userDataSvc.saveUser(testingUser);
+		
+		this.userDataSvc.saveUser(dummyFetchUser);
 		
 		this.userDataSvc.saveUser(user);
 		this.verificationTokenSvc.generateTokenForUser(user);
