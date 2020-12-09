@@ -7,6 +7,8 @@ import java.time.Month;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -47,7 +49,23 @@ public class UserControllerIntegrationTest {
 	@Rule
     public ExpectedException expectedException = ExpectedException.none();
 	
-	private static final String USER_BASE_URL = "/v1/users"; 
+	private static final String USER_BASE_URL = "/v1/users";
+	
+	private static final String TEST_USER_EMAIL = "testRegisterUser@e.com";
+	
+	private static final String TEST_USER_PASSWORD = "TestUser@123";
+	
+	private UserDTO userDTO;
+	
+	@Before
+	public void setup() {
+		userDTO = createUser();
+	}
+	
+	@AfterClass
+	public static void cleanUp() {
+		deleteUser();
+	}
 	
 	/**
 	 * Method used to test if all mandatory data is passed to the controller class, the new user is registered successfully.
@@ -56,10 +74,10 @@ public class UserControllerIntegrationTest {
 	 */
 	@Test
 	public void testRegisterUser() throws Exception {
-		ResponseEntity<String> responseEntity = postResponseEntity("User", "testRegisterUser@e.com");
+		ResponseEntity<String> responseEntity = postEntity(userDTO);
 		
-		assertEquals(responseEntity.getStatusCode(), HttpStatus.CREATED);
-		assertEquals(responseEntity.getBody(), "Test User: user Registration Successfull!!!");
+		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+		assertEquals("Test User: user Registration Successfull!!!", responseEntity.getBody());
 	}
 	
 	/**
@@ -69,40 +87,43 @@ public class UserControllerIntegrationTest {
 	 */
 	@Test
 	public void testRegisterUser_LastNameNull() throws Exception {
-		ResponseEntity<String> responseEntity = postResponseEntity(null, "testRegisterUserFail@e.com");
+		// Failure point
+		userDTO.setLastName(null);
 		
-		assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+		ResponseEntity<String> responseEntity = postEntity(userDTO);
+		
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
 	
 	/**
-	 * Method used to create a post request for the register user functionality
+	 * Method used to post data to UserController
 	 * 
-	 * @param lastName - Last name of user
-	 * @param email - Email of the user
-	 * @return ResponseEntity<String> - Response from the request
+	 * @param inputUserDTO - User DTO object with user details
+	 * @return ResponseEntity<String> - Message from server
 	 */
-	private ResponseEntity<String> postResponseEntity(String lastName, String email) {
-		UserDTO userDTO = createUser(lastName, email);
+	private ResponseEntity<String> postEntity(UserDTO inputUserDTO) {
+		HttpEntity<UserDTO> httpEntity = new HttpEntity<UserDTO>(inputUserDTO, new HttpHeaders());
 		
 		String url = new StringBuilder(USER_BASE_URL).append("/register").toString();
-		HttpEntity<UserDTO> httpEntity = new HttpEntity<UserDTO>(userDTO, new HttpHeaders());
-		
-		return this.restTemplate.postForEntity(url, httpEntity, String.class);
+		ResponseEntity<String> responseEntity = this.restTemplate.postForEntity(url, httpEntity, String.class);
+		return responseEntity;
 	}
 	
 	/**
 	 * Method used to create a new userDTO object to be sent to the controller class.
 	 * 
-	 * @param lastName - Last name of user
-	 * @param email - Email of the user
 	 * @return UserDTO - UserDTO object from method
 	 */
-	private UserDTO createUser(String lastName, String email) {
+	private UserDTO createUser() {
 		UserRoleDTO userRoleDTO = new UserRoleDTO(UserRoles.USER_BASIC);
 		Set<UserRoleDTO> userRoles = new HashSet<>();
 		userRoles.add(userRoleDTO);
 		
-		return new UserDTO("Test", lastName, email, "TestUser@123", LocalDate.of(1982, Month.APRIL, 1), Gender.M, userRoles);
+		return new UserDTO("Test", "User", TEST_USER_EMAIL, TEST_USER_PASSWORD, LocalDate.of(1982, Month.APRIL, 1), Gender.M, userRoles);
+	}
+	
+	private static void deleteUser() {
+		System.out.println("Deleted if present");
 	}
 	
 }
