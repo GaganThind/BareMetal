@@ -165,6 +165,74 @@ public class UserControllerIntegrationTest {
 	}
 	
 	/**
+	 * Method used to test if changes are getting persisted if email and changes are sent to server.
+	 * 
+	 * @throws Exception - Throw any unwanted exception
+	 */
+	@Test
+	public void testUpdateUser() throws Exception {
+		LocalDate dob = LocalDate.of(1984, Month.JUNE, 6);
+		
+		UserDTO inputUserDTO = createUser(INTEGRATION_TEST_USER, dob);
+		
+		ResponseEntity<UserDTO> responseEntity = putEntity(inputUserDTO);
+		
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals(INTEGRATION_TEST_USER, responseEntity.getBody().getEmail());
+		assertEquals(dob, responseEntity.getBody().getDob());
+	}
+	
+	/**
+	 * Method used to test if non-admin account tries to update another users account.
+	 * 
+	 * @throws Exception - Throw any unwanted exception
+	 */
+	@Test
+	public void testUpdateUser_WithOtherRegisteredEmail_NonAdmin() throws Exception {
+		UserDTO inputUserDTO = createUser("dummytesting@e.com", LocalDate.of(1984, Month.JUNE, 3));
+		
+		ResponseEntity<UserDTO> responseEntity = putEntity(inputUserDTO);
+		
+		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+	}
+	
+	/**
+	 * Method used to test if changes of another account are getting persisted if email and changes are sent to server and user is an admin.
+	 * 
+	 * @throws Exception - Throw any unwanted exception
+	 */
+	@Test
+	public void testUpdateUser_WithOtherRegisteredEmail_Admin() throws Exception {
+		LocalDate dob = LocalDate.of(1984, Month.AUGUST, 9);
+		
+		UserDTO inputUserDTO = createUser("dummytesting@e.com", dob);
+		
+		String bearerToken = getBearerToken("admintesting@e.com", "TestUser@123");
+		HttpHeaders headers = createHttpHeader(MediaType.APPLICATION_JSON, bearerToken);
+		HttpEntity<UserDTO> httpEntity = new HttpEntity<>(inputUserDTO, headers);
+		
+		ResponseEntity<UserDTO> responseEntity = this.restTemplate.exchange(USER_BASE_URL, HttpMethod.PUT, httpEntity, UserDTO.class);
+		
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals("dummytesting@e.com", responseEntity.getBody().getEmail());
+		assertEquals(dob, responseEntity.getBody().getDob());
+	}
+	
+	/**
+	 * Method used to test if un-registered account tries to update its users account.
+	 * 
+	 * @throws Exception - Throw any unwanted exception
+	 */
+	@Test
+	public void testUpdateUser_WithOtherUnRegisteredEmail() throws Exception {
+		UserDTO inputUserDTO = createUser("unregisteres@e.com", LocalDate.of(1984, Month.AUGUST, 9));
+		
+		ResponseEntity<UserDTO> responseEntity = putEntity(inputUserDTO);
+		
+		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+	}
+
+	/**
 	 * Method used to post data to UserController
 	 * 
 	 * @param <T> - Input DTO class
@@ -193,6 +261,20 @@ public class UserControllerIntegrationTest {
 	}
 	
 	/**
+	 * Method used to update already existing user details.
+	 * 
+	 * @param inputUserDTO - UserDTO object
+	 * @return ResponseEntity<UserDTO> - Updated User Details object
+	 */
+	private ResponseEntity<UserDTO> putEntity(UserDTO inputUserDTO) {
+		String bearerToken = getBearerToken();
+		HttpHeaders headers = createHttpHeader(MediaType.APPLICATION_JSON, bearerToken);
+		HttpEntity<UserDTO> httpEntity = new HttpEntity<>(inputUserDTO, headers);
+		
+		return this.restTemplate.exchange(USER_BASE_URL, HttpMethod.PUT, httpEntity, UserDTO.class);
+	} 
+	
+	/**
 	 * Method used to create a new userDTO object to be sent to the controller class.
 	 * 
 	 * @return UserDTO - UserDTO object from method
@@ -206,12 +288,26 @@ public class UserControllerIntegrationTest {
 	}
 	
 	/**
-	 * Method to create a bearer token for user authentication.
+	 * Method used to create a new UserDTO object with email and dob.
 	 * 
+	 * @return UserDTO - User details object
+	 */
+	private UserDTO createUser(String email, LocalDate dob) {
+		UserDTO inputUserDTO = new UserDTO();
+		inputUserDTO.setEmail(email);
+		inputUserDTO.setDob(dob);
+		return inputUserDTO;
+	}
+	
+	/**
+	 * Method to create a bearer token for user authentication with provided username and password.
+	 * 
+	 * @param username - email id of user
+	 * @param password - password of user
 	 * @return String - Bearer token
 	 */
-	private String getBearerToken() {
-		UsernamePasswordAuthDTO usernamePasswordAuthDTO = new UsernamePasswordAuthDTO(INTEGRATION_TEST_USER, INTEGRATION_USER_PASSWORD);
+	private String getBearerToken(String username, String password) {
+		UsernamePasswordAuthDTO usernamePasswordAuthDTO = new UsernamePasswordAuthDTO(username, password);
 		
 		ResponseEntity<String> responseEntity = postEntity(usernamePasswordAuthDTO, "/login");
 
@@ -222,6 +318,15 @@ public class UserControllerIntegrationTest {
 		
 		String authorizationHeader = responseHeaders.getFirst("Authorization");
 		return authorizationHeader.replace("Bearer ", "");
+	}
+	
+	/**
+	 * Method to create a bearer token for user authentication.
+	 * 
+	 * @return String - Bearer token
+	 */
+	private String getBearerToken() {
+		return getBearerToken(INTEGRATION_TEST_USER, INTEGRATION_USER_PASSWORD);
 	}
 
 	/**

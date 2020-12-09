@@ -45,9 +45,13 @@ public class DummyDataServiceImpl implements DummyDataService {
 		testingUser.addRole(new Role(USER));
 		testingUser.setActiveSw(ApplicationConstants.CHAR_Y);
 		
-		User dummyFetchUser = new User("Dummy", "Testing", "dummytesting@e.com", null, Gender.F, "Test@123");
-		testingUser.addRole(new Role(USER_BASIC));
-		testingUser.setActiveSw(ApplicationConstants.CHAR_Y);
+		User dummyFetchUser = new User("Dummy", "Testing", "dummytesting@e.com", null, Gender.F, "TestUser@123");
+		dummyFetchUser.addRole(new Role(USER_BASIC));
+		dummyFetchUser.setActiveSw(ApplicationConstants.CHAR_Y);
+		
+		User adminUser = new User("Admin", "Testing", "admintesting@e.com", null, Gender.F, "TestUser@123");
+		adminUser.addRole(new Role(ADMIN));
+		adminUser.setActiveSw(ApplicationConstants.CHAR_Y);
 		
 		User user = new User("A", "B", "test1@e.com", null, Gender.M, "T");
 		user.addRole(new Role(ADMIN));
@@ -68,6 +72,8 @@ public class DummyDataServiceImpl implements DummyDataService {
 		this.userDataSvc.saveUser(testingUser);
 		
 		this.userDataSvc.saveUser(dummyFetchUser);
+		
+		this.userDataSvc.saveUser(adminUser);
 		
 		this.userDataSvc.saveUser(user);
 		this.verificationTokenSvc.generateTokenForUser(user);
