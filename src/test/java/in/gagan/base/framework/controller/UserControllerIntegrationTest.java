@@ -8,8 +8,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -65,18 +63,6 @@ public class UserControllerIntegrationTest {
 	
 	private static final String SLASH = "/";
 	
-	private UserDTO userDTO;
-	
-	@Before
-	public void setup() {
-		userDTO = createUser();
-	}
-
-	@AfterClass
-	public static void cleanUp() {
-		deleteUser();
-	}
-	
 	/**
 	 * Method used to test if all mandatory data is passed to the controller class, the new user is registered successfully.
 	 * 
@@ -84,6 +70,7 @@ public class UserControllerIntegrationTest {
 	 */
 	@Test
 	public void testRegisterUser() throws Exception {
+		UserDTO userDTO = createUser();
 		String url = new StringBuilder(USER_BASE_URL).append("/register").toString();
 		ResponseEntity<String> responseEntity = postEntity(userDTO, url);
 		
@@ -98,6 +85,7 @@ public class UserControllerIntegrationTest {
 	 */
 	@Test
 	public void testRegisterUser_LastNameNull() throws Exception {
+		UserDTO userDTO = createUser();
 		// Failure point
 		userDTO.setLastName(null);
 		userDTO.setMatchingPassword(null);
@@ -353,10 +341,6 @@ public class UserControllerIntegrationTest {
 			requestHeaders.setBearerAuth(bearerToken);
 		}
 		return requestHeaders;
-	}
-	
-	private static void deleteUser() {
-		System.out.println("Deleted if present");
 	}
 	
 }
