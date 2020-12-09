@@ -69,18 +69,6 @@ public class UserController {
 	}
 	
 	/**
-	 * This method is used to fetch the details based on input email.
-	 * 
-	 * @param email - Input email to fetch user details
-	 * @return ResponseEntity<UserDTO> - User details from database
-	 */
-	@GetMapping(consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserDTO> fetchUserWithRequestBody(@EmailValidator @RequestBody String email) {
-		UserDTO userDTO = this.userRegistrationSvc.fetchUser(email);
-		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
-	}
-	
-	/**
 	 * This method is used to update the details in a user entity.
 	 * 
 	 * @param updateUserDTO - the user data represented in form of a DTO
