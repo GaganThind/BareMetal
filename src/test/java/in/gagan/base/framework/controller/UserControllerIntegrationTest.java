@@ -162,7 +162,7 @@ public class UserControllerIntegrationTest {
 		ResponseEntity<UserDTO> responseEntity = getEntity(url);
 		
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-	}	
+	}
 	
 	/**
 	 * Method used to post data to UserController
@@ -187,7 +187,7 @@ public class UserControllerIntegrationTest {
 	private ResponseEntity<UserDTO> getEntity(String url) {
 		String bearerToken = getBearerToken();
 		HttpHeaders headers = createHttpHeader(MediaType.TEXT_PLAIN, bearerToken);
-		HttpEntity<?> httpEntity = new HttpEntity<>(headers);
+		HttpEntity<UserDTO> httpEntity = new HttpEntity<>(headers);
 		
 		return this.restTemplate.exchange(url, HttpMethod.GET, httpEntity, UserDTO.class);
 	}
