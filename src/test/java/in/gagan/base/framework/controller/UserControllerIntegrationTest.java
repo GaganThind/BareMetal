@@ -264,6 +264,41 @@ public class UserControllerIntegrationTest {
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals("Deleted Successfully!!!", responseEntity.getBody());
 	}
+	
+	/**
+	 * Method used to test if a user can be verified.
+	 * 
+	 * @throws Exception - Throw any unwanted exception
+	 */
+	//@Test
+	public void testVerifyUser() throws Exception {
+		//TODO Need a logic to add the verification token automatically
+		
+		String verifyUrl = new StringBuilder(USER_BASE_URL).append("/register/verify/").append("").toString();
+		HttpHeaders headers = createHttpHeader(MediaType.TEXT_PLAIN);
+		HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+		
+		ResponseEntity<String> responseEntity = this.restTemplate.exchange(verifyUrl, HttpMethod.PUT, httpEntity, String.class);
+		
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals("User Verified Successfully!!!", responseEntity.getBody());
+	}
+	
+	/**
+	 * Method used to test if an invalid token is provided, then an error is thrown.
+	 * 
+	 * @throws Exception - Throw any unwanted exception
+	 */
+	@Test
+	public void testVerifyUser_EmptyToken() throws Exception {
+		String verifyUrl = new StringBuilder(USER_BASE_URL).append("/register/verify/").toString();
+		HttpHeaders headers = createHttpHeader(MediaType.TEXT_PLAIN);
+		HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+		
+		ResponseEntity<String> responseEntity = this.restTemplate.exchange(verifyUrl, HttpMethod.PUT, httpEntity, String.class);
+		
+		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+	}
 
 	/**
 	 * Method used to post data to UserController
