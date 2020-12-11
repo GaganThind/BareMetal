@@ -9,15 +9,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -43,14 +40,8 @@ import in.gagan.base.framework.enums.UserRoles;
 @SpringBootTest(classes = SpringBootHibernateFrameworkApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class UserControllerIntegrationTest {
 	
-	@LocalServerPort
-	private int port;
-	
 	@Autowired
 	private TestRestTemplate restTemplate;
-	
-	@Rule
-    public ExpectedException expectedException = ExpectedException.none();
 	
 	private static final String USER_BASE_URL = "/v1/users";
 	
