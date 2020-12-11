@@ -53,6 +53,18 @@ public class DummyDataServiceImpl implements DummyDataService {
 		adminUser.addRole(new Role(ADMIN));
 		adminUser.setActiveSw(ApplicationConstants.CHAR_Y);
 		
+		User deleteUser = new User("Delete", "Testing", "deletetesting@e.com", null, Gender.F, "TestUser@123");
+		deleteUser.addRole(new Role(USER));
+		deleteUser.setActiveSw(ApplicationConstants.CHAR_Y);
+		
+		User deleteUser1 = new User("Delete", "Testing", "deletetesting1@e.com", null, Gender.F, "TestUser@123");
+		deleteUser1.addRole(new Role(USER_BASIC));
+		deleteUser1.setActiveSw(ApplicationConstants.CHAR_Y);
+		
+		User deleteUser2 = new User("Delete", "Testing", "deletetesting2@e.com", null, Gender.F, "TestUser@123");
+		deleteUser2.addRole(new Role(USER_BASIC));
+		deleteUser2.setActiveSw(ApplicationConstants.CHAR_Y);
+		
 		User user = new User("A", "B", "test1@e.com", null, Gender.M, "T");
 		user.addRole(new Role(ADMIN));
 		user.setActiveSw(ApplicationConstants.CHAR_Y);
@@ -74,6 +86,12 @@ public class DummyDataServiceImpl implements DummyDataService {
 		this.userDataSvc.saveUser(dummyFetchUser);
 		
 		this.userDataSvc.saveUser(adminUser);
+		
+		this.userDataSvc.saveUser(deleteUser);
+		
+		this.userDataSvc.saveUser(deleteUser1);
+		
+		this.userDataSvc.saveUser(deleteUser2);
 		
 		this.userDataSvc.saveUser(user);
 		this.verificationTokenSvc.generateTokenForUser(user);

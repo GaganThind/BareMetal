@@ -164,7 +164,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(IllegalAccessException.class)
 	public final ResponseEntity<?> IllegalAccessException(final IllegalAccessException ex, WebRequest request) {
-		return new ResponseEntity<>(handleException(ex), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(handleException(ex), HttpStatus.FORBIDDEN);
 	}
 	
 	/**

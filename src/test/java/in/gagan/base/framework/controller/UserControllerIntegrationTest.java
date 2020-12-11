@@ -2,6 +2,7 @@ package in.gagan.base.framework.controller;
 
 import static org.junit.Assert.assertEquals;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.HashSet;
@@ -181,7 +182,7 @@ public class UserControllerIntegrationTest {
 		
 		ResponseEntity<UserDTO> responseEntity = putEntity(inputUserDTO);
 		
-		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
 	}
 	
 	/**
@@ -217,7 +218,51 @@ public class UserControllerIntegrationTest {
 		
 		ResponseEntity<UserDTO> responseEntity = putEntity(inputUserDTO);
 		
-		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+	}
+	
+	/**
+	 * Method used to test if a user can be deleted by itself.
+	 * 
+	 * @throws Exception - Throw any unwanted exception
+	 */
+	@Test
+	public void testDeleteUser() throws Exception {
+		StringBuilder urlBuilder = new StringBuilder(USER_BASE_URL).append(SLASH).append("deletetesting@e.com");
+		URI url = new URI(urlBuilder.toString());
+		ResponseEntity<String> responseEntity = deleteEntity(url, "deletetesting@e.com", "TestUser@123");
+		
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals("Deleted Successfully!!!", responseEntity.getBody());
+	}
+	
+	/**
+	 * Method used to test if a user CANNOT be deleted by other non-admin user.
+	 * 
+	 * @throws Exception - Throw any unwanted exception
+	 */
+	@Test
+	public void testDeleteUser_NonAdmin() throws Exception {
+		StringBuilder urlBuilder = new StringBuilder(USER_BASE_URL).append(SLASH).append("deletetesting1@e.com");
+		URI url = new URI(urlBuilder.toString());
+		ResponseEntity<String> responseEntity = deleteEntity(url, INTEGRATION_TEST_USER, INTEGRATION_USER_PASSWORD);
+		
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+	}
+	
+	/**
+	 * Method used to test if a user CAN be deleted by other admin user.
+	 * 
+	 * @throws Exception - Throw any unwanted exception
+	 */
+	@Test
+	public void testDeleteUser_Admin() throws Exception {
+		StringBuilder urlBuilder = new StringBuilder(USER_BASE_URL).append(SLASH).append("deletetesting1@e.com");
+		URI url = new URI(urlBuilder.toString());
+		ResponseEntity<String> responseEntity = deleteEntity(url, "admintesting@e.com", "TestUser@123");
+		
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals("Deleted Successfully!!!", responseEntity.getBody());
 	}
 
 	/**
@@ -246,6 +291,20 @@ public class UserControllerIntegrationTest {
 		HttpEntity<UserDTO> httpEntity = new HttpEntity<>(headers);
 		
 		return this.restTemplate.exchange(url, HttpMethod.GET, httpEntity, UserDTO.class);
+	}
+	
+	/**
+	 * Method used to send a get request for fetching user detaiils.
+	 * 
+	 * @param url - Url to hit
+	 * @return ResponseEntity<String> - Server message
+	 */
+	private ResponseEntity<String> deleteEntity(URI url, String username, String password) {
+		String bearerToken = getBearerToken(username, password);
+		HttpHeaders headers = createHttpHeader(MediaType.TEXT_PLAIN, bearerToken);
+		HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+		
+		return this.restTemplate.exchange(url, HttpMethod.DELETE, httpEntity, String.class);
 	}
 	
 	/**
