@@ -66,7 +66,7 @@ public class PasswordManagerController {
 	}
 	
 	/**
-	 * Methid used to reset user password.
+	 * Method used to reset user password.
 	 * 
 	 * @param passwordResetDTO - Object to transfer password and confirm password
 	 * @param token - Unique token string 
