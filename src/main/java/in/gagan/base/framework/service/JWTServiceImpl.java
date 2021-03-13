@@ -69,11 +69,10 @@ public class JWTServiceImpl implements JWTService {
 	public Set<SimpleGrantedAuthority> getRoles(String token) {
 		List<Map<String, String>> authorities = (List<Map<String, String>>) getClaims(token).get(JWTSecurityConstants.AUTHORITIES);
 		
-		Set<SimpleGrantedAuthority> roles = authorities.stream()
-														.map(role -> role.get(JWTSecurityConstants.AUTHORITIY))
-														.map(SimpleGrantedAuthority::new)
-														.collect(Collectors.toUnmodifiableSet());
-		return roles;
+		return authorities.stream()
+							.map(role -> role.get(JWTSecurityConstants.AUTHORITIY))
+							.map(SimpleGrantedAuthority::new)
+							.collect(Collectors.toUnmodifiableSet());
 	}
 
 	/**
@@ -108,14 +107,13 @@ public class JWTServiceImpl implements JWTService {
 	 */
 	@Override
 	public String buildToken(Authentication authResult) {
-		String token = Jwts.builder()
-				.setSubject(authResult.getName())
-				.claim(AUTHORITIES, authResult.getAuthorities())
-				.setIssuedAt(new Date())
-				.setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(this.jwtProps.getTokenExpirationInWeeks())))
-				.signWith(this.jwtProps.getSecretKey())
-				.compact();
-		return token;
+		return Jwts.builder()
+					.setSubject(authResult.getName())
+					.claim(AUTHORITIES, authResult.getAuthorities())
+					.setIssuedAt(new Date())
+					.setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(this.jwtProps.getTokenExpirationInWeeks())))
+					.signWith(this.jwtProps.getSecretKey())
+					.compact();
 	}
 	
 	/**
@@ -127,16 +125,15 @@ public class JWTServiceImpl implements JWTService {
 	 */
 	@Override
 	public String buildToken(Authentication authResult, String ipAddress, String userAgent) {
-		String token = Jwts.builder()
-				.setSubject(authResult.getName())
-				.claim(AUTHORITIES, authResult.getAuthorities())
-				.claim(IP, ipAddress)
-				.claim(USER_AGENT, userAgent)
-				.setIssuedAt(new Date())
-				.setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(this.jwtProps.getTokenExpirationInWeeks())))
-				.signWith(this.jwtProps.getSecretKey())
-				.compact();
-		return token;
+		return Jwts.builder()
+					.setSubject(authResult.getName())
+					.claim(AUTHORITIES, authResult.getAuthorities())
+					.claim(IP, ipAddress)
+					.claim(USER_AGENT, userAgent)
+					.setIssuedAt(new Date())
+					.setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(this.jwtProps.getTokenExpirationInWeeks())))
+					.signWith(this.jwtProps.getSecretKey())
+					.compact();
 	}
 	
 	/**
@@ -166,12 +163,11 @@ public class JWTServiceImpl implements JWTService {
 	 * @return Jws<Claims> - Claims details
 	 */
 	private Claims getClaims(String token) {
-		Claims claims = Jwts.parserBuilder()
-									.setSigningKey(this.jwtProps.getSecretKey())
-									.build()
-									.parseClaimsJws(token)
-									.getBody();
-		return claims;
+		return Jwts.parserBuilder()
+					.setSigningKey(this.jwtProps.getSecretKey())
+					.build()
+					.parseClaimsJws(token)
+					.getBody();
 	}
 
 }
