@@ -9,6 +9,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.enums.Gender;
 import in.gagan.base.framework.util.UserHelperUtil;
@@ -95,6 +97,7 @@ public class UserDTO implements Serializable {
 		this.lastName = lastName;
 	}
 
+	@JsonIgnore
 	public String getUsername() {
 		return new StringBuilder(firstName).append(ApplicationConstants.BLANK).append(lastName).toString();
 	}
