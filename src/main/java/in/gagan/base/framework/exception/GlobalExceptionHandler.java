@@ -3,6 +3,8 @@ package in.gagan.base.framework.exception;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.ConstraintViolationException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,6 +144,18 @@ public class GlobalExceptionHandler {
 	}
 	
 	/**
+	 * Global exception handler for ConstraintViolationException
+	 * 
+	 * @param ex - Exception thrown in application
+	 * @param request - Request Parameter to get details
+	 * @return ResponseEntity<?> - Response Entity object
+	 */
+	@ExceptionHandler(ConstraintViolationException.class)
+	public final ResponseEntity<?> ConstraintViolationException(final ConstraintViolationException ex, WebRequest request) {
+		return new ResponseEntity<>(handleException(ex), HttpStatus.BAD_REQUEST);
+	}
+	
+	/**
 	 * Global exception handler for IllegalAccessException
 	 * 
 	 * @param ex - Exception thrown in application
@@ -150,7 +164,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(IllegalAccessException.class)
 	public final ResponseEntity<?> IllegalAccessException(final IllegalAccessException ex, WebRequest request) {
-		return new ResponseEntity<>(handleException(ex), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(handleException(ex), HttpStatus.FORBIDDEN);
 	}
 	
 	/**
