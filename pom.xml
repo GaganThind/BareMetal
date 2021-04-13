@@ -139,7 +139,7 @@
 			</plugin>
 
 			<!-- Hibernate Bytecode Enhancement -->
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.hibernate.orm.tooling</groupId>
 				<artifactId>hibernate-enhance-maven-plugin</artifactId>
 				<version>${hibernate.version}</version>
@@ -158,7 +158,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 </project>
