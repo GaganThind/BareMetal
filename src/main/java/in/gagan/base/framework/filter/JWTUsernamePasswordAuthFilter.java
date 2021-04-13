@@ -98,6 +98,10 @@ public class JWTUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
 		
 		response.addHeader(HEADER_STRING, headerString);
 		
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"" + HEADER_STRING + "\":\"" + headerString + "\"}");
+        
 	}
 
 	/**
