@@ -16,3 +16,8 @@
         }
     ]
 }
+
+# Running the project
+1. Goto project folder
+2. ./mvnw install
+3. ./mvnw spring-boot:run
