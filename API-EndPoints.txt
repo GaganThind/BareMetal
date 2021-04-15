@@ -1,0 +1,55 @@
+http://localhost:8081/baseFw/api
+
+1) Get User - GET - /v1/users/<email>
+2) Update User - PUT - /v1/users
+    {
+    "firstName": "Test",
+    "lastName": "Thinjd12",
+    "email": "test1@e.com",
+    "dob": "2020-05-03"
+    }
+3) Delete User - DELETE - /v1/users
+    Test3@e.com
+4) Delete User - DELETE - /v1/admin/account/delete
+    [ "test3@e.com", "test4@e.com" ]
+5) Password reset - PUT - /v1/password/reset
+    {
+    "email": "<email>"
+    "password": "Test@123",
+    "matchingPassword": "Test@123"
+    }
+6) Generate Forgot Password token - POST - Check this method
+6) Forgot Password - PUT - /v1/password/forgot/<token>
+    {
+    "password": "Test@123",
+    "matchingPassword": "Test@123"
+    }
+7) Register User - POST - /v1/users/register
+    {
+    "firstName": "Test",
+    "lastName": "Thind",
+    "email": "Test11@e.com",
+    "password": "Test@123",
+    "matchingPassword": "Test@123",
+    "dob": "1981-05-03",
+    "gender": "F",
+    "activeSw": true,
+    "userRole": [
+        {
+            "roleName": "USER"
+        }
+        ]
+    }
+8) Login - POST - /login
+    {
+    "username": "test1@e.com",
+    "password": "T"
+    }
+9) Verify User - PUT - /v1/users/register/verify/<token>
+10) Get All users - GET - /v1/admin/users
+11) Unlock users - PUT - /v1/admin/account/unlock
+    [ "test3@e.com", "test4@e.com" ]
+12) Delete users - DELETE - /v1/admin/account/delete
+    [ "test3@e.com", "test4@e.com" ]
+13) Hard delete users - DELETE - /v1/admin/account/hardDelete
+    [ "test3@e.com", "test4@e.com" ]
