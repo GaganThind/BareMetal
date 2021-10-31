@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.enums.Gender;
+import in.gagan.base.framework.enums.UserRoles;
 import in.gagan.base.framework.util.UserHelperUtil;
 import in.gagan.base.framework.validator.EmailValidator;
 import in.gagan.base.framework.validator.Password;
@@ -63,8 +64,7 @@ public class UserDTO implements Serializable {
 	
 	private boolean activeSw;
 	
-	@NotNull(message = "{message.registration.roles}")
-	@Size(min = 1, message = "{message.registration.roles}")
+	// Even if no roles are added by the user, a default role will be added.
 	private Set<UserRoleDTO> userRole = new HashSet<>();
 	
 	public UserDTO() { super(); }
@@ -77,8 +77,15 @@ public class UserDTO implements Serializable {
 		this.password = this.matchingPassword = password;
 		this.dob = dob;
 		this.gender = gender;
-		this.userRole = userRole;
 		this.age = UserHelperUtil.calculateAge(dob);
+		
+		// Assign default role if not present
+		if (null == userRole) {
+			Set<UserRoleDTO> roles = new HashSet<>();
+			roles.add(new UserRoleDTO(UserRoles.USER_BASIC));
+			userRole = roles;
+		}
+		this.userRole = userRole;
 	}
 
 	public String getFirstName() {
