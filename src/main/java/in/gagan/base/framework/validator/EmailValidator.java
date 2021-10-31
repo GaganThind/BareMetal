@@ -28,7 +28,7 @@ import javax.validation.constraints.Email;
 @Documented
 public @interface EmailValidator {
 	
-	String message() default "${message.registration.email.invalid}";
+	String message() default "{message.registration.email.invalid}";
 	
     Class<?>[] groups() default {};
     

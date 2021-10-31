@@ -23,7 +23,7 @@ import javax.validation.Payload;
 @Documented
 public @interface PasswordMatches {
 	
-	String message() default "${message.registration.password.not.matching}";
+	String message() default "{message.registration.password.not.matching}";
 
     Class<?>[] groups() default {};
 

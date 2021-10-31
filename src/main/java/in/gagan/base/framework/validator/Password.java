@@ -24,7 +24,7 @@ import javax.validation.Payload;
 @Retention(RUNTIME)
 public @interface Password {
 	
-	String message() default "${message.registration.password.not.valid}";
+	String message() default "{message.registration.password.not.valid}";
 	 
     Class<?>[] groups() default {};
  
