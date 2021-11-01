@@ -32,13 +32,13 @@ import in.gagan.base.framework.service.JWTService;
  */
 public class JWTUsernamePasswordAuthFilter extends UsernamePasswordAuthenticationFilter {
 	
-	private final AuthenticationManager authenticationmanager;
+	private final AuthenticationManager authenticationManager;
 	private final JWTProps jwtProps;
 	private final JWTService jwtSvc;
 	
 	@Autowired
-	public JWTUsernamePasswordAuthFilter(AuthenticationManager authenticationmanager, JWTProps jwtProps, JWTService jwtSvc) {
-		this.authenticationmanager = authenticationmanager;
+	public JWTUsernamePasswordAuthFilter(AuthenticationManager authenticationManager, JWTProps jwtProps, JWTService jwtSvc) {
+		this.authenticationManager = authenticationManager;
 		this.jwtProps = jwtProps;
 		this.jwtSvc = jwtSvc;
 	}
@@ -60,7 +60,7 @@ public class JWTUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
 		String password = usernamePasswordAuth.getPassword();
 		
 		Authentication auth = new UsernamePasswordAuthenticationToken(username, password);
-		Authentication authenticateUser = this.authenticationmanager.authenticate(auth);
+		Authentication authenticateUser = this.authenticationManager.authenticate(auth);
 		
 		return authenticateUser;
 		
