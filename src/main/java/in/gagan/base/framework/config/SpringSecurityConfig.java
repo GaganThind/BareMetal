@@ -1,5 +1,12 @@
 package in.gagan.base.framework.config;
 
+import static in.gagan.base.framework.enums.UserRoles.ADMIN;
+import static in.gagan.base.framework.enums.UserRoles.ADMIN_BASIC;
+import static in.gagan.base.framework.enums.UserRoles.USER;
+import static in.gagan.base.framework.enums.UserRoles.USER_BASIC;
+
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,10 +23,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import static in.gagan.base.framework.enums.UserRoles.*;
-
-import java.util.Arrays;
-
+import in.gagan.base.framework.component.CustomAuthenticationFailureHandler;
 import in.gagan.base.framework.component.JWTProps;
 import in.gagan.base.framework.filter.JWTTokenAuthenticationFilter;
 import in.gagan.base.framework.filter.JWTUsernamePasswordAuthFilter;
@@ -40,12 +44,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	private final CustomUserDetailsService userDetailsSvc;
 	private final JWTProps jwtProps;
 	private final JWTService jwtSvc;
+	private final CustomAuthenticationFailureHandler authenticationFailureHandler;
 	
 	@Autowired
-	public SpringSecurityConfig(CustomUserDetailsService userDetailsSvc, JWTProps jwtProps, JWTService jwtSvc) {
+	public SpringSecurityConfig(CustomUserDetailsService userDetailsSvc, JWTProps jwtProps, JWTService jwtSvc, CustomAuthenticationFailureHandler authenticationFailureHandler) {
 		this.userDetailsSvc = userDetailsSvc;
 		this.jwtProps = jwtProps;
 		this.jwtSvc = jwtSvc;
+		this.authenticationFailureHandler = authenticationFailureHandler;
 	}
 	
 	@Autowired
@@ -62,7 +68,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and()
-			.addFilter(new JWTUsernamePasswordAuthFilter(authenticationManager(), this.jwtProps, this.jwtSvc))
+			.addFilter(jwtUsernamePasswordAuthFilter())
 			.addFilter(new JWTTokenAuthenticationFilter(authenticationManager(), this.jwtProps, this.jwtSvc))
 			.authorizeRequests()
 	            .antMatchers("/login", "/v1/users/register/**", "/h2/**", "/v1/password/forgot/**").permitAll()
@@ -99,6 +105,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	    urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", config);
 	   
 	    return new CorsFilter(urlBasedCorsConfigurationSource);
+	}
+
+	public JWTUsernamePasswordAuthFilter jwtUsernamePasswordAuthFilter() throws Exception {
+		JWTUsernamePasswordAuthFilter jwtUsernamePasswordAuthFilter = new JWTUsernamePasswordAuthFilter(authenticationManager(), this.jwtProps, this.jwtSvc);
+		jwtUsernamePasswordAuthFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+		return jwtUsernamePasswordAuthFilter;
 	}
 
 }

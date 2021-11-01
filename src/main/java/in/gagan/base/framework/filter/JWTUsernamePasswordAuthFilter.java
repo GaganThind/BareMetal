@@ -3,6 +3,7 @@ package in.gagan.base.framework.filter;
 import static in.gagan.base.framework.constant.JWTSecurityConstants.HEADER_STRING;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -100,7 +101,13 @@ public class JWTUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
 		
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("{\"" + HEADER_STRING + "\":\"" + headerString + "\", \"ExpiresIn\":\"" + this.jwtSvc.getExpirationDate(token).getTime() + "\"}");
+        
+        try (PrintWriter writer = response.getWriter()) {	
+            writer.write("{\"" + HEADER_STRING + "\":\"" + headerString + "\", \"ExpiresIn\":\"" + this.jwtSvc.getExpirationDate(token).getTime() + "\"}");
+			writer.flush();
+        } catch (IOException ie) {
+            // Nothing
+        }
         
 	}
 
