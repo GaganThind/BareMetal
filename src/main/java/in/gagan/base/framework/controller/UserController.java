@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -107,10 +108,13 @@ public class UserController extends AbstractController {
 	 * @param token - Unique token string 
 	 * @return ResponseEntity<String> - Success message
 	 */
-	@PutMapping(value = "/register/verify/{token}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	@PatchMapping(value = "/register/verify/{token}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> verifyUser(@NotNull @NotEmpty @PathVariable String token) {
 		this.userRegistrationSvc.confirmUserRegisteration(token);
-		return new ResponseEntity<String>("User Verified Successfully!!!", HttpStatus.OK);
+		return new ResponseEntity<String>(message.getMessage("message.registration.user.verified", 
+															null,
+															Locale.ENGLISH), 
+											HttpStatus.OK);
 	}
 	
 }
