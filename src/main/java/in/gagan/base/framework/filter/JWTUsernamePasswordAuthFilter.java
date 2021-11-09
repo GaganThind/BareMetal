@@ -4,6 +4,7 @@ import static in.gagan.base.framework.constant.JWTSecurityConstants.HEADER_STRIN
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -99,11 +101,13 @@ public class JWTUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
 		
 		response.addHeader(HEADER_STRING, headerString);
 		
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
         
         try (PrintWriter writer = response.getWriter()) {	
-            writer.write("{\"" + HEADER_STRING + "\":\"" + headerString + "\", \"ExpiresIn\":\"" + this.jwtSvc.getExpirationDate(token).getTime() + "\"}");
+            writer.write("{\"" + HEADER_STRING + "\":\"" + headerString + 
+            				"\", \"ExpiresIn\":\"" + this.jwtSvc.getExpirationDate(token).getTime() + 
+            				"\", \"Username\":\"" + authResult.getName() + "\"}");
 			writer.flush();
         } catch (IOException ie) {
             // Nothing
