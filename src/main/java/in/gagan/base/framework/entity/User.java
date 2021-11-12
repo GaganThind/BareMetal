@@ -56,6 +56,9 @@ public class User extends Auditable implements BaseEntity {
 	@Column(name = "GENDER", nullable = true)
 	private Gender gender;
 	
+	@Column(name="PHONE_NUMBER", nullable = true)
+	private long phoneNumber;
+	
 	@Column(name = "PASSWORD", nullable = false, length = 100)
 	private String password;
 	
@@ -75,7 +78,7 @@ public class User extends Auditable implements BaseEntity {
 	
 	public User() { super(); }
 	
-	public User(String firstName, String lastName, String email, LocalDate dob, Gender gender, String password) {
+	public User(String firstName, String lastName, String email, LocalDate dob, Gender gender, String password, long phoneNumber) {
 		super(ApplicationConstants.CHAR_N);
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -83,6 +86,7 @@ public class User extends Auditable implements BaseEntity {
 		this.dob = dob;
 		this.gender = gender;
 		this.password = password;
+		this.phoneNumber = phoneNumber;
 	}
 	
 	public long getUserId() {
@@ -133,6 +137,14 @@ public class User extends Auditable implements BaseEntity {
 		this.gender = gender;
 	}
 	
+	public long getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(long phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
 	public String getPassword() {
 		return password;
 	}

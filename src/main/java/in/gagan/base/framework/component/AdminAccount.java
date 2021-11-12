@@ -52,7 +52,7 @@ public class AdminAccount {
 	 * @return User - The user entity object for admin to be persisted
 	 */
 	public User getAdminDetails() {
-		User user = new User(firstName, lastName, email, LocalDate.parse(dob), Gender.valueOf(gender), password);
+		User user = new User(firstName, lastName, email, LocalDate.parse(dob), Gender.valueOf(gender), password, 0);
 		user.setPasswordExpireDate(LocalDateTime.now().plusDays(Integer.valueOf(passwordExp)));
 		user.setActiveSw(ApplicationConstants.CHAR_Y);
 		user.addRole(new Role(ADMIN));

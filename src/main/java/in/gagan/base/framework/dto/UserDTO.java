@@ -62,6 +62,8 @@ public class UserDTO implements Serializable {
 
 	private Gender gender;
 	
+	private long phoneNumber;
+	
 	private boolean activeSw;
 	
 	// Even if no roles are added by the user, a default role will be added.
@@ -70,7 +72,7 @@ public class UserDTO implements Serializable {
 	public UserDTO() { super(); }
 	
 	public UserDTO(String firstName, String lastName, String email, String password, LocalDate dob, Gender gender,
-			Set<UserRoleDTO> userRole) {
+			Set<UserRoleDTO> userRole, long phoneNumber) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -78,6 +80,7 @@ public class UserDTO implements Serializable {
 		this.dob = dob;
 		this.gender = gender;
 		this.age = UserHelperUtil.calculateAge(dob);
+		this.phoneNumber = phoneNumber;
 		
 		// Assign default role if not present
 		if (null == userRole) {
@@ -147,6 +150,14 @@ public class UserDTO implements Serializable {
 
 	public void setGender(Gender gender) {
 		this.gender = gender;
+	}
+
+	public long getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(long phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 	public boolean isActiveSw() {
