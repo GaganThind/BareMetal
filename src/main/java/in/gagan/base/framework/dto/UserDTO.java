@@ -64,6 +64,18 @@ public class UserDTO implements Serializable {
 	
 	private long phoneNumber;
 	
+	private String addressline1;
+	
+	private String addressline2;
+	
+	private String country;
+	
+	private String state;
+	
+	private String city;
+	
+	private long zipCode;
+	
 	private boolean activeSw;
 	
 	// Even if no roles are added by the user, a default role will be added.
@@ -71,8 +83,16 @@ public class UserDTO implements Serializable {
 	
 	public UserDTO() { super(); }
 	
+	/*
+	 * Bare minimum user details. This constructor contains required fields.
+	 */
+	public UserDTO(String firstName, String lastName, String email, String password, Set<UserRoleDTO> userRole) {
+		this(firstName, lastName, email, password, null, Gender.NULL, userRole, 0, null, null, null, 0, null, null);
+	}
+	
 	public UserDTO(String firstName, String lastName, String email, String password, LocalDate dob, Gender gender,
-			Set<UserRoleDTO> userRole, long phoneNumber) {
+			Set<UserRoleDTO> userRole, long phoneNumber, String country, String state, String city, long zipCode,
+			String addressline1, String addressline2) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -81,6 +101,12 @@ public class UserDTO implements Serializable {
 		this.gender = gender;
 		this.age = UserHelperUtil.calculateAge(dob);
 		this.phoneNumber = phoneNumber;
+		this.addressline1 = addressline1;
+		this.addressline2 = addressline2;
+		this.country = country;
+		this.state = state;
+		this.city = city;
+		this.zipCode = zipCode;
 		
 		// Assign default role if not present
 		if (null == userRole) {
@@ -89,6 +115,54 @@ public class UserDTO implements Serializable {
 			userRole = roles;
 		}
 		this.userRole = userRole;
+	}
+
+	public String getAddressline1() {
+		return addressline1;
+	}
+
+	public void setAddressline1(String addressline1) {
+		this.addressline1 = addressline1;
+	}
+
+	public String getAddressline2() {
+		return addressline2;
+	}
+
+	public void setAddressline2(String addressline2) {
+		this.addressline2 = addressline2;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public long getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(long zipCode) {
+		this.zipCode = zipCode;
 	}
 
 	public String getFirstName() {

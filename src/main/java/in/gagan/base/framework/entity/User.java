@@ -71,6 +71,24 @@ public class User extends Auditable implements BaseEntity {
 	@Column(name = "ACCOUNT_LOCKED", nullable = false)
 	private char accountLocked = ApplicationConstants.CHAR_N;
 	
+	@Column(name = "ADDRESS_LINE_1", nullable = true)
+	private String addressline1;
+	
+	@Column(name = "ADDRESS_LINE_2", nullable = true)
+	private String addressline2;
+	
+	@Column(name = "COUNTRY", nullable = true)
+	private String country;
+	
+	@Column(name = "State", nullable = true)
+	private String state;
+	
+	@Column(name = "CITY", nullable = true)
+	private String city;
+	
+	@Column(name = "ZIP_CODE", nullable = true)
+	private long zipCode;
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name="USER_ID", nullable = false)
 	@Fetch(FetchMode.SELECT)
@@ -78,7 +96,16 @@ public class User extends Auditable implements BaseEntity {
 	
 	public User() { super(); }
 	
-	public User(String firstName, String lastName, String email, LocalDate dob, Gender gender, String password, long phoneNumber) {
+	/*
+	 * Bare minimum user details. This constructor contains required fields.
+	 */
+	public User(String firstName, String lastName, String email, String password) {
+		this(firstName, lastName, email, null, Gender.NULL, password, 0, null, null, null, 0, null, null);
+	}
+	
+	public User(String firstName, String lastName, String email, LocalDate dob, Gender gender, String password, 
+			long phoneNumber, String country, String state, String city, long zipCode, String addressLine1, 
+			String addressLine2) {
 		super(ApplicationConstants.CHAR_N);
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -87,8 +114,62 @@ public class User extends Auditable implements BaseEntity {
 		this.gender = gender;
 		this.password = password;
 		this.phoneNumber = phoneNumber;
+		this.country = country;
+		this.state = state;
+		this.city = city;
+		this.zipCode = zipCode;
+		this.addressline1 = addressLine1;
+		this.addressline2 = addressLine2;
 	}
 	
+	public String getAddressline1() {
+		return addressline1;
+	}
+
+	public void setAddressline1(String addressline1) {
+		this.addressline1 = addressline1;
+	}
+
+	public String getAddressline2() {
+		return addressline2;
+	}
+
+	public void setAddressline2(String addressline2) {
+		this.addressline2 = addressline2;
+	}
+	
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public long getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(long zipCode) {
+		this.zipCode = zipCode;
+	}
+
 	public long getUserId() {
 		return userId;
 	}

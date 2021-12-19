@@ -357,7 +357,8 @@ public class UserControllerIntegrationTest {
 		Set<UserRoleDTO> userRoles = new HashSet<>();
 		userRoles.add(userRoleDTO);
 		
-		return new UserDTO("Test", "User", TEST_USER_EMAIL, TEST_USER_PASSWORD, LocalDate.of(1982, Month.APRIL, 1), Gender.M, userRoles, 0);
+		return new UserDTO("Test", "User", TEST_USER_EMAIL, TEST_USER_PASSWORD, LocalDate.of(1982, Month.APRIL, 1), 
+				Gender.M, userRoles, 0, "ABC", "DEF", "GHI", 456478, "123", "345");
 	}
 	
 	/**

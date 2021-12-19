@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.entity.Role;
 import in.gagan.base.framework.entity.User;
-import in.gagan.base.framework.enums.Gender;
 
 /**
  * This class provides the implementation of DummyDataServide interface and provides operations for creating dummy data.
@@ -41,43 +40,43 @@ public class DummyDataServiceImpl implements DummyDataService {
 	@Override
 	public void createDummyData() {
 		
-		User testingUser = new User("Integration", "Testing", "integrationtesting@e.com", null, Gender.M, "TestUser@123", 0);
+		User testingUser = new User("Integration", "Testing", "integrationtesting@e.com", "TestUser@123");
 		testingUser.addRole(new Role(USER));
 		testingUser.setActiveSw(ApplicationConstants.CHAR_Y);
 		
-		User dummyFetchUser = new User("Dummy", "Testing", "dummytesting@e.com", null, Gender.F, "TestUser@123", 0);
+		User dummyFetchUser = new User("Dummy", "Testing", "dummytesting@e.com", "TestUser@123");
 		dummyFetchUser.addRole(new Role(USER_BASIC));
 		dummyFetchUser.setActiveSw(ApplicationConstants.CHAR_Y);
 		
-		User adminUser = new User("Admin", "Testing", "admintesting@e.com", null, Gender.F, "TestUser@123", 0);
+		User adminUser = new User("Admin", "Testing", "admintesting@e.com", "TestUser@123");
 		adminUser.addRole(new Role(ADMIN));
 		adminUser.setActiveSw(ApplicationConstants.CHAR_Y);
 		
-		User deleteUser = new User("Delete", "Testing", "deletetesting@e.com", null, Gender.F, "TestUser@123", 0);
+		User deleteUser = new User("Delete", "Testing", "deletetesting@e.com", "TestUser@123");
 		deleteUser.addRole(new Role(USER));
 		deleteUser.setActiveSw(ApplicationConstants.CHAR_Y);
 		
-		User deleteUser1 = new User("Delete", "Testing", "deletetesting1@e.com", null, Gender.F, "TestUser@123", 0);
+		User deleteUser1 = new User("Delete", "Testing", "deletetesting1@e.com", "TestUser@123");
 		deleteUser1.addRole(new Role(USER_BASIC));
 		deleteUser1.setActiveSw(ApplicationConstants.CHAR_Y);
 		
-		User deleteUser2 = new User("Delete", "Testing", "deletetesting2@e.com", null, Gender.F, "TestUser@123", 0);
+		User deleteUser2 = new User("Delete", "Testing", "deletetesting2@e.com", "TestUser@123");
 		deleteUser2.addRole(new Role(USER_BASIC));
 		deleteUser2.setActiveSw(ApplicationConstants.CHAR_Y);
 		
-		User user = new User("A", "B", "test1@e.com", null, Gender.M, "T", 0);
+		User user = new User("A", "B", "test1@e.com", "T");
 		user.addRole(new Role(ADMIN));
 		user.setActiveSw(ApplicationConstants.CHAR_Y);
 		
-		User user1 = new User("A1", "B1", "test2@e.com", null, Gender.F, "T", 0);
+		User user1 = new User("A1", "B1", "test2@e.com", "T");
 		user1.addRole(new Role(ADMIN_BASIC));
 		user1.setActiveSw(ApplicationConstants.CHAR_Y);
 		
-		User user2 = new User("A2", "B2", "test3@e.com", null, Gender.F, "T", 0);
+		User user2 = new User("A2", "B2", "test3@e.com", "T");
 		user2.addRole(new Role(USER));
 		user2.setActiveSw(ApplicationConstants.CHAR_Y);
 		
-		User user3 = new User("A3", "B3", "test4@e.com", null, Gender.M, "T", 0);
+		User user3 = new User("A3", "B3", "test4@e.com", "T");
 		user3.addRole(new Role(USER_BASIC));
 		user3.setActiveSw(ApplicationConstants.CHAR_Y);
 		
