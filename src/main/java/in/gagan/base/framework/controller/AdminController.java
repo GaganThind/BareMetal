@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,7 +44,7 @@ public class AdminController {
 		return new ResponseEntity<List<UserDTO>>(userDTOs, HttpStatus.OK);
 	}
 	
-	@PutMapping(value = "/account/unlock", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	@PatchMapping(value = "/account/unlock", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> unlockUserAccounts(@RequestBody List<String> emails) {
 		this.adminSvc.unlockUserAccounts(emails);
 		return new ResponseEntity<String>("User Account(s) Unlocked Successfully!!!", HttpStatus.OK);
