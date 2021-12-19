@@ -11,6 +11,7 @@ public enum Gender {
 	M("Male"),
 	F("Female"),
 	O("Others"),
+	R("Rather Not Say"),
 	NULL(null);
 	
 	private final String gender;
