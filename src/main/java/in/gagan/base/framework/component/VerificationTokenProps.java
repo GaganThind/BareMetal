@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+import in.gagan.base.framework.constant.ApplicationConstants;
+
 /**
  * This class provides the verification token properties 
  * and the data is loaded from the properties file (verificationToken.properties)
@@ -22,6 +24,13 @@ public class VerificationTokenProps {
 	
 	public int getVerificationTokenExpiryDays() {
 		return this.VERIFICATION_TOKEN_EXPIRY_DAYS;
+	}
+	
+	@Value("${server.configured.send.email}")
+	private String TOKEN_SERVER_CONFIGURED_TO_SEND_EMAIL;
+	
+	public boolean isServerConfiguredToSendEmail() {
+		return ApplicationConstants.STRING_TRUE.equals(this.TOKEN_SERVER_CONFIGURED_TO_SEND_EMAIL);
 	}
 	
 	/**

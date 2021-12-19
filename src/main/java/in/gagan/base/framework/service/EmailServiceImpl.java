@@ -14,6 +14,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
+import in.gagan.base.framework.component.VerificationTokenProps;
+
 /**
  * This class provides the implementation of EmailService interface and provides operations for Email service functionality.
  * 
@@ -26,8 +28,11 @@ public class EmailServiceImpl implements EmailService {
 	
 	private final JavaMailSender javaMailSender;
 	
-	public EmailServiceImpl(JavaMailSender javaMailSender) {
+	private final VerificationTokenProps verificationTokenProps;
+	
+	public EmailServiceImpl(JavaMailSender javaMailSender, VerificationTokenProps verificationTokenProps) {
 		this.javaMailSender = javaMailSender;
+		this.verificationTokenProps = verificationTokenProps;
 	}
 
 	/**
@@ -40,6 +45,10 @@ public class EmailServiceImpl implements EmailService {
 	@Async
 	@Override
 	public void sendEmail(String toAddress, String subject, String message) {
+		if (!this.verificationTokenProps.isServerConfiguredToSendEmail()) {
+			return;
+		}
+		
 		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 		simpleMailMessage.setTo(toAddress);
 		simpleMailMessage.setSubject(subject);
@@ -61,6 +70,10 @@ public class EmailServiceImpl implements EmailService {
 	@Override
 	public void sendAttachmentEmail(String toAddress, String subject, String message, String attachment) 
 			throws MessagingException, FileNotFoundException {
+		if (!this.verificationTokenProps.isServerConfiguredToSendEmail()) {
+			return;
+		}
+		
 		MimeMessage mimeMessage = this.javaMailSender.createMimeMessage();
 		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
 		messageHelper.setTo(toAddress);
