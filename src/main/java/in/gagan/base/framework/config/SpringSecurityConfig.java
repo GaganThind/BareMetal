@@ -71,7 +71,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 			.addFilter(jwtUsernamePasswordAuthFilter())
 			.addFilter(new JWTTokenAuthenticationFilter(authenticationManager(), this.jwtProps, this.jwtSvc))
 			.authorizeRequests()
-	            .antMatchers("/login", "/v1/users/register/**", "/h2/**", "/v1/password/forgot/**").permitAll()
+	            .antMatchers("/login", "/v1/users/register/**", "/h2/**", "/v1/password/forgot/**", "/v1/address/**").permitAll()
 	            .antMatchers(HttpMethod.GET, "/v1/users/**").hasAnyRole(ADMIN_BASIC.name(), USER_BASIC.name(), ADMIN.name(), USER.name())
 	            .antMatchers("/v1/users/**").hasAnyRole(ADMIN.name(), USER.name())
 	            .antMatchers("/v1/password/**").hasAnyRole(ADMIN_BASIC.name(), USER_BASIC.name(), ADMIN.name(), USER.name())
