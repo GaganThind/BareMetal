@@ -72,10 +72,10 @@ public class User extends Auditable implements BaseEntity {
 	private char accountLocked = ApplicationConstants.CHAR_N;
 	
 	@Column(name = "ADDRESS_LINE_1", nullable = true)
-	private String addressline1;
+	private String addressLine1;
 	
 	@Column(name = "ADDRESS_LINE_2", nullable = true)
-	private String addressline2;
+	private String addressLine2;
 	
 	@Column(name = "COUNTRY", nullable = true)
 	private String country;
@@ -87,7 +87,7 @@ public class User extends Auditable implements BaseEntity {
 	private String city;
 	
 	@Column(name = "ZIP_CODE", nullable = true)
-	private long zipCode;
+	private long zipcode;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	@JoinColumn(name="USER_ID", nullable = false)
@@ -117,25 +117,25 @@ public class User extends Auditable implements BaseEntity {
 		this.country = country;
 		this.state = state;
 		this.city = city;
-		this.zipCode = zipCode;
-		this.addressline1 = addressLine1;
-		this.addressline2 = addressLine2;
+		this.zipcode = zipCode;
+		this.addressLine1 = addressLine1;
+		this.addressLine2 = addressLine2;
 	}
 	
-	public String getAddressline1() {
-		return addressline1;
+	public String getAddressLine1() {
+		return addressLine1;
 	}
 
-	public void setAddressline1(String addressline1) {
-		this.addressline1 = addressline1;
+	public void setAddressLine1(String addressLine1) {
+		this.addressLine1 = addressLine1;
 	}
 
-	public String getAddressline2() {
-		return addressline2;
+	public String getAddressLine2() {
+		return addressLine2;
 	}
 
-	public void setAddressline2(String addressline2) {
-		this.addressline2 = addressline2;
+	public void setAddressLine2(String addressLine2) {
+		this.addressLine2 = addressLine2;
 	}
 	
 	public String getCountry() {
@@ -162,12 +162,12 @@ public class User extends Auditable implements BaseEntity {
 		this.city = city;
 	}
 
-	public long getZipCode() {
-		return zipCode;
+	public long getZipcode() {
+		return zipcode;
 	}
 
-	public void setZipCode(long zipCode) {
-		this.zipCode = zipCode;
+	public void setZipcode(long zipcode) {
+		this.zipcode = zipcode;
 	}
 
 	public long getUserId() {

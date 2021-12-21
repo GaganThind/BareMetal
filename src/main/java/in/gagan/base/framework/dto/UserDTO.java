@@ -31,7 +31,7 @@ public class UserDTO implements Serializable {
 	/**
 	 * Serial Version
 	 */
-	private static final long serialVersionUID = -5722242821192312914L;
+	private static final long serialVersionUID = 870412525303714142L;
 
 	@NotNull(message = "{message.registration.first.name}")
 	@Size(min = 1, max = 25, message = "{message.registration.first.name.length}")
@@ -64,9 +64,9 @@ public class UserDTO implements Serializable {
 	
 	private long phoneNumber;
 	
-	private String addressline1;
+	private String addressLine1;
 	
-	private String addressline2;
+	private String addressLine2;
 	
 	private String country;
 	
@@ -74,7 +74,7 @@ public class UserDTO implements Serializable {
 	
 	private String city;
 	
-	private long zipCode;
+	private long zipcode;
 	
 	private boolean activeSw;
 	
@@ -91,8 +91,8 @@ public class UserDTO implements Serializable {
 	}
 	
 	public UserDTO(String firstName, String lastName, String email, String password, LocalDate dob, Gender gender,
-			Set<UserRoleDTO> userRole, long phoneNumber, String country, String state, String city, long zipCode,
-			String addressline1, String addressline2) {
+			Set<UserRoleDTO> userRole, long phoneNumber, String country, String state, String city, long zipcode,
+			String addressLine1, String addressLine2) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -101,12 +101,12 @@ public class UserDTO implements Serializable {
 		this.gender = gender;
 		this.age = UserHelperUtil.calculateAge(dob);
 		this.phoneNumber = phoneNumber;
-		this.addressline1 = addressline1;
-		this.addressline2 = addressline2;
+		this.addressLine1 = addressLine1;
+		this.addressLine2 = addressLine2;
 		this.country = country;
 		this.state = state;
 		this.city = city;
-		this.zipCode = zipCode;
+		this.zipcode = zipcode;
 		
 		// Assign default role if not present
 		if (null == userRole) {
@@ -117,20 +117,20 @@ public class UserDTO implements Serializable {
 		this.userRole = userRole;
 	}
 
-	public String getAddressline1() {
-		return addressline1;
+	public String getAddressLine1() {
+		return addressLine1;
 	}
 
-	public void setAddressline1(String addressline1) {
-		this.addressline1 = addressline1;
+	public void setAddressLine1(String addressLine1) {
+		this.addressLine1 = addressLine1;
 	}
 
-	public String getAddressline2() {
-		return addressline2;
+	public String getAddressLine2() {
+		return addressLine2;
 	}
 
-	public void setAddressline2(String addressline2) {
-		this.addressline2 = addressline2;
+	public void setAddressLine2(String addressLine2) {
+		this.addressLine2 = addressLine2;
 	}
 
 	public String getCountry() {
@@ -157,12 +157,12 @@ public class UserDTO implements Serializable {
 		this.city = city;
 	}
 
-	public long getZipCode() {
-		return zipCode;
+	public long getZipcode() {
+		return zipcode;
 	}
 
-	public void setZipCode(long zipCode) {
-		this.zipCode = zipCode;
+	public void setZipcode(long zipcode) {
+		this.zipcode = zipcode;
 	}
 
 	public String getFirstName() {
