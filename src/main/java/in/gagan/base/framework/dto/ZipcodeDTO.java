@@ -17,17 +17,17 @@ public class ZipcodeDTO implements Serializable {
 	
 	private Long zipcode;
 	
-	private String city;
+	private String cityId;
 	
-	private String state;
+	private String stateId;
 	
-	private String country;
+	private String countryId;
 
-	public ZipcodeDTO(Long zipcode, String city, String state, String country) {
+	public ZipcodeDTO(Long zipcode, String cityId, String stateId, String countryId) {
 		this.zipcode = zipcode;
-		this.city = city;
-		this.state = state;
-		this.country = country;
+		this.cityId = cityId;
+		this.stateId = stateId;
+		this.countryId = countryId;
 	}
 
 	public Long getZipcode() {
@@ -35,15 +35,15 @@ public class ZipcodeDTO implements Serializable {
 	}
 
 	public String getCity() {
-		return city;
+		return cityId;
 	}
 
 	public String getState() {
-		return state;
+		return stateId;
 	}
 
 	public String getCountry() {
-		return country;
+		return countryId;
 	}
 	
 }
