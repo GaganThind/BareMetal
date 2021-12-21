@@ -67,7 +67,7 @@ public class AddressServiceImpl implements AddressService {
 	 * @return zipcode - data containing details based on zipcode
 	 */
 	public ZipcodeDTO getDataBasedOnZipcode(String countryId, Long zipcode) {
-		return new ZipcodeDTO(400700L, "Mumbai", "Maharashtra", "India");
+		return new ZipcodeDTO(400700L, "MU", "MH", "IN");
 	}
 
 }
