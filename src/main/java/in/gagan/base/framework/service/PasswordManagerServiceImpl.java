@@ -56,6 +56,7 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 	 * 
 	 * @param email - User email address
 	 */
+	@Override
 	public void generateForgotPasswordToken(String email) {
 		User user = this.userDataSvc.fetchUserByEmail(email);
 		String token = this.forgotPasswordTokenService.generateForgotPasswordToken(user);
