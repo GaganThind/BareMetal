@@ -1,6 +1,7 @@
 package in.gagan.base.framework.service;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.function.Supplier;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import in.gagan.base.framework.dao.CountryDAO;
@@ -30,9 +32,12 @@ public class AddressServiceImpl implements AddressService {
 	
 	private final CountryDAO countryDAO;
 	
+	private final MessageSource message;
+	
 	@Autowired
-	public AddressServiceImpl(CountryDAO countryDAO) {
+	public AddressServiceImpl(CountryDAO countryDAO, MessageSource message) {
 		this.countryDAO = countryDAO;
+		this.message = message;
 	}
 	
 	/**
@@ -44,7 +49,8 @@ public class AddressServiceImpl implements AddressService {
 	public Optional<Set<CountryDTO>> getCountries() {
 		Iterable<Country> countries = 
 				this.countryDAO.findAll()
-								.orElseThrow(noSuchElementExceptionSupplier("Countries data not found"));
+								.orElseThrow(
+										noSuchElementExceptionSupplier(message.getMessage("message.address.countries.list.empty", null, Locale.ENGLISH)));
 		
 		Set<CountryDTO> countryDTOs = convertToDTO(countries);
 		return Optional.ofNullable(countryDTOs);
@@ -60,7 +66,7 @@ public class AddressServiceImpl implements AddressService {
 	public Optional<CountryDTO> getCountry(String countryId) {
 		Iterable<Country> countries = 
 				this.countryDAO.findbyCountryId(countryId)
-								.orElseThrow(noSuchElementExceptionSupplier("Country: " + countryId + " not found."));
+								.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.country.not.found", new Object[] { countryId }, Locale.ENGLISH)));
 
 		Set<CountryDTO> countryDTOs = convertToDTO(countries);
 		return countryDTOs.stream().findFirst();
@@ -75,7 +81,7 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public Optional<Set<StateDTO>> getStates(String countryId) {
 		Set<StateDTO> states = getCountry(countryId)
-								.orElseThrow(noSuchElementExceptionSupplier("States for the country: " + countryId + " not found."))
+								.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.states.not.found", new Object[] { countryId }, Locale.ENGLISH)))
 								.getStates();
 		return Optional.ofNullable(states);
 	}
@@ -90,7 +96,8 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public Optional<StateDTO> getState(String countryId, String stateId) {
 		Iterable<Country> countries = this.countryDAO.findbyCountryIdAndStateId(countryId, stateId)
-														.orElseThrow(noSuchElementExceptionSupplier("State: " + stateId + " in the country: " + countryId + " not found."));
+														.orElseThrow(
+																noSuchElementExceptionSupplier(message.getMessage("message.address.state.not.found", new Object[] { stateId, countryId }, Locale.ENGLISH)));
 		
 		Set<CountryDTO> countryDTOs = convertToDTO(countries);
 		Optional<CountryDTO> country = countryDTOs.stream().findFirst();
@@ -108,7 +115,7 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public Optional<Set<CityDTO>> getCities(String countryId, String stateId) {
 		Set<CityDTO> cities = getState(countryId, stateId)
-								.orElseThrow(noSuchElementExceptionSupplier("Cities for the state: " + stateId + " in the country: " + countryId + " not found."))
+								.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.cities.not.found", new Object[] { stateId, countryId }, Locale.ENGLISH)))
 								.getCities();
 		return Optional.ofNullable(cities);
 	}
@@ -123,7 +130,9 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public Optional<CityDTO> getCity(String countryId, String stateId, String cityId) {
 		Iterable<Country> countries = this.countryDAO.findbyCountryIdStateIdAndCityId(countryId, stateId, cityId)
-														.orElseThrow(noSuchElementExceptionSupplier("City: " + cityId + " in the state: " + stateId + " in the country: " + countryId + " not found."));
+														.orElseThrow(
+																noSuchElementExceptionSupplier(
+																		message.getMessage("message.address.city.not.found", new Object[] { cityId, stateId, countryId }, Locale.ENGLISH)));
 		
 		Set<CountryDTO> countryDTOs = convertToDTO(countries);
 		Optional<CountryDTO> country = countryDTOs.stream().findFirst();
@@ -142,7 +151,9 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public Optional<ZipcodeDTO> getDataBasedOnZipcode(String countryId, long zipcode) {
 		Country country = this.countryDAO.findbyCountryIdAndZipcode(countryId, zipcode)
-														.orElseThrow(noSuchElementExceptionSupplier("Zipcode: " + zipcode + " for the country: " + countryId + " not found."));
+														.orElseThrow(
+																noSuchElementExceptionSupplier(
+																		message.getMessage("message.address.zipcode.not.found", new Object[] { zipcode, countryId }, Locale.ENGLISH)));
 		return Optional.ofNullable(new ZipcodeDTO(country.getZipcode(), country.getCity(), country.getState(), country.getCountry()));
 	}
 	
