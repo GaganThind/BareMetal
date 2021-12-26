@@ -23,13 +23,14 @@ public final class CountryDTO implements Serializable {
 	
 	private Set<StateDTO> states;
 	
-	public CountryDTO(String id, String name) {
-		this.id = id;
+	public CountryDTO(String name) {
+		this.id = name;
 		this.name = name;
+		this.states = new HashSet<>();
 	}
 	
-	public CountryDTO(String id, String name, Set<StateDTO> states) {
-		this.id = id;
+	public CountryDTO(String name, Set<StateDTO> states) {
+		this.id = name;
 		this.name = name;
 		this.states = states;
 	}
@@ -52,6 +53,31 @@ public final class CountryDTO implements Serializable {
 		}
 		
 		this.states.add(state);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CountryDTO other = (CountryDTO) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

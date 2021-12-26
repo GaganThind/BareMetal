@@ -80,13 +80,13 @@ public class User extends Auditable implements BaseEntity {
 	@Column(name = "COUNTRY", nullable = true)
 	private String country;
 	
-	@Column(name = "State", nullable = true)
+	@Column(name = "STATE", nullable = true)
 	private String state;
 	
 	@Column(name = "CITY", nullable = true)
 	private String city;
 	
-	@Column(name = "ZIP_CODE", nullable = true)
+	@Column(name = "ZIPCODE", nullable = true)
 	private long zipcode;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

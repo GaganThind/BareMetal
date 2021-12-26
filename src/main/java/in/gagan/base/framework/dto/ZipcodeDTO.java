@@ -15,7 +15,7 @@ public class ZipcodeDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = -1354685243128420186L;
 	
-	private Long zipcode;
+	private long zipcode;
 	
 	private String cityId;
 	
@@ -23,14 +23,14 @@ public class ZipcodeDTO implements Serializable {
 	
 	private String countryId;
 
-	public ZipcodeDTO(Long zipcode, String cityId, String stateId, String countryId) {
+	public ZipcodeDTO(long zipcode, String cityId, String stateId, String countryId) {
 		this.zipcode = zipcode;
 		this.cityId = cityId;
 		this.stateId = stateId;
 		this.countryId = countryId;
 	}
 
-	public Long getZipcode() {
+	public long getZipcode() {
 		return zipcode;
 	}
 

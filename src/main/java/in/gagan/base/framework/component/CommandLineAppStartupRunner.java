@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import in.gagan.base.framework.service.AdminService;
+import in.gagan.base.framework.service.CountryService;
 import in.gagan.base.framework.service.DummyDataService;
 
 /**
@@ -22,15 +23,19 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 	
 	private final DummyDataService dummyDataSvc;
 	
+	private final CountryService countryService;
+	
 	@Autowired
-	public CommandLineAppStartupRunner(AdminService adminSvc, DummyDataService dummyDataSvc) {
+	public CommandLineAppStartupRunner(AdminService adminSvc, DummyDataService dummyDataSvc, CountryService countryService) {
 		this.adminSvc = adminSvc;
 		this.dummyDataSvc = dummyDataSvc;
+		this.countryService = countryService;
 	}
 	
 	@Override
 	public void run(String... args) throws Exception {
 		this.adminSvc.createAdminUser();
+		this.countryService.loadCountriesFromCSV();
 		this.dummyDataSvc.createDummyData();
 	}
 
