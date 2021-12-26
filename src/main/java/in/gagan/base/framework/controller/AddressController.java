@@ -92,7 +92,7 @@ public class AddressController extends AbstractController {
 	public ResponseEntity<StateDTO> getState(@PathVariable String countryId, @PathVariable String stateId) {
 		Optional<StateDTO> stateDTO = this.addressSvc.getState(countryId, stateId);
 		StateDTO state = stateDTO.orElseThrow(noSuchElementExceptionSupplier(message
-				.getMessage("message.address.state.not.found", new Object[] { countryId, stateId }, Locale.ENGLISH)));
+				.getMessage("message.address.state.not.found", new Object[] { stateId, countryId }, Locale.ENGLISH)));
 		return new ResponseEntity<StateDTO>(state, HttpStatus.OK);
 	}
 
@@ -107,7 +107,7 @@ public class AddressController extends AbstractController {
 	public ResponseEntity<Set<CityDTO>> getCities(@PathVariable String countryId, @PathVariable String stateId) {
 		Optional<Set<CityDTO>> cityDTOs = this.addressSvc.getCities(countryId, stateId);
 		Set<CityDTO> cities = cityDTOs.orElseThrow(noSuchElementExceptionSupplier(message
-				.getMessage("message.address.cities.not.found", new Object[] { countryId, stateId }, Locale.ENGLISH)));
+				.getMessage("message.address.cities.not.found", new Object[] { stateId, countryId }, Locale.ENGLISH)));
 		return new ResponseEntity<Set<CityDTO>>(cities, HttpStatus.OK);
 	}
 
@@ -124,7 +124,7 @@ public class AddressController extends AbstractController {
 		Optional<CityDTO> cityDTO = this.addressSvc.getCity(countryId, stateId, cityId);
 		CityDTO city = cityDTO
 				.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.city.not.found",
-						new Object[] { countryId, stateId, cityId }, Locale.ENGLISH)));
+						new Object[] { cityId, stateId, countryId }, Locale.ENGLISH)));
 		return new ResponseEntity<CityDTO>(city, HttpStatus.OK);
 	}
 
@@ -140,7 +140,7 @@ public class AddressController extends AbstractController {
 			@PathVariable Long zipcode) {
 		Optional<ZipcodeDTO> zipcodeDTO = this.addressSvc.getDataBasedOnZipcode(countryId, zipcode);
 		ZipcodeDTO zipcodeObj = zipcodeDTO.orElseThrow(noSuchElementExceptionSupplier(message
-				.getMessage("message.address.zipcode.not.found", new Object[] { countryId, zipcode }, Locale.ENGLISH)));
+				.getMessage("message.address.zipcode.not.found", new Object[] { zipcode, countryId }, Locale.ENGLISH)));
 		return new ResponseEntity<ZipcodeDTO>(zipcodeObj, HttpStatus.OK);
 	}
 
