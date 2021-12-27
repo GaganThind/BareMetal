@@ -3,7 +3,7 @@ package in.gagan.base.framework.dao;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
@@ -19,8 +19,6 @@ import in.gagan.base.framework.entity.Country;
 @Repository
 public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements CountryDAO {
 	
-	private static final String WHERE = " where ";
-	private static final String AND = " and ";
 	private static final String COUNTRY_CLAUSE = " country = :country ";
 	private static final String STATE_CLAUSE = " state = :state ";
 	private static final String CITY_CLAUSE = " city = :city ";
@@ -36,19 +34,18 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 	 * @param countryId: country to search
 	 * @return countries: countries data consisting of state, cities and zipcodes
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<Iterable<Country>> findbyCountryId(String countryId) {
 		StringBuilder selectQuery = new StringBuilder();
 		selectQuery.append(LITERAL_FROM);
 		selectQuery.append(getTableName());
-		selectQuery.append(WHERE);
+		selectQuery.append(LITREAL_WHERE);
 		selectQuery.append(COUNTRY_CLAUSE);
 		
-		Query query = entityManager.createQuery(selectQuery.toString());
+		TypedQuery<Country> query = entityManager.createQuery(selectQuery.toString(), Country.class);
 		query.setParameter(COUNTRY, countryId);
 		
-		List<Country> countries = (List<Country>) query.getResultList();
+		List<Country> countries = query.getResultList();
 		return !CollectionUtils.isEmpty(countries) ? Optional.of(countries) : Optional.empty();
 	}
 	
@@ -59,22 +56,21 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 	 * @param stateId: state to search
 	 * @return countries: countries data consisting of state, cities and zipcodes
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<Iterable<Country>> findbyCountryIdAndStateId(String countryId, String stateId) {
 		StringBuilder selectQuery = new StringBuilder();
 		selectQuery.append(LITERAL_FROM);
 		selectQuery.append(getTableName());
-		selectQuery.append(WHERE);
+		selectQuery.append(LITREAL_WHERE);
 		selectQuery.append(COUNTRY_CLAUSE);
-		selectQuery.append(AND);
+		selectQuery.append(LITREAL_AND);
 		selectQuery.append(STATE_CLAUSE);
 		
-		Query query = entityManager.createQuery(selectQuery.toString());
+		TypedQuery<Country> query = entityManager.createQuery(selectQuery.toString(), Country.class);
 		query.setParameter(COUNTRY, countryId);
 		query.setParameter(STATE, stateId);
 		
-		List<Country> countries = (List<Country>) query.getResultList();
+		List<Country> countries = query.getResultList();
 		return !CollectionUtils.isEmpty(countries) ? Optional.of(countries) : Optional.empty();
 	}
 	
@@ -86,25 +82,24 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 	 * @param cityId: city to search
 	 * @return countries: countries data consisting of state, cities and zipcodes
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<Iterable<Country>> findbyCountryIdStateIdAndCityId(String countryId, String stateId, String cityId) {
 		StringBuilder selectQuery = new StringBuilder();
 		selectQuery.append(LITERAL_FROM);
 		selectQuery.append(getTableName());
-		selectQuery.append(WHERE);
+		selectQuery.append(LITREAL_WHERE);
 		selectQuery.append(COUNTRY_CLAUSE);
-		selectQuery.append(AND);
+		selectQuery.append(LITREAL_AND);
 		selectQuery.append(STATE_CLAUSE);
-		selectQuery.append(AND);
+		selectQuery.append(LITREAL_AND);
 		selectQuery.append(CITY_CLAUSE);
 		
-		Query query = entityManager.createQuery(selectQuery.toString());
+		TypedQuery<Country> query = entityManager.createQuery(selectQuery.toString(), Country.class);
 		query.setParameter(COUNTRY, countryId);
 		query.setParameter(STATE, stateId);
 		query.setParameter(CITY, cityId);
 		
-		List<Country> countries = (List<Country>) query.getResultList();
+		List<Country> countries = query.getResultList();
 		return !CollectionUtils.isEmpty(countries) ? Optional.of(countries) : Optional.empty();
 	}
 	
@@ -115,22 +110,21 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 	 * @param zipcode: zipcode to search
 	 * @return country: country data consisting of state, citie and zipcode
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<Country> findbyCountryIdAndZipcode(String countryId, long zipcode) {
 		StringBuilder selectQuery = new StringBuilder();
 		selectQuery.append(LITERAL_FROM);
 		selectQuery.append(getTableName());
-		selectQuery.append(WHERE);
+		selectQuery.append(LITREAL_WHERE);
 		selectQuery.append(COUNTRY_CLAUSE);
-		selectQuery.append(AND);
+		selectQuery.append(LITREAL_AND);
 		selectQuery.append(ZIPCODE_CLAUSE);
 		
-		Query query = entityManager.createQuery(selectQuery.toString());
+		TypedQuery<Country> query = entityManager.createQuery(selectQuery.toString(), Country.class);
 		query.setParameter(COUNTRY, countryId);
 		query.setParameter(ZIPCODE, zipcode);
 		
-		List<Country> countries = (List<Country>) query.getResultList();
+		List<Country> countries = query.getResultList();
 		return !CollectionUtils.isEmpty(countries) ? Optional.of(countries.get(0)) : Optional.empty();
 	}
 

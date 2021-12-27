@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -29,9 +29,13 @@ import in.gagan.base.framework.entity.Auditable;
 @Repository
 public abstract class AbstractBaseDAO<E extends Auditable, K extends Serializable> implements BaseDAO<E, K> {
 	
+	protected static final String LITERAL_SELECT = "select ";
 	protected static final String LITERAL_DELETE = "delete ";
 	protected static final String LITERAL_UPDATE = "update ";
+	protected static final String LITERAL_DISTINCT = "distinct ";
 	protected static final String LITERAL_FROM = "from ";
+	protected static final String LITREAL_WHERE = " where ";
+	protected static final String LITREAL_AND = " and ";
 
 	@PersistenceContext
 	protected EntityManager entityManager;
@@ -70,10 +74,9 @@ public abstract class AbstractBaseDAO<E extends Auditable, K extends Serializabl
 	 *
 	 * @return all entities
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<Iterable<E>> findAll() {
-		Query query = entityManager.createQuery(LITERAL_FROM + getPersistentClass().getSimpleName());
+		TypedQuery<E> query = entityManager.createQuery(LITERAL_FROM + getPersistentClass().getSimpleName(), getPersistentClass());
 		return Optional.ofNullable(query.getResultList());
 	}
 	
