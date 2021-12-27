@@ -1,5 +1,6 @@
 package in.gagan.base.framework.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,36 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 	private static final String STATE = "state";
 	private static final String CITY = "city";
 	private static final String ZIPCODE = "zipcode";
+	
+	/**
+	 * Method used to find country and state name based on countryId. It only returns country and state names only.
+	 * 
+	 * @param countryId: country to search
+	 * @return countries: countries data consisting of state, cities and zipcodes
+	 */
+	@Override
+	public Optional<Iterable<Country>> findCountryAndStateNameByCountryId(String countryId) {
+		StringBuilder selectQuery = new StringBuilder();
+		selectQuery.append(LITERAL_SELECT);
+		selectQuery.append(LITERAL_DISTINCT);
+		selectQuery.append(" c.country, c.state ");
+		selectQuery.append(LITERAL_FROM);
+		selectQuery.append(getTableName());
+		selectQuery.append(" As c");
+		selectQuery.append(LITREAL_WHERE);
+		selectQuery.append(COUNTRY_CLAUSE);
+		
+		TypedQuery<Object[]> query = entityManager.createQuery(selectQuery.toString(), Object[].class);
+		query.setParameter(COUNTRY, countryId);
+		
+		List<Object[]> countryObjArr = query.getResultList();
+		List<Country> countries = new ArrayList<>();
+		for (Object[] countryObj: countryObjArr) {
+			countries.add(new Country(0, null, String.valueOf(countryObj[1]), String.valueOf(countryObj[0])));
+		}
+		
+		return !CollectionUtils.isEmpty(countries) ? Optional.of(countries) : Optional.empty();
+	}
 	
 	/**
 	 * Method used to find country data based on countryId

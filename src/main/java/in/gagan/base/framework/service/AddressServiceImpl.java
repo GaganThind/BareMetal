@@ -65,7 +65,7 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public Optional<CountryDTO> getCountry(String countryId) {
 		Iterable<Country> countries = 
-				this.countryDAO.findbyCountryId(countryId)
+				this.countryDAO.findCountryAndStateNameByCountryId(countryId)
 								.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.country.not.found", new Object[] { countryId }, Locale.ENGLISH)));
 
 		Set<CountryDTO> countryDTOs = convertToDTO(countries);

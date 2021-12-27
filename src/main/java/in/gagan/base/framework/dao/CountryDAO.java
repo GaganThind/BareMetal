@@ -13,6 +13,14 @@ import in.gagan.base.framework.entity.Country;
 public interface CountryDAO extends BaseDAO<Country, Long> {
 	
 	/**
+	 * Method used to find country and state name based on countryId. It only returns country and state names only.
+	 * 
+	 * @param countryId: country to search
+	 * @return countries: countries data consisting of state, cities and zipcodes
+	 */
+	public Optional<Iterable<Country>> findCountryAndStateNameByCountryId(String countryId);
+	
+	/**
 	 * Method used to find country data based on countryId
 	 * 
 	 * @param countryId: country to search
