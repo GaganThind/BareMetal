@@ -3,7 +3,7 @@ package in.gagan.base.framework.dao;
 import java.io.Serializable;
 import java.util.Optional;
 
-import in.gagan.base.framework.entity.Auditable;
+import in.gagan.base.framework.entity.BaseEntity;
 
 /**
  * Base interface for all DAO classes
@@ -13,7 +13,7 @@ import in.gagan.base.framework.entity.Auditable;
  * @param <E> - Entity
  * @param <K> - Key
  */
-public interface BaseDAO<E extends Auditable, K extends Serializable> {
+public interface BaseDAO<E extends BaseEntity, K extends Serializable> {
 	
 	/**
 	 * Retrieves an entity by its id.

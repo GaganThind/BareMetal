@@ -20,7 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  */
 @MappedSuperclass
 @EntityListeners(value = AuditingEntityListener.class)
-public abstract class Auditable {
+public abstract class Auditable implements BaseEntity {
 	
 	public Auditable() { }
 	
@@ -60,10 +60,12 @@ public abstract class Auditable {
 	@Column(name="UPDATE_USER_ID", nullable = true)
 	private String updateUserId;
 	
+	@Override
 	public char isActive() {
 		return activeSw;
 	}
 
+	@Override
 	public void setActiveSw(char activeSw) {
 		this.activeSw = activeSw;
 	}

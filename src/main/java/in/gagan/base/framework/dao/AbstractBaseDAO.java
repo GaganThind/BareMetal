@@ -16,7 +16,7 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
-import in.gagan.base.framework.entity.Auditable;
+import in.gagan.base.framework.entity.BaseEntity;
 
 /**
  * The Base DAO for all the DAO classes. This class provides the commonly used CRUD methods. 
@@ -27,7 +27,7 @@ import in.gagan.base.framework.entity.Auditable;
  * @param <K> - Key
  */
 @Repository
-public abstract class AbstractBaseDAO<E extends Auditable, K extends Serializable> implements BaseDAO<E, K> {
+public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializable> implements BaseDAO<E, K> {
 	
 	protected static final String LITERAL_SELECT = "SELECT ";
 	protected static final String LITERAL_DELETE = "DELETE ";
