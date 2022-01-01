@@ -96,7 +96,9 @@ public class User extends AuditableEntity implements BaseEntity {
 	@Fetch(FetchMode.SELECT)
 	private Set<Role> userRole = new HashSet<>();
 	
-	public User() { super(); }
+	public User() {
+		super(ApplicationConstants.CHAR_N);
+	}
 	
 	/*
 	 * Bare minimum user details. This constructor contains required fields.

@@ -35,7 +35,9 @@ public class ExceptionMonitor extends AuditableEntity implements BaseEntity {
 	@Column(name = "STACK_TRACE", nullable = true, length = 500)
 	private String stackTrace;
 	
-	public ExceptionMonitor() { super(); }
+	public ExceptionMonitor() {
+		super(ApplicationConstants.CHAR_Y);
+	}
 
 	public ExceptionMonitor(String exceptionDetails, String exceptionMessage, String stackTrace) {
 		super(ApplicationConstants.CHAR_Y);

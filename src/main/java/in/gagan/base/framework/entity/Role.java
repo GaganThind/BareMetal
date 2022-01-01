@@ -33,7 +33,9 @@ public class Role extends AuditableEntity implements BaseEntity {
 	@Column(name = "ROLE_NAME", nullable = false)
 	private UserRoles roleName;
 	
-	public Role() { super(); }
+	public Role() {
+		super(ApplicationConstants.CHAR_Y);
+	}
 	
 	public Role(UserRoles roleName) {
 		super(ApplicationConstants.CHAR_Y);

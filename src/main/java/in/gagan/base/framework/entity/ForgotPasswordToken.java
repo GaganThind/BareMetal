@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.entity.base.AuditableEntity;
 import in.gagan.base.framework.entity.base.BaseEntity;
 
@@ -41,10 +42,12 @@ public class ForgotPasswordToken extends AuditableEntity implements BaseEntity {
 	@Column(name="EXPIRY_DATE", nullable = false)
 	private LocalDateTime expiryDate;
 	
-	public ForgotPasswordToken() { super(); }
+	public ForgotPasswordToken() {
+		super(ApplicationConstants.CHAR_Y);
+	}
 	
 	public ForgotPasswordToken(String token) { 
-		super();
+		super(ApplicationConstants.CHAR_Y);
 		this.token = token;
 	}
 	
