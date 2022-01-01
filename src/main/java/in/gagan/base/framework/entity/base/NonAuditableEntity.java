@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
  *
  */
 @MappedSuperclass
-public class NonAuditableEntity implements BaseEntity {
+public abstract class NonAuditableEntity implements BaseEntity {
 	
 	public NonAuditableEntity() {  }
 	
