@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
-import in.gagan.base.framework.entity.base.Auditable;
+import in.gagan.base.framework.entity.base.AuditableEntity;
 import in.gagan.base.framework.entity.base.BaseEntity;
 import in.gagan.base.framework.enums.UserRoles;
 
@@ -22,7 +22,7 @@ import in.gagan.base.framework.enums.UserRoles;
  */
 @Entity
 @Table(name="ROLES")
-public class Role extends Auditable implements BaseEntity {
+public class Role extends AuditableEntity implements BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

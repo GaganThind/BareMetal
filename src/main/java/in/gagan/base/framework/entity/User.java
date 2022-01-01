@@ -22,7 +22,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
-import in.gagan.base.framework.entity.base.Auditable;
+import in.gagan.base.framework.entity.base.AuditableEntity;
 import in.gagan.base.framework.entity.base.BaseEntity;
 import in.gagan.base.framework.enums.Gender;
 import in.gagan.base.framework.util.UserHelperUtil;
@@ -35,7 +35,7 @@ import in.gagan.base.framework.util.UserHelperUtil;
  */
 @Entity
 @Table(name="USERS")
-public class User extends Auditable implements BaseEntity {
+public class User extends AuditableEntity implements BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

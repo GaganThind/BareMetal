@@ -20,11 +20,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  */
 @MappedSuperclass
 @EntityListeners(value = AuditingEntityListener.class)
-public abstract class Auditable implements BaseEntity {
+public abstract class AuditableEntity implements BaseEntity {
 	
-	public Auditable() { }
+	public AuditableEntity() { }
 	
-	public Auditable(char activeSw) {
+	public AuditableEntity(char activeSw) {
 		super();
 		this.activeSw = activeSw;
 	}

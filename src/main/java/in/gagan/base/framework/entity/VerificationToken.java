@@ -13,7 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import in.gagan.base.framework.entity.base.Auditable;
+import in.gagan.base.framework.entity.base.AuditableEntity;
 import in.gagan.base.framework.entity.base.BaseEntity;
 
 /**
@@ -24,7 +24,7 @@ import in.gagan.base.framework.entity.base.BaseEntity;
  */
 @Entity
 @Table(name="VERIFICATION_TOKEN")
-public class VerificationToken extends Auditable implements BaseEntity {
+public class VerificationToken extends AuditableEntity implements BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
