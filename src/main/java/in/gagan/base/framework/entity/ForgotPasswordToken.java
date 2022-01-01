@@ -13,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import in.gagan.base.framework.entity.base.Auditable;
+import in.gagan.base.framework.entity.base.BaseEntity;
+
 /**
  * Entity representing the FORGOT_PASSWORD_TOKEN table 
  * 

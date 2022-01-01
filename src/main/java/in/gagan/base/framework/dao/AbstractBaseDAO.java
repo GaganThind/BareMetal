@@ -16,7 +16,7 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
-import in.gagan.base.framework.entity.BaseEntity;
+import in.gagan.base.framework.entity.base.BaseEntity;
 
 /**
  * The Base DAO for all the DAO classes. This class provides the commonly used CRUD methods. 

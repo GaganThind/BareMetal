@@ -3,7 +3,7 @@ package in.gagan.base.framework.dao;
 import java.io.Serializable;
 import java.util.Optional;
 
-import in.gagan.base.framework.entity.BaseEntity;
+import in.gagan.base.framework.entity.base.BaseEntity;
 
 /**
  * Base interface for all DAO classes
