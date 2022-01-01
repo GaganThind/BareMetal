@@ -1,4 +1,4 @@
-package in.gagan.base.framework.entity;
+package in.gagan.base.framework.entity.base;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;

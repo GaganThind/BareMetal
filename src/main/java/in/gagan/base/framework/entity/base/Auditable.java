@@ -1,4 +1,4 @@
-package in.gagan.base.framework.entity;
+package in.gagan.base.framework.entity.base;
 
 import java.time.LocalDateTime;
 
