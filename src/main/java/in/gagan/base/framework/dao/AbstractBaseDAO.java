@@ -29,13 +29,13 @@ import in.gagan.base.framework.entity.Auditable;
 @Repository
 public abstract class AbstractBaseDAO<E extends Auditable, K extends Serializable> implements BaseDAO<E, K> {
 	
-	protected static final String LITERAL_SELECT = "select ";
-	protected static final String LITERAL_DELETE = "delete ";
-	protected static final String LITERAL_UPDATE = "update ";
-	protected static final String LITERAL_DISTINCT = "distinct ";
-	protected static final String LITERAL_FROM = "from ";
-	protected static final String LITREAL_WHERE = " where ";
-	protected static final String LITREAL_AND = " and ";
+	protected static final String LITERAL_SELECT = "SELECT ";
+	protected static final String LITERAL_DELETE = "DELETE ";
+	protected static final String LITERAL_UPDATE = "UPDATE ";
+	protected static final String LITERAL_DISTINCT = "DISTINCT ";
+	protected static final String LITERAL_FROM = "FROM ";
+	protected static final String LITREAL_WHERE = " WHERE ";
+	protected static final String LITREAL_AND = " AND ";
 
 	@PersistenceContext
 	protected EntityManager entityManager;
