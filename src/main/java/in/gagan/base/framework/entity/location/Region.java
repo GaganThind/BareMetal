@@ -22,74 +22,74 @@ import in.gagan.base.framework.entity.base.BaseEntity;
 import in.gagan.base.framework.entity.base.NonAuditableEntity;
 
 /**
- * Entity representing the COUNTRIES table 
+ * Entity representing the REGIONS table 
  * 
  * @author gaganthind
  *
  */
 @Entity
-@Table(name="COUNTRIES")
-public class Country extends NonAuditableEntity implements BaseEntity {
+@Table(name="REGIONS")
+public class Region extends NonAuditableEntity implements BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "COUNTRY_ID", nullable = false, unique = true, length = 10)
-	private long countryId;
+	@Column(name = "REGION_ID", nullable = false, unique = true, length = 10)
+	private long regionId;
 	
-	@Column(name = "COUNTRY_NAME", nullable = false)
-	private String countryName;
+	@Column(name = "REGION_NAME", nullable = false)
+	private String regionName;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	@JoinColumn(name="COUNTRY_ID", nullable = false)
+	@JoinColumn(name="REGION_ID", nullable = false)
 	@Fetch(FetchMode.SELECT)
-	private Set<Region> regions = new HashSet<>();
+	private Set<City> cities = new HashSet<>();
 	
-	public Country() { 
-		super(ApplicationConstants.CHAR_Y); 
-	}
-	
-	public Country(String countryName) {
+	public Region() {
 		super(ApplicationConstants.CHAR_Y);
-		this.countryName = countryName;
+	}
+
+	public Region(String regionName) {
+		super(ApplicationConstants.CHAR_Y);
+		this.regionName = regionName;
+	}
+
+	public long getRegionId() {
+		return regionId;
+	}
+
+	public void setRegionId(long regionId) {
+		this.regionId = regionId;
+	}
+
+	public String getRegionName() {
+		return regionName;
+	}
+
+	public void setRegionName(String regionName) {
+		this.regionName = regionName;
+	}
+
+	public Set<City> getCities() {
+		return cities;
+	}
+
+	public void setCities(Set<City> cities) {
+		this.cities = cities;
 	}
 	
-	public void setCountryId(long countryId) {
-		this.countryId = countryId;
-	}
-
-	public long getCountryId() {
-		return countryId;
-	}
-
-	public String getCountryName() {
-		return countryName;
-	}
-
-	public void setCountryName(String countryName) {
-		this.countryName = countryName;
-	}
-	
-	public Set<Region> getRegions() {
-		return regions;
-	}
-
-	public void setRegions(Set<Region> regions) {
-		this.regions = regions;
-	}
-
-	public void addRegion(Region region) {
-		if (null == this.regions) {
-			this.regions = new HashSet<>();
+	public void addCity(City city) {
+		if (null == this.cities) {
+			this.cities = new HashSet<>();
 		}
 		
-		this.regions.add(region);
+		this.cities.add(city);
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((countryName == null) ? 0 : countryName.hashCode());
+		result = prime * result + ((regionName == null) ? 0 : regionName.hashCode());
 		return result;
 	}
 
@@ -101,11 +101,11 @@ public class Country extends NonAuditableEntity implements BaseEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Country other = (Country) obj;
-		if (countryName == null) {
-			if (other.countryName != null)
+		Region other = (Region) obj;
+		if (regionName == null) {
+			if (other.regionName != null)
 				return false;
-		} else if (!countryName.equals(other.countryName))
+		} else if (!regionName.equals(other.regionName))
 			return false;
 		return true;
 	}

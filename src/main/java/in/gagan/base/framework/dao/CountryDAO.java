@@ -2,7 +2,10 @@ package in.gagan.base.framework.dao;
 
 import java.util.Optional;
 
-import in.gagan.base.framework.entity.Country;
+import in.gagan.base.framework.dto.ZipcodeDTO;
+import in.gagan.base.framework.entity.location.City;
+import in.gagan.base.framework.entity.location.Country;
+import in.gagan.base.framework.entity.location.Region;
 
 /**
  * This DAO interface provides the CRUD operations for COUNTRIES table.
@@ -13,47 +16,47 @@ import in.gagan.base.framework.entity.Country;
 public interface CountryDAO extends BaseDAO<Country, Long> {
 	
 	/**
-	 * Method used to find country and state name based on countryId. It only returns country and state names only.
-	 * 
-	 * @param countryId: country to search
-	 * @return countries: countries data consisting of state, cities and zipcodes
-	 */
-	public Optional<Iterable<Country>> findCountryAndStateNameByCountryId(String countryId);
-	
-	/**
 	 * Method used to find country data based on countryId
 	 * 
 	 * @param countryId: country to search
-	 * @return countries: countries data consisting of state, cities and zipcodes
+	 * @return country: country data consisting of state, cities and zipcodes
 	 */
-	public Optional<Iterable<Country>> findbyCountryId(String countryId);
+	public Optional<Country> findbyCountryId(String countryId);
 	
 	/**
-	 * Method used to find country data based on countryId and stateId
+	 * Method used to find region data (only) based on countryId.
 	 * 
 	 * @param countryId: country to search
-	 * @param stateId: state to search
-	 * @return countries: countries data consisting of state, cities and zipcodes
+	 * @return regions: state/region data
 	 */
-	public Optional<Iterable<Country>> findbyCountryIdAndStateId(String countryId, String stateId);
+	public Optional<Iterable<Region>> findRegionsByCountryId(String countryId);
 	
 	/**
-	 * Method used to find country data based on countryId, stateId and cityId
+	 * Method used to find region data along with city data based on country id and region id
 	 * 
 	 * @param countryId: country to search
-	 * @param stateId: state to search
+	 * @param regionId: region to search
+	 * @return region: data consisting of the region/state
+	 */
+	public Optional<Region> findRegionbyCountryIdAndRegionId(String countryId, String regionId);
+	
+	/**
+	 * Method used to find city data based on countryId, regionId and cityId
+	 * 
+	 * @param countryId: country to search
+	 * @param regionId: region/state to search
 	 * @param cityId: city to search
-	 * @return countries: countries data consisting of state, cities and zipcodes
+	 * @return city: data consisting of city details
 	 */
-	public Optional<Iterable<Country>> findbyCountryIdStateIdAndCityId(String countryId, String stateId, String cityId);
+	public Optional<Iterable<City>> findCitybyCountryIdStateIdAndCityId(String countryId, String regionId, String cityId);
 	
 	/**
 	 * Method used to find country data based on countryId and zipcode
 	 * 
 	 * @param countryId: country to search
 	 * @param zipcode: zipcode to search
-	 * @return country: country data consisting of state, citie and zipcode
+	 * @return zipcodeDTO: zipcode data consisting of region/state, city and country names
 	 */
-	public Optional<Country> findbyCountryIdAndZipcode(String countryId, long zipcode);
+	public Optional<ZipcodeDTO> findZipcodeDatabyCountryIdAndZipcode(String countryId, long zipcode);
 
 }

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import in.gagan.base.framework.dto.CityDTO;
 import in.gagan.base.framework.dto.CountryDTO;
-import in.gagan.base.framework.dto.StateDTO;
+import in.gagan.base.framework.dto.RegionDTO;
 import in.gagan.base.framework.dto.ZipcodeDTO;
 import in.gagan.base.framework.service.AddressService;
 
@@ -55,11 +55,13 @@ public class AddressController extends AbstractController {
 	}
 
 	/**
-	 * Method used to return the country data containing states and cities.
+	 * Method used to return the country data. This method would only return country
+	 * specific info and not state or city info.
 	 * 
 	 * @param countryId - country id for which data is to be searched
 	 * @return country - data consisting of all the states and respective cities
 	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(value = "/country/{countryId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CountryDTO> getCountry(@PathVariable String countryId) {
 		Optional<CountryDTO> countryDTO = this.addressSvc.getCountry(countryId);
@@ -76,11 +78,11 @@ public class AddressController extends AbstractController {
 	 *         respective cities
 	 */
 	@GetMapping(value = "/country/{countryId}/states", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Set<StateDTO>> getStates(@PathVariable String countryId) {
-		Optional<Set<StateDTO>> stateDTOs = this.addressSvc.getStates(countryId);
-		Set<StateDTO> states = stateDTOs.orElseThrow(noSuchElementExceptionSupplier(
+	public ResponseEntity<Set<RegionDTO>> getRegions(@PathVariable String countryId) {
+		Optional<Set<RegionDTO>> regionDTOs = this.addressSvc.getRegions(countryId);
+		Set<RegionDTO> regions = regionDTOs.orElseThrow(noSuchElementExceptionSupplier(
 				message.getMessage("message.address.states.not.found", new Object[] { countryId }, Locale.ENGLISH)));
-		return new ResponseEntity<Set<StateDTO>>(states, HttpStatus.OK);
+		return new ResponseEntity<Set<RegionDTO>>(regions, HttpStatus.OK);
 	}
 
 	/**
@@ -91,11 +93,11 @@ public class AddressController extends AbstractController {
 	 * @return state - data consisting of all the cities of the state
 	 */
 	@GetMapping(value = "/country/{countryId}/states/{stateId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StateDTO> getState(@PathVariable String countryId, @PathVariable String stateId) {
-		Optional<StateDTO> stateDTO = this.addressSvc.getState(countryId, stateId);
-		StateDTO state = stateDTO.orElseThrow(noSuchElementExceptionSupplier(message
+	public ResponseEntity<RegionDTO> getRegion(@PathVariable String countryId, @PathVariable String stateId) {
+		Optional<RegionDTO> regionDTO = this.addressSvc.getRegion(countryId, stateId);
+		RegionDTO state = regionDTO.orElseThrow(noSuchElementExceptionSupplier(message
 				.getMessage("message.address.state.not.found", new Object[] { stateId, countryId }, Locale.ENGLISH)));
-		return new ResponseEntity<StateDTO>(state, HttpStatus.OK);
+		return new ResponseEntity<RegionDTO>(state, HttpStatus.OK);
 	}
 
 	/**

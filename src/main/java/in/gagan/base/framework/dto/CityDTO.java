@@ -39,6 +39,10 @@ public final class CityDTO implements Serializable {
 		return zipcodes;
 	}
 	
+	public void setZipcodes(Set<Long> zipcodes) {
+		this.zipcodes = zipcodes;
+	}
+
 	public void addZipcode(long zipcode) {
 		if (null == this.zipcodes) {
 			this.zipcodes = new HashSet<>();

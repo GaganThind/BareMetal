@@ -21,18 +21,18 @@ public final class CountryDTO implements Serializable {
 	
 	private final String name;
 	
-	private Set<StateDTO> states;
+	private Set<RegionDTO> regions;
 	
 	public CountryDTO(String name) {
 		this.id = name;
 		this.name = name;
-		this.states = new HashSet<>();
+		this.regions = new HashSet<>();
 	}
 	
-	public CountryDTO(String name, Set<StateDTO> states) {
+	public CountryDTO(String name, Set<RegionDTO> regions) {
 		this.id = name;
 		this.name = name;
-		this.states = states;
+		this.regions = regions;
 	}
 
 	public String getId() {
@@ -42,17 +42,21 @@ public final class CountryDTO implements Serializable {
 	public String getName() {
 		return name;
 	}
-
-	public Set<StateDTO> getStates() {
-		return states;
-	}
 	
-	public void addState(StateDTO state) {
-		if (null == this.states) {
-			this.states = new HashSet<>();
+	public Set<RegionDTO> getRegions() {
+		return regions;
+	}
+
+	public void setRegions(Set<RegionDTO> regions) {
+		this.regions = regions;
+	}
+
+	public void addRegion(RegionDTO region) {
+		if (null == this.regions) {
+			this.regions = new HashSet<>();
 		}
 		
-		this.states.add(state);
+		this.regions.add(region);
 	}
 
 	@Override

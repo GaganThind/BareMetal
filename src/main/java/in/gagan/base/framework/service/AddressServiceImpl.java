@@ -16,12 +16,15 @@ import org.springframework.stereotype.Service;
 import in.gagan.base.framework.dao.CountryDAO;
 import in.gagan.base.framework.dto.CityDTO;
 import in.gagan.base.framework.dto.CountryDTO;
-import in.gagan.base.framework.dto.StateDTO;
+import in.gagan.base.framework.dto.RegionDTO;
 import in.gagan.base.framework.dto.ZipcodeDTO;
-import in.gagan.base.framework.entity.Country;
+import in.gagan.base.framework.entity.location.City;
+import in.gagan.base.framework.entity.location.Country;
+import in.gagan.base.framework.entity.location.Region;
 
 /**
- * This class provides the implementation of AddressService interface and provides operations for Address functionality.
+ * This class provides the implementation of AddressService interface and
+ * provides operations for Address functionality.
  * 
  * @author gaganthind
  *
@@ -29,17 +32,18 @@ import in.gagan.base.framework.entity.Country;
 @Transactional
 @Service
 public class AddressServiceImpl implements AddressService {
-	
+
 	private final CountryDAO countryDAO;
-	
+
 	private final MessageSource message;
-	
+
 	@Autowired
 	public AddressServiceImpl(CountryDAO countryDAO, MessageSource message) {
 		this.countryDAO = countryDAO;
 		this.message = message;
 	}
-	
+
+	// TODO Refactor
 	/**
 	 * Method used to return all the countries data containing states and cities.
 	 * 
@@ -47,11 +51,9 @@ public class AddressServiceImpl implements AddressService {
 	 */
 	@Override
 	public Optional<Set<CountryDTO>> getCountries() {
-		Iterable<Country> countries = 
-				this.countryDAO.findAll()
-								.orElseThrow(
-										noSuchElementExceptionSupplier(message.getMessage("message.address.countries.list.empty", null, Locale.ENGLISH)));
-		
+		Iterable<Country> countries = this.countryDAO.findAll().orElseThrow(noSuchElementExceptionSupplier(
+				message.getMessage("message.address.countries.list.empty", null, Locale.ENGLISH)));
+
 		Set<CountryDTO> countryDTOs = convertToDTO(countries);
 		return Optional.ofNullable(countryDTOs);
 	}
@@ -64,142 +66,143 @@ public class AddressServiceImpl implements AddressService {
 	 */
 	@Override
 	public Optional<CountryDTO> getCountry(String countryId) {
-		Iterable<Country> countries = 
-				this.countryDAO.findCountryAndStateNameByCountryId(countryId)
-								.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.country.not.found", new Object[] { countryId }, Locale.ENGLISH)));
+		Country country = this.countryDAO.findbyCountryId(countryId).orElseThrow(noSuchElementExceptionSupplier(
+				message.getMessage("message.address.country.not.found", new Object[] { countryId }, Locale.ENGLISH)));
 
-		Set<CountryDTO> countryDTOs = convertToDTO(countries);
-		return countryDTOs.stream().findFirst();
+		CountryDTO countryDTO = convertToDTO(country);
+		return Optional.ofNullable(countryDTO);
 	}
-	
+
 	/**
-	 * Method used to return all the states data based on passed country.
+	 * Method used to return all the region data based on passed country.
 	 * 
 	 * @param countryId - country id for which data is to be searched
-	 * @return states - data consisting of all the states of the country and respective cities
+	 * @return regions - data consisting of all the region/states of the country
 	 */
 	@Override
-	public Optional<Set<StateDTO>> getStates(String countryId) {
-		Set<StateDTO> states = getCountry(countryId)
-								.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.states.not.found", new Object[] { countryId }, Locale.ENGLISH)))
-								.getStates();
-		return Optional.ofNullable(states);
+	public Optional<Set<RegionDTO>> getRegions(String countryId) {
+		Iterable<Region> regions = this.countryDAO.findRegionsByCountryId(countryId)
+				.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.states.not.found",
+						new Object[] { countryId }, Locale.ENGLISH)));
+		Set<RegionDTO> regionDTOs = new HashSet<>();
+		for (Region region : regions) {
+			regionDTOs.add(new RegionDTO(region.getRegionName()));
+		}
+
+		return Optional.of(regionDTOs);
 	}
-	
+
 	/**
-	 * Method used to return the state data based on passed state.
+	 * Method used to return the region data along with city details based on passed
+	 * countryid and regionId.
 	 * 
 	 * @param countryId - country id for which data is to be searched
-	 * @param stateId - state id for which data is to be searched
-	 * @return state - data consisting of all the cities of the state
+	 * @param regionId  - region/state id for which data is to be searched
+	 * @return region - data consisting of the region/state
 	 */
 	@Override
-	public Optional<StateDTO> getState(String countryId, String stateId) {
-		Iterable<Country> countries = this.countryDAO.findbyCountryIdAndStateId(countryId, stateId)
-														.orElseThrow(
-																noSuchElementExceptionSupplier(message.getMessage("message.address.state.not.found", new Object[] { stateId, countryId }, Locale.ENGLISH)));
-		
-		Set<CountryDTO> countryDTOs = convertToDTO(countries);
-		Optional<CountryDTO> country = countryDTOs.stream().findFirst();
-		Set<StateDTO> states = country.get().getStates();
-		return states.stream().findFirst();
+	public Optional<RegionDTO> getRegion(String countryId, String regionId) {
+		Region region = this.countryDAO.findRegionbyCountryIdAndRegionId(countryId, regionId)
+				.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.state.not.found",
+						new Object[] { regionId, countryId }, Locale.ENGLISH)));
+		RegionDTO regionDTO = new RegionDTO(region.getRegionName());
+
+		Set<City> cities = region.getCities();
+		for (City city : cities) {
+			regionDTO.addCity(new CityDTO(city.getCityName()));
+		}
+
+		return Optional.of(regionDTO);
 	}
-	
+
 	/**
 	 * Method used to return the cities based on country and state.
 	 * 
 	 * @param countryId - country id for which data is to be searched
-	 * @param stateId - state id for which data is to be searched
+	 * @param regionId  - region/state id for which data is to be searched
 	 * @return cities - data consisting of all the cities of the state
 	 */
 	@Override
-	public Optional<Set<CityDTO>> getCities(String countryId, String stateId) {
-		Set<CityDTO> cities = getState(countryId, stateId)
-								.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.cities.not.found", new Object[] { stateId, countryId }, Locale.ENGLISH)))
-								.getCities();
-		return Optional.ofNullable(cities);
+	public Optional<Set<CityDTO>> getCities(String countryId, String regionId) {
+		Set<CityDTO> cities = getRegion(countryId, regionId).orElseThrow(noSuchElementExceptionSupplier(message
+				.getMessage("message.address.cities.not.found", new Object[] { regionId, countryId }, Locale.ENGLISH)))
+				.getCities();
+		return Optional.of(cities);
 	}
-	
+
 	/**
 	 * Method used to return the city based on country, state and city.
 	 * 
 	 * @param countryId - country id for which data is to be searched
-	 * @param stateId - state id for which data is to be searched
+	 * @param stateId   - state id for which data is to be searched
 	 * @return city - data consisting of city details
 	 */
 	@Override
-	public Optional<CityDTO> getCity(String countryId, String stateId, String cityId) {
-		Iterable<Country> countries = this.countryDAO.findbyCountryIdStateIdAndCityId(countryId, stateId, cityId)
-														.orElseThrow(
-																noSuchElementExceptionSupplier(
-																		message.getMessage("message.address.city.not.found", new Object[] { cityId, stateId, countryId }, Locale.ENGLISH)));
-		
-		Set<CountryDTO> countryDTOs = convertToDTO(countries);
-		Optional<CountryDTO> country = countryDTOs.stream().findFirst();
-		Optional<StateDTO> state = country.get().getStates().stream().findFirst();
-		Set<CityDTO> cities = state.get().getCities();
-		return cities.stream().findFirst();
+	public Optional<CityDTO> getCity(String countryId, String regionId, String cityId) {
+		Iterable<City> city = this.countryDAO.findCitybyCountryIdStateIdAndCityId(countryId, regionId, cityId)
+				.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.city.not.found",
+						new Object[] { cityId, regionId, countryId }, Locale.ENGLISH)));
+
+		CityDTO cityDTO = null;
+
+		for (City ct : city) {
+			if (null == cityDTO) {
+				cityDTO = new CityDTO(ct.getCityName());
+			}
+			cityDTO.addZipcode(ct.getZipcode());
+		}
+
+		return Optional.of(cityDTO);
 	}
-	
+
 	/**
 	 * Method used to return data based on passed zipcode.
 	 * 
 	 * @param countryId - country id for which data is to be searched
-	 * @param zipcode - state id for which data is to be searched
+	 * @param zipcode   - zipcode for which data is to be searched
 	 * @return zipcodeDTO - data containing details based on zipcode
 	 */
 	@Override
 	public Optional<ZipcodeDTO> getDataBasedOnZipcode(String countryId, long zipcode) {
-		Country country = this.countryDAO.findbyCountryIdAndZipcode(countryId, zipcode)
-														.orElseThrow(
-																noSuchElementExceptionSupplier(
-																		message.getMessage("message.address.zipcode.not.found", new Object[] { zipcode, countryId }, Locale.ENGLISH)));
-		return Optional.ofNullable(new ZipcodeDTO(country.getZipcode(), country.getCity(), country.getState(), country.getCountry()));
+		return this.countryDAO.findZipcodeDatabyCountryIdAndZipcode(countryId, zipcode);
 	}
-	
+
 	private Supplier<? extends NoSuchElementException> noSuchElementExceptionSupplier(String message) {
 		return () -> new NoSuchElementException(message);
 	}
-	
+
 	private Set<CountryDTO> convertToDTO(Iterable<Country> countries) {
 		Set<CountryDTO> countryDTOs = new HashSet<>();
-		Set<StateDTO> stateDTOs = null;
-		Set<CityDTO> cityDTOs = null;
-		
-		CountryDTO countryDTO = null;
-		StateDTO stateDTO = null;
-		CityDTO cityDTO = null;
-		
-		for (Country country: countries) {
-			String countryName = country.getCountry();
-			String stateName = country.getState();
-			String cityName = country.getCity();
-			long zipcode = country.getZipcode();
-			
-			Optional<CountryDTO> countryOpt = countryDTOs.stream()
-															.filter(c -> c.getName().equals(countryName))
-															.findFirst();
-			countryDTO = countryOpt.orElse(new CountryDTO(countryName));
-			
-			stateDTOs = countryDTO.getStates();
-			Optional<StateDTO> stateOpt = stateDTOs.stream()
-													.filter(s -> s.getName().equals(stateName))
-													.findFirst();
-			stateDTO = stateOpt.orElse(new StateDTO(stateName));
-			
-			cityDTOs = stateDTO.getCities();
-			Optional<CityDTO> cityOpt = cityDTOs.stream()
-													.filter(c -> c.getName().equals(cityName))
-													.findFirst();
-			
-			cityDTO = cityOpt.orElse(new CityDTO(cityName));
-			
-			cityDTO.addZipcode(zipcode);
-			stateDTO.addCity(cityDTO);
-			countryDTO.addState(stateDTO);
-			countryDTOs.add(countryDTO);
+
+		for (Country country : countries) {
+			countryDTOs.add(convertToDTO(country));
 		}
+
 		return countryDTOs;
+	}
+
+	private CountryDTO convertToDTO(Country country) {
+		CountryDTO countryDTO = new CountryDTO(country.getCountryName());
+
+		for (Region region : country.getRegions()) {
+			RegionDTO regionDTO = new RegionDTO(region.getRegionName());
+
+			for (City city : region.getCities()) {
+				Set<CityDTO> cityDTOs = regionDTO.getCities();
+				String cityName = city.getCityName();
+
+				Optional<CityDTO> cityOpt = cityDTOs.stream().filter(c -> c.getName().equals(cityName)).findFirst();
+
+				CityDTO cityDTO = cityOpt.orElse(new CityDTO(cityName));
+				cityDTO.addZipcode(city.getZipcode());
+
+				regionDTO.addCity(cityDTO);
+			}
+
+			countryDTO.addRegion(regionDTO);
+		}
+
+		return countryDTO;
 	}
 
 }

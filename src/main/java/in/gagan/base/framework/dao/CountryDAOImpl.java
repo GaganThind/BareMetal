@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
-import in.gagan.base.framework.entity.Country;
+import in.gagan.base.framework.dto.ZipcodeDTO;
+import in.gagan.base.framework.entity.location.City;
+import in.gagan.base.framework.entity.location.Country;
+import in.gagan.base.framework.entity.location.Region;
 
 /**
  * This class is used to CRUD operations on the COUNTRIES table using DAO pattern.
@@ -20,44 +24,14 @@ import in.gagan.base.framework.entity.Country;
 @Repository
 public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements CountryDAO {
 	
-	private static final String COUNTRY_CLAUSE = " country = :country ";
-	private static final String STATE_CLAUSE = " state = :state ";
-	private static final String CITY_CLAUSE = " city = :city ";
-	private static final String ZIPCODE_CLAUSE = " zipcode = :zipcode ";
-	private static final String COUNTRY = "country";
-	private static final String STATE = "state";
-	private static final String CITY = "city";
+	private static final String COUNTRY_CLAUSE = " country_name = :countryName ";
+	private static final String COUNTRY = "countryName";
+	private static final String REGION = "regionName";
+	private static final String CITY = "cityName";
 	private static final String ZIPCODE = "zipcode";
-	
-	/**
-	 * Method used to find country and state name based on countryId. It only returns country and state names only.
-	 * 
-	 * @param countryId: country to search
-	 * @return countries: countries data consisting of state, cities and zipcodes
-	 */
-	@Override
-	public Optional<Iterable<Country>> findCountryAndStateNameByCountryId(String countryId) {
-		StringBuilder selectQuery = new StringBuilder();
-		selectQuery.append(LITERAL_SELECT);
-		selectQuery.append(LITERAL_DISTINCT);
-		selectQuery.append(" c.country, c.state ");
-		selectQuery.append(LITERAL_FROM);
-		selectQuery.append(getTableName());
-		selectQuery.append(" As c");
-		selectQuery.append(LITREAL_WHERE);
-		selectQuery.append(COUNTRY_CLAUSE);
-		
-		TypedQuery<Object[]> query = entityManager.createQuery(selectQuery.toString(), Object[].class);
-		query.setParameter(COUNTRY, countryId);
-		
-		List<Object[]> countryObjArr = query.getResultList();
-		List<Country> countries = new ArrayList<>();
-		for (Object[] countryObj: countryObjArr) {
-			countries.add(new Country(0, null, String.valueOf(countryObj[1]), String.valueOf(countryObj[0])));
-		}
-		
-		return !CollectionUtils.isEmpty(countries) ? Optional.of(countries) : Optional.empty();
-	}
+	private static final String TABLE_COUNTRIES = "COUNTRIES";
+	private static final String TABLE_REGIONS = "REGIONS";
+	private static final String TABLE_CITIES = "CITIES";
 	
 	/**
 	 * Method used to find country data based on countryId
@@ -66,7 +40,7 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 	 * @return countries: countries data consisting of state, cities and zipcodes
 	 */
 	@Override
-	public Optional<Iterable<Country>> findbyCountryId(String countryId) {
+	public Optional<Country> findbyCountryId(String countryId) {
 		StringBuilder selectQuery = new StringBuilder();
 		selectQuery.append(LITERAL_FROM);
 		selectQuery.append(getTableName());
@@ -77,61 +51,101 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 		query.setParameter(COUNTRY, countryId);
 		
 		List<Country> countries = query.getResultList();
-		return !CollectionUtils.isEmpty(countries) ? Optional.of(countries) : Optional.empty();
+		return !CollectionUtils.isEmpty(countries) ? Optional.of(countries.get(0)) : Optional.empty();
 	}
 	
 	/**
-	 * Method used to find country data based on countryId and stateId
+	 * Method used to find region data (only) based on countryId.
 	 * 
 	 * @param countryId: country to search
-	 * @param stateId: state to search
-	 * @return countries: countries data consisting of state, cities and zipcodes
+	 * @return regions: state/region data
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public Optional<Iterable<Country>> findbyCountryIdAndStateId(String countryId, String stateId) {
+	public Optional<Iterable<Region>> findRegionsByCountryId(String countryId) {
 		StringBuilder selectQuery = new StringBuilder();
+		selectQuery.append(LITERAL_SELECT);
+		selectQuery.append("regions.* ");
 		selectQuery.append(LITERAL_FROM);
-		selectQuery.append(getTableName());
+		selectQuery.append(TABLE_COUNTRIES).append(" countries ").append("INNER JOIN ").append(TABLE_REGIONS).append(" regions ");
 		selectQuery.append(LITREAL_WHERE);
-		selectQuery.append(COUNTRY_CLAUSE);
+		selectQuery.append(" countries.country_id = regions.country_id ");
 		selectQuery.append(LITREAL_AND);
-		selectQuery.append(STATE_CLAUSE);
+		selectQuery.append(" countries.country_name = :countryName ");
 		
-		TypedQuery<Country> query = entityManager.createQuery(selectQuery.toString(), Country.class);
+		Query query = entityManager.createNativeQuery(selectQuery.toString(), Region.class);
 		query.setParameter(COUNTRY, countryId);
-		query.setParameter(STATE, stateId);
 		
-		List<Country> countries = query.getResultList();
-		return !CollectionUtils.isEmpty(countries) ? Optional.of(countries) : Optional.empty();
+		List<Region> regions = query.getResultList();
+		
+		return !CollectionUtils.isEmpty(regions) ? Optional.of(regions) : Optional.empty();
 	}
 	
 	/**
-	 * Method used to find country data based on countryId, stateId and cityId
+	 * Method used to find region data along with city data based on country id and region id
 	 * 
 	 * @param countryId: country to search
-	 * @param stateId: state to search
+	 * @param regionId: region to search
+	 * @return region: data consisting of the region/state
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Optional<Region> findRegionbyCountryIdAndRegionId(String countryId, String regionId) {
+		StringBuilder selectQuery = new StringBuilder();
+		selectQuery.append(LITERAL_SELECT);
+		selectQuery.append("regions.* ");
+		selectQuery.append(LITERAL_FROM);
+		selectQuery.append(TABLE_COUNTRIES).append(" countries ").append("INNER JOIN ").append(TABLE_REGIONS).append(" regions ");
+		selectQuery.append(LITREAL_WHERE);
+		selectQuery.append(" countries.country_id = regions.country_id ");
+		selectQuery.append(LITREAL_AND);
+		selectQuery.append(" countries.country_name = :countryName ");
+		selectQuery.append(LITREAL_AND);
+		selectQuery.append(" regions.region_name = :regionName ");
+		
+		Query query = entityManager.createNativeQuery(selectQuery.toString(), Region.class);
+		query.setParameter(COUNTRY, countryId);
+		query.setParameter(REGION, regionId);
+		
+		List<Region> regions = query.getResultList();
+		
+		return !CollectionUtils.isEmpty(regions) ? Optional.of(regions.get(0)) : Optional.empty();
+	}
+	
+	/**
+	 * Method used to find city data based on countryId, regionId and cityId
+	 * 
+	 * @param countryId: country to search
+	 * @param regionId: region/state to search
 	 * @param cityId: city to search
-	 * @return countries: countries data consisting of state, cities and zipcodes
+	 * @return city: data consisting of city details
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public Optional<Iterable<Country>> findbyCountryIdStateIdAndCityId(String countryId, String stateId, String cityId) {
+	public Optional<Iterable<City>> findCitybyCountryIdStateIdAndCityId(String countryId, String regionId, String cityId) {
 		StringBuilder selectQuery = new StringBuilder();
+		selectQuery.append(LITERAL_SELECT);
+		selectQuery.append("cities.* ");
 		selectQuery.append(LITERAL_FROM);
-		selectQuery.append(getTableName());
+		selectQuery.append(TABLE_COUNTRIES).append(" countries ").append("INNER JOIN ").append(TABLE_REGIONS).append(" regions ");
+		selectQuery.append(" On countries.country_id = regions.country_id ");
+		selectQuery.append("INNER JOIN ").append(TABLE_CITIES).append(" cities ");
+		selectQuery.append(" On regions.region_id = cities.region_id ");
 		selectQuery.append(LITREAL_WHERE);
-		selectQuery.append(COUNTRY_CLAUSE);
+		selectQuery.append(" countries.country_name = :countryName ");
 		selectQuery.append(LITREAL_AND);
-		selectQuery.append(STATE_CLAUSE);
+		selectQuery.append(" regions.region_name = :regionName ");
 		selectQuery.append(LITREAL_AND);
-		selectQuery.append(CITY_CLAUSE);
+		selectQuery.append(" cities.city_name = :cityName ");
 		
-		TypedQuery<Country> query = entityManager.createQuery(selectQuery.toString(), Country.class);
+		Query query = entityManager.createNativeQuery(selectQuery.toString(), City.class);
 		query.setParameter(COUNTRY, countryId);
-		query.setParameter(STATE, stateId);
+		query.setParameter(REGION, regionId);
 		query.setParameter(CITY, cityId);
 		
-		List<Country> countries = query.getResultList();
-		return !CollectionUtils.isEmpty(countries) ? Optional.of(countries) : Optional.empty();
+		List<City> cities = query.getResultList();
+		
+		return !CollectionUtils.isEmpty(cities) ? Optional.of(cities) : Optional.empty();
 	}
 	
 	/**
@@ -139,24 +153,35 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 	 * 
 	 * @param countryId: country to search
 	 * @param zipcode: zipcode to search
-	 * @return country: country data consisting of state, citie and zipcode
+	 * @return zipcodeDTO: zipcode data consisting of region/state, city and country names
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public Optional<Country> findbyCountryIdAndZipcode(String countryId, long zipcode) {
+	public Optional<ZipcodeDTO> findZipcodeDatabyCountryIdAndZipcode(String countryId, long zipcode) {
 		StringBuilder selectQuery = new StringBuilder();
+		selectQuery.append(LITERAL_SELECT);
+		selectQuery.append(" countries.country_name, regions.region_name, cities.city_name, cities.zipcode ");
 		selectQuery.append(LITERAL_FROM);
-		selectQuery.append(getTableName());
+		selectQuery.append(TABLE_COUNTRIES).append(" countries ").append("INNER JOIN ").append(TABLE_REGIONS).append(" regions ");
+		selectQuery.append(" On countries.country_id = regions.country_id ");
+		selectQuery.append("INNER JOIN ").append(TABLE_CITIES).append(" cities ");
+		selectQuery.append(" On regions.region_id = cities.region_id ");
 		selectQuery.append(LITREAL_WHERE);
-		selectQuery.append(COUNTRY_CLAUSE);
+		selectQuery.append(" countries.country_name = :countryName ");
 		selectQuery.append(LITREAL_AND);
-		selectQuery.append(ZIPCODE_CLAUSE);
+		selectQuery.append(" cities.zipcode LIKE CONCAT('%',:zipcode,'%')");
 		
-		TypedQuery<Country> query = entityManager.createQuery(selectQuery.toString(), Country.class);
+		Query query = entityManager.createNativeQuery(selectQuery.toString());
 		query.setParameter(COUNTRY, countryId);
 		query.setParameter(ZIPCODE, zipcode);
 		
-		List<Country> countries = query.getResultList();
-		return !CollectionUtils.isEmpty(countries) ? Optional.of(countries.get(0)) : Optional.empty();
+		List zipData = query.getResultList();
+		if (!CollectionUtils.isEmpty(zipData)) {
+			Object[] data = ((ArrayList<Object[]>) zipData).get(0);
+			return Optional.of(new ZipcodeDTO(zipcode, (String) data[2], (String) data[1], (String) data[0]));
+		}
+		
+		return Optional.empty();
 	}
 
 }
