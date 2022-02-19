@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 
+import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dao.CountryDAO;
 import in.gagan.base.framework.dto.CountryInputDTO;
 import in.gagan.base.framework.entity.location.City;
@@ -39,12 +40,20 @@ public class CountryServiceImpl implements CountryService {
 	
 	@Value("${application.countries.file.location}")
 	private String fileLocation;
+	
+	@Value("${application.countries.file.force.reload}")
+	private String forceCSVReloadOnBoot;
 
 	/**
 	 * Method used to load country data from csv file.
 	 */
 	@Override
 	public void loadCountriesFromCSV() {
+		
+		if(ApplicationConstants.String_N.equals(forceCSVReloadOnBoot) && this.countryDAO.findbyCountryId("India").isPresent()) {
+			return;
+		}
+		
 		File initialFile = new File(fileLocation);
 		List<CountryInputDTO> countryList = null;
 	    
