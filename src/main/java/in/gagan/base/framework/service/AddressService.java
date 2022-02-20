@@ -17,7 +17,14 @@ import in.gagan.base.framework.dto.ZipcodeDTO;
 public interface AddressService {
 	
 	/**
-	 * Method used to return all the countries data containing states and cities.
+	 * Method used to return all the countries data containing states and cities for admin purpose.
+	 * 
+	 * @return countries - data consisting of all the countries
+	 */
+	public Optional<Set<CountryDTO>> getCountriesForAdmin();
+	
+	/**
+	 * Method used to return all the countries names.
 	 * 
 	 * @return countries - data consisting of all the countries
 	 */

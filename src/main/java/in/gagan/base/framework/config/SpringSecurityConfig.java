@@ -71,11 +71,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 			.addFilter(jwtUsernamePasswordAuthFilter())
 			.addFilter(new JWTTokenAuthenticationFilter(authenticationManager(), this.jwtProps, this.jwtSvc))
 			.authorizeRequests()
-	            .antMatchers("/login", "/v1/users/register/**", "/h2/**", "/v1/password/forgot/**", "/v1/address/**").permitAll()
+	            .antMatchers("/login", "/v1/users/register/**", "/h2/**", "/v1/password/forgot/**", "/v1/address/country/**").permitAll()
 	            .antMatchers(HttpMethod.GET, "/v1/users/**").hasAnyRole(ADMIN_BASIC.name(), USER_BASIC.name(), ADMIN.name(), USER.name())
 	            .antMatchers("/v1/users/**").hasAnyRole(ADMIN.name(), USER.name())
 	            .antMatchers("/v1/password/**").hasAnyRole(ADMIN_BASIC.name(), USER_BASIC.name(), ADMIN.name(), USER.name())
-	            .antMatchers(HttpMethod.GET,"/v1/admin/**").hasAnyRole(ADMIN.name(), ADMIN_BASIC.name())
+	            .antMatchers(HttpMethod.GET,"/v1/admin/**", "/v1/address/admin/country/**").hasAnyRole(ADMIN.name(), ADMIN_BASIC.name())
 	            .antMatchers("/v1/admin/**").hasRole(ADMIN.name())
 				.antMatchers("/**").authenticated()
 				.anyRequest().authenticated();

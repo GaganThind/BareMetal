@@ -44,19 +44,39 @@ public class AddressServiceImpl implements AddressService {
 		this.countryDAO = countryDAO;
 		this.message = message;
 	}
-
-	// TODO Refactor
+	
 	/**
-	 * Method used to return all the countries data containing states and cities.
+	 * Method used to return all the countries data containing states and cities for admin purpose.
+	 * 
+	 * @return countries - data consisting of all the countries
+	 */
+	@Override
+	public Optional<Set<CountryDTO>> getCountriesForAdmin() {
+		Iterable<Country> countries = 
+				this.countryDAO.findAll()
+								.orElseThrow(noSuchElementExceptionSupplier(
+										message.getMessage("message.address.countries.list.empty", null, Locale.ENGLISH)));
+
+		Set<CountryDTO> countryDTOs = convertToDTO(countries);
+		return Optional.ofNullable(countryDTOs);
+	}
+
+	/**
+	 * Method used to return all the countries names.
 	 * 
 	 * @return countries - data consisting of all the countries
 	 */
 	@Override
 	public Optional<Set<CountryDTO>> getCountries() {
-		Iterable<Country> countries = this.countryDAO.findAll().orElseThrow(noSuchElementExceptionSupplier(
-				message.getMessage("message.address.countries.list.empty", null, Locale.ENGLISH)));
+		Iterable<Country> countries = 
+				this.countryDAO.findAll()
+								.orElseThrow(noSuchElementExceptionSupplier(
+										message.getMessage("message.address.countries.list.empty", null, Locale.ENGLISH)));
 
-		Set<CountryDTO> countryDTOs = convertToDTO(countries);
+		Set<CountryDTO> countryDTOs = new HashSet<>();
+		for (Country country: countries) {
+			countryDTOs.add(new CountryDTO(country.getCountryName()));
+		}
 		return Optional.ofNullable(countryDTOs);
 	}
 
@@ -68,11 +88,22 @@ public class AddressServiceImpl implements AddressService {
 	 */
 	@Override
 	public Optional<CountryDTO> getCountry(String countryId) {
-		Country country = this.countryDAO.findbyCountryId(countryId).orElseThrow(noSuchElementExceptionSupplier(
-				message.getMessage("message.address.country.not.found", new Object[] { countryId }, Locale.ENGLISH)));
+		Country country = 
+				this.countryDAO.findbyCountryId(countryId)
+								.orElseThrow(noSuchElementExceptionSupplier(
+										message.getMessage("message.address.country.not.found", 
+															new Object[] { countryId }, Locale.ENGLISH)));
 
-		CountryDTO countryDTO = convertToDTO(country);
-		return Optional.ofNullable(countryDTO);
+		Set<RegionDTO> regionDTOs = new HashSet<>();
+		for (Region region : country.getRegions()) {
+			regionDTOs.add(new RegionDTO(region.getRegionName()));
+		}
+		
+		// Sort region
+		Set<RegionDTO> sortedSet = new TreeSet<>(Comparator.comparing(RegionDTO::getName));
+		sortedSet.addAll(regionDTOs);
+		
+		return Optional.ofNullable(new CountryDTO(country.getCountryName(), sortedSet));
 	}
 
 	/**
@@ -83,9 +114,11 @@ public class AddressServiceImpl implements AddressService {
 	 */
 	@Override
 	public Optional<Set<RegionDTO>> getRegions(String countryId) {
-		Iterable<Region> regions = this.countryDAO.findRegionsByCountryId(countryId)
-				.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.states.not.found",
-						new Object[] { countryId }, Locale.ENGLISH)));
+		Iterable<Region> regions = 
+				this.countryDAO.findRegionsByCountryId(countryId)
+								.orElseThrow(
+										noSuchElementExceptionSupplier(message.getMessage("message.address.states.not.found",
+																		new Object[] { countryId }, Locale.ENGLISH)));
 		Set<RegionDTO> regionDTOs = new HashSet<>();
 		for (Region region : regions) {
 			regionDTOs.add(new RegionDTO(region.getRegionName()));

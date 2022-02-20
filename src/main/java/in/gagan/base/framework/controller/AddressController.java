@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,13 +38,25 @@ public class AddressController extends AbstractController {
 	public AddressController(AddressService addressSvc) {
 		this.addressSvc = addressSvc;
 	}
+	
+	/**
+	 * Method used get all the countries.
+	 * 
+	 * @return countries - data consisting of all the countries
+	 */
+	@GetMapping(value = "/admin/country", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Set<CountryDTO>> getCountriesForAdmin() {
+		Optional<Set<CountryDTO>> countryDTOs = this.addressSvc.getCountries();
+		Set<CountryDTO> countries = countryDTOs.orElseThrow(noSuchElementExceptionSupplier(
+				message.getMessage("message.address.countries.list.empty", null, Locale.ENGLISH)));
+		return new ResponseEntity<Set<CountryDTO>>(countries, HttpStatus.OK);
+	}
 
 	/**
 	 * Method used get all the countries.
 	 * 
 	 * @return countries - data consisting of all the countries
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(value = "/country", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Set<CountryDTO>> getCountries() {
 		Optional<Set<CountryDTO>> countryDTOs = this.addressSvc.getCountries();
@@ -61,7 +72,6 @@ public class AddressController extends AbstractController {
 	 * @param countryId - country id for which data is to be searched
 	 * @return country - data consisting of all the states and respective cities
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(value = "/country/{countryId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CountryDTO> getCountry(@PathVariable String countryId) {
 		Optional<CountryDTO> countryDTO = this.addressSvc.getCountry(countryId);
