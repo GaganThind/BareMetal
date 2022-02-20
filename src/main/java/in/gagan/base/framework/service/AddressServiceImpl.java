@@ -1,10 +1,12 @@
 package in.gagan.base.framework.service;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Supplier;
 
 import javax.transaction.Transactional;
@@ -88,8 +90,12 @@ public class AddressServiceImpl implements AddressService {
 		for (Region region : regions) {
 			regionDTOs.add(new RegionDTO(region.getRegionName()));
 		}
+		
+		// Sort region
+		Set<RegionDTO> sortedSet = new TreeSet<>(Comparator.comparing(RegionDTO::getName));
+		sortedSet.addAll(regionDTOs);
 
-		return Optional.of(regionDTOs);
+		return Optional.of(sortedSet);
 	}
 
 	/**
@@ -107,10 +113,16 @@ public class AddressServiceImpl implements AddressService {
 						new Object[] { regionId, countryId }, Locale.ENGLISH)));
 		RegionDTO regionDTO = new RegionDTO(region.getRegionName());
 
-		Set<City> cities = region.getCities();
-		for (City city : cities) {
-			regionDTO.addCity(new CityDTO(city.getCityName()));
+		Set<CityDTO> cityDTOs = new HashSet<>();
+		for (City city : region.getCities()) {
+			cityDTOs.add(new CityDTO(city.getCityName()));
 		}
+		
+		// Sort cities
+		Set<CityDTO> sortedSet = new TreeSet<>(Comparator.comparing(CityDTO::getName));
+		sortedSet.addAll(cityDTOs);
+		
+		regionDTO.setCities(sortedSet);
 
 		return Optional.of(regionDTO);
 	}
@@ -124,10 +136,17 @@ public class AddressServiceImpl implements AddressService {
 	 */
 	@Override
 	public Optional<Set<CityDTO>> getCities(String countryId, String regionId) {
-		Set<CityDTO> cities = getRegion(countryId, regionId).orElseThrow(noSuchElementExceptionSupplier(message
-				.getMessage("message.address.cities.not.found", new Object[] { regionId, countryId }, Locale.ENGLISH)))
-				.getCities();
-		return Optional.of(cities);
+		Set<CityDTO> cities = 
+				getRegion(countryId, regionId)
+					.orElseThrow(noSuchElementExceptionSupplier(message
+						.getMessage("message.address.cities.not.found", new Object[] { regionId, countryId }, Locale.ENGLISH)))
+					.getCities();
+		
+		// Sort cities
+		Set<CityDTO> sortedSet = new TreeSet<>(Comparator.comparing(CityDTO::getName));
+		sortedSet.addAll(cities);
+		
+		return Optional.of(sortedSet);
 	}
 
 	/**
@@ -139,9 +158,10 @@ public class AddressServiceImpl implements AddressService {
 	 */
 	@Override
 	public Optional<CityDTO> getCity(String countryId, String regionId, String cityId) {
-		Iterable<City> city = this.countryDAO.findCitybyCountryIdStateIdAndCityId(countryId, regionId, cityId)
-				.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.city.not.found",
-						new Object[] { cityId, regionId, countryId }, Locale.ENGLISH)));
+		Iterable<City> city = 
+				this.countryDAO.findCitybyCountryIdStateIdAndCityId(countryId, regionId, cityId)
+								.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.city.not.found",
+											new Object[] { cityId, regionId, countryId }, Locale.ENGLISH)));
 
 		CityDTO cityDTO = null;
 
@@ -151,6 +171,10 @@ public class AddressServiceImpl implements AddressService {
 			}
 			cityDTO.addZipcode(ct.getZipcode());
 		}
+		
+		// Sort zipcodes
+		Set<Long> sortedSet = new TreeSet<>(cityDTO.getZipcodes());
+		cityDTO.setZipcodes(sortedSet);
 
 		return Optional.of(cityDTO);
 	}

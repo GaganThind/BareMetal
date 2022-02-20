@@ -33,6 +33,10 @@ public class RegionDTO implements Serializable {
 		this.cities = cities;
 	}
 	
+	public void setCities(Set<CityDTO> cities) {
+		this.cities = cities;
+	}
+
 	public void addCity(CityDTO city) {
 		if (null == this.cities) {
 			this.cities = new HashSet<>();
