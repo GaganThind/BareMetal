@@ -319,7 +319,7 @@ public class UserControllerIntegrationTest {
 	 */
 	private <T> ResponseEntity<String> postEntity(T inputDTO, String url) {
 		HttpHeaders requestHeaders = createHttpHeader(MediaType.APPLICATION_JSON);
-		HttpEntity<T> httpEntity = new HttpEntity<T>(inputDTO, requestHeaders);
+		HttpEntity<T> httpEntity = new HttpEntity<>(inputDTO, requestHeaders);
 		return this.restTemplate.postForEntity(url, httpEntity, String.class);
 	}
 	

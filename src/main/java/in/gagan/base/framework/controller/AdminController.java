@@ -60,25 +60,25 @@ public class AdminController {
 	@GetMapping(value = "/users", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UserDTO>> fetchAllUsers() {
 		List<UserDTO> userDTOs = this.adminSvc.fetchAllUsers();
-		return new ResponseEntity<List<UserDTO>>(userDTOs, HttpStatus.OK);
+		return new ResponseEntity<>(userDTOs, HttpStatus.OK);
 	}
 	
 	@PatchMapping(value = "/account/unlock", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> unlockUserAccounts(@RequestBody List<String> emails) {
 		this.adminSvc.unlockUserAccounts(emails);
-		return new ResponseEntity<String>("User Account(s) Unlocked Successfully!!!", HttpStatus.OK);
+		return new ResponseEntity<>("User Account(s) Unlocked Successfully!!!", HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/account/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> deleteUserAccounts(@RequestBody List<String> emails) {
 		this.adminSvc.deleteUsers(emails);
-		return new ResponseEntity<String>("User Accounts(s) Deleted Successfully!!!", HttpStatus.OK);
+		return new ResponseEntity<>("User Accounts(s) Deleted Successfully!!!", HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/account/hardDelete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> hardDeleteUserAccounts(@RequestBody List<String> emails) {
 		this.adminSvc.hardDeleteUsers(emails);
-		return new ResponseEntity<String>("User Accounts(s) Hard Deleted Successfully!!!", HttpStatus.OK);
+		return new ResponseEntity<>("User Accounts(s) Hard Deleted Successfully!!!", HttpStatus.OK);
 	}
 
 }

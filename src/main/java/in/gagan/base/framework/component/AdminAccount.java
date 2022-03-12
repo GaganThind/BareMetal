@@ -70,7 +70,7 @@ public class AdminAccount {
 	 */
 	public User getAdminDetails() {
 		User user = new User(firstName, lastName, email, password);
-		user.setPasswordExpireDate(LocalDateTime.now().plusDays(Integer.valueOf(passwordExp)));
+		user.setPasswordExpireDate(LocalDateTime.now().plusDays(Integer.parseInt(passwordExp)));
 		user.setActiveSw(ApplicationConstants.CHAR_Y);
 		user.addRole(new Role(ADMIN));
 		return user;
