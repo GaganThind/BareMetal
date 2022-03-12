@@ -19,15 +19,10 @@
 
 package in.gagan.base.framework.config;
 
-import static in.gagan.base.framework.enums.UserRoles.ADMIN;
-import static in.gagan.base.framework.enums.UserRoles.ADMIN_BASIC;
-import static in.gagan.base.framework.enums.UserRoles.USER;
-import static in.gagan.base.framework.enums.UserRoles.USER_BASIC;
-
-import java.util.Arrays;
-import java.util.List;
-
+import in.gagan.base.framework.component.JWTProps;
+import in.gagan.base.framework.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -39,16 +34,18 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
+import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import in.gagan.base.framework.component.CustomAuthenticationFailureHandler;
-import in.gagan.base.framework.component.JWTProps;
-import in.gagan.base.framework.filter.JWTTokenAuthenticationFilter;
-import in.gagan.base.framework.filter.JWTUsernamePasswordAuthFilter;
-import in.gagan.base.framework.service.CustomUserDetailsService;
-import in.gagan.base.framework.service.JWTService;
+import java.util.Arrays;
+import java.util.List;
+
+import static in.gagan.base.framework.enums.UserRoles.*;
 
 /**
  * This class provides the spring security configurations.
@@ -62,16 +59,13 @@ import in.gagan.base.framework.service.JWTService;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final CustomUserDetailsService userDetailsSvc;
+
 	private final JWTProps jwtProps;
-	private final JWTService jwtSvc;
-	private final CustomAuthenticationFailureHandler authenticationFailureHandler;
 	
 	@Autowired
-	public SpringSecurityConfig(CustomUserDetailsService userDetailsSvc, JWTProps jwtProps, JWTService jwtSvc, CustomAuthenticationFailureHandler authenticationFailureHandler) {
+	public SpringSecurityConfig(CustomUserDetailsService userDetailsSvc, JWTProps jwtProps) {
 		this.userDetailsSvc = userDetailsSvc;
 		this.jwtProps = jwtProps;
-		this.jwtSvc = jwtSvc;
-		this.authenticationFailureHandler = authenticationFailureHandler;
 	}
 	
 	@Override
@@ -87,10 +81,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf().disable()
 		.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
 		.and()
-			.addFilter(jwtUsernamePasswordAuthFilter())
-			.addFilter(new JWTTokenAuthenticationFilter(authenticationManager(), this.jwtProps, this.jwtSvc))
+				.exceptionHandling()
+					.authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
+				.accessDeniedHandler(new BearerTokenAccessDeniedHandler())
+		.and()
 			.authorizeRequests()
 	            .antMatchers("/login", "/v1/users/register/**", "/h2/**", "/v1/password/forgot/**", "/v1/address/country/**").permitAll()
 	            .antMatchers(HttpMethod.GET, "/v1/users/**").hasAnyRole(ADMIN_BASIC.name(), USER_BASIC.name(), ADMIN.name(), USER.name())
@@ -99,7 +94,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	            .antMatchers(HttpMethod.GET,"/v1/admin/**", "/v1/address/admin/country/**").hasAnyRole(ADMIN.name(), ADMIN_BASIC.name())
 	            .antMatchers("/v1/admin/**").hasRole(ADMIN.name())
 				.antMatchers("/**").authenticated()
-				.anyRequest().authenticated();
+				.anyRequest().authenticated()
+			.and()
+				.oauth2ResourceServer()
+				.jwt();
 		
 		http.headers().frameOptions().disable(); // Makes h2-console to work 
 	}
@@ -128,10 +126,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	    return new CorsFilter(urlBasedCorsConfigurationSource);
 	}
 
-	public JWTUsernamePasswordAuthFilter jwtUsernamePasswordAuthFilter() throws Exception {
-		JWTUsernamePasswordAuthFilter jwtUsernamePasswordAuthFilter = new JWTUsernamePasswordAuthFilter(authenticationManager(), this.jwtProps, this.jwtSvc);
-		jwtUsernamePasswordAuthFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
-		return jwtUsernamePasswordAuthFilter;
+	@Bean
+	public JwtDecoder customDecoder(OAuth2ResourceServerProperties properties) {
+		return NimbusJwtDecoder.withPublicKey(this.jwtProps.getPublicKey()).build();
 	}
 
 }

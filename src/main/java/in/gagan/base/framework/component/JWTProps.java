@@ -19,15 +19,12 @@
 
 package in.gagan.base.framework.component;
 
-import static in.gagan.base.framework.constant.JWTSecurityConstants.SINGLE_SPACE;
-
-import javax.crypto.SecretKey;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.security.Keys;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 
 /**
  * This class provides the jwt token details
@@ -40,25 +37,17 @@ import io.jsonwebtoken.security.Keys;
 @PropertySource(value = { "classpath:jwtToken.properties" })
 public class JWTProps {
 	
-	@Value("${secretKey}")
-	private String secretKey;
-	
-	@Value("${tokenExpirationInWeeks}")
-	private int tokenExpirationInWeeks;
+	@Value("${public.key}")
+	private RSAPublicKey publicKey;
 
-	@Value("${tokenPrefix}")
-	private String tokenPrefix;
+	@Value("${private.key}")
+	private RSAPrivateKey privateKey;
 
-	public SecretKey getSecretKey() {
-		return Keys.hmacShaKeyFor(secretKey.getBytes());
+	public RSAPublicKey getPublicKey() {
+		return publicKey;
 	}
 
-	public int getTokenExpirationInWeeks() {
-		return tokenExpirationInWeeks;
+	public RSAPrivateKey getPrivateKey() {
+		return privateKey;
 	}
-
-	public String getTokenPrefix() {
-		return new StringBuilder(tokenPrefix).append(SINGLE_SPACE).toString();
-	}
-	
 }
