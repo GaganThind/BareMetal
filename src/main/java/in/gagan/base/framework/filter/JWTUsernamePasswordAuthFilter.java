@@ -140,7 +140,7 @@ public class JWTUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
 	 * @return UsernamePasswordAuthDTO - Username and Password in DTO object
 	 */
 	private UsernamePasswordAuthDTO getUsernamePasswordAuthDTO(HttpServletRequest request) {
-		UsernamePasswordAuthDTO usernamePasswordAuth = null;
+		UsernamePasswordAuthDTO usernamePasswordAuth;
 		try {
 			usernamePasswordAuth = new ObjectMapper().readValue(request.getInputStream(), UsernamePasswordAuthDTO.class);
 		} catch (IOException e) {

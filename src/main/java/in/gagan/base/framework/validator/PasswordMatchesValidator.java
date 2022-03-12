@@ -39,8 +39,8 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 	@Override
     public boolean isValid(Object obj, ConstraintValidatorContext context) {
 		
-		String password = ApplicationConstants.BLANK;
-		String matchingPassword = ApplicationConstants.BLANK;
+		String password;
+		String matchingPassword;
 		
 		if (obj instanceof UserDTO) {
 			UserDTO userDTO = (UserDTO) obj;

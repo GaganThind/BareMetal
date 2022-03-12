@@ -74,7 +74,7 @@ public class CountryServiceImpl implements CountryService {
 		}
 		
 		File initialFile = new File(fileLocation);
-		List<CountryInputDTO> countryList = null;
+		List<CountryInputDTO> countryList;
 	    
 		try {
 			InputStream targetStream = new FileInputStream(initialFile);
