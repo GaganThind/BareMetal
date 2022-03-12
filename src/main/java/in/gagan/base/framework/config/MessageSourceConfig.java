@@ -61,10 +61,6 @@ public class MessageSourceConfig implements WebMvcConfigurer {
 	 * @param messageSource - message source bean
 	 * @return LocalValidatorFactoryBean - Local Validator Factory bean
 	 */
-	/**
-	 * @param messageSource
-	 * @return
-	 */
 	@Bean
 	public LocalValidatorFactoryBean localValidatorFactoryBean(MessageSource messageSource) {
 		LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
