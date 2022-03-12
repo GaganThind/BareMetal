@@ -114,9 +114,7 @@ public class ExceptionMonitor extends AuditableEntity implements BaseEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		ExceptionMonitor other = (ExceptionMonitor) obj;
-		if (exceptionId != other.exceptionId)
-			return false;
-		return true;
+		return exceptionId == other.exceptionId;
 	}
 	
 }

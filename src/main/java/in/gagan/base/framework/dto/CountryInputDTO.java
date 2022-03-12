@@ -118,9 +118,7 @@ public class CountryInputDTO implements Serializable {
 				return false;
 		} else if (!state.equals(other.state))
 			return false;
-		if (zipcode != other.zipcode)
-			return false;
-		return true;
+		return zipcode == other.zipcode;
 	}
 	
 }

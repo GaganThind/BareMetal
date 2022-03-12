@@ -108,9 +108,7 @@ public class City extends NonAuditableEntity implements BaseEntity {
 				return false;
 		} else if (!cityName.equals(other.cityName))
 			return false;
-		if (zipcode != other.zipcode)
-			return false;
-		return true;
+		return zipcode == other.zipcode;
 	}
 	
 }

@@ -122,11 +122,8 @@ public class Country extends NonAuditableEntity implements BaseEntity {
 			return false;
 		Country other = (Country) obj;
 		if (countryName == null) {
-			if (other.countryName != null)
-				return false;
-		} else if (!countryName.equals(other.countryName))
-			return false;
-		return true;
+			return other.countryName == null;
+		} else return countryName.equals(other.countryName);
 	}
 
 }

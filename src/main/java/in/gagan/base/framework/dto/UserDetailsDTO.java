@@ -111,11 +111,8 @@ public class UserDetailsDTO implements Serializable {
 		
 		UserDetailsDTO other = (UserDetailsDTO) obj;
 		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		return true;
+			return other.email == null;
+		} else return email.equals(other.email);
 	}
 	
 }

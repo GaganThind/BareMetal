@@ -124,11 +124,8 @@ public class ForgotPasswordToken extends AuditableEntity implements BaseEntity {
 			return false;
 		ForgotPasswordToken other = (ForgotPasswordToken) obj;
 		if (token == null) {
-			if (other.token != null)
-				return false;
-		} else if (!token.equals(other.token))
-			return false;
-		return true;
+			return other.token == null;
+		} else return token.equals(other.token);
 	}
 
 }

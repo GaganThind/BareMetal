@@ -122,11 +122,8 @@ public class Region extends NonAuditableEntity implements BaseEntity {
 			return false;
 		Region other = (Region) obj;
 		if (regionName == null) {
-			if (other.regionName != null)
-				return false;
-		} else if (!regionName.equals(other.regionName))
-			return false;
-		return true;
+			return other.regionName == null;
+		} else return regionName.equals(other.regionName);
 	}
 
 }
