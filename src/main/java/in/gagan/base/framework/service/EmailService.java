@@ -38,7 +38,7 @@ public interface EmailService {
 	 * @param subject - Subject of email
 	 * @param message - Message inside the email
 	 */
-	public void sendEmail(String toAddress, String subject, String message);
+	void sendEmail(String toAddress, String subject, String message);
 
 	/**
 	 * This method is used to send a text email with attachment to user.

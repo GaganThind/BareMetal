@@ -37,6 +37,6 @@ public interface VerificationTokenDAO extends BaseDAO<VerificationToken, Long> {
 	 * @param token - token to fetch record
 	 * @return Optional<VerificationToken> - VerificationToken record
 	 */
-	public Optional<VerificationToken> fetchByToken(String token);
+	Optional<VerificationToken> fetchByToken(String token);
 	
 }

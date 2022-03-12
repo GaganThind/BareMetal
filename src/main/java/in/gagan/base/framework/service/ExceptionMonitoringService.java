@@ -34,6 +34,6 @@ public interface ExceptionMonitoringService {
 	 * 
 	 * @param exceptionMonitorDTO - Exception DTO
 	 */
-	public void insertException(ExceptionMonitorDTO exceptionMonitorDTO);
+	void insertException(ExceptionMonitorDTO exceptionMonitorDTO);
 
 }

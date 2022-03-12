@@ -30,6 +30,6 @@ public interface CountryService {
 	/**
 	 * Method used to load country data from csv file.
 	 */
-	public void loadCountriesFromCSV();
+	void loadCountriesFromCSV();
 
 }
