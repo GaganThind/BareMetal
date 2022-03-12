@@ -25,6 +25,7 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -404,12 +405,9 @@ public class UserControllerIntegrationTest {
 		ResponseEntity<String> responseEntity = postEntity(usernamePasswordAuthDTO, "/login");
 
 		HttpHeaders responseHeaders = responseEntity.getHeaders();
-		if (null == responseHeaders) {
-			return "";
-		}
-		
+
 		String authorizationHeader = responseHeaders.getFirst("Authorization");
-		return authorizationHeader.replace("Bearer ", "");
+		return Objects.requireNonNull(authorizationHeader).replace("Bearer ", "");
 	}
 	
 	/**

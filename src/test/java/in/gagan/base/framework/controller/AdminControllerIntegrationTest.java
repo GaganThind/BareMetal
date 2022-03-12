@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -73,7 +74,7 @@ public class AdminControllerIntegrationTest {
 		ResponseEntity<List<UserDTO>> responseEntity = getEntity(ADMIN_BASE_URL);
 		
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertTrue(responseEntity.getBody().size() > 0);
+		assertTrue(Objects.requireNonNull(responseEntity.getBody()).size() > 0);
 	}
 	
 	//@Test
@@ -105,7 +106,7 @@ public class AdminControllerIntegrationTest {
 	 * Method used to post data to UserController
 	 * 
 	 * @param <T> - Input DTO class
-	 * @param inputUserDTO - User DTO object with user details
+	 * @param inputDTO - User DTO object with user details
 	 * @return ResponseEntity<String> - Message from server
 	 */
 	private <T> ResponseEntity<String> postEntity(T inputDTO, String url) {
@@ -142,12 +143,9 @@ public class AdminControllerIntegrationTest {
 		ResponseEntity<String> responseEntity = postEntity(usernamePasswordAuthDTO, "/login");
 
 		HttpHeaders responseHeaders = responseEntity.getHeaders();
-		if (null == responseHeaders) {
-			return "";
-		}
-		
+
 		String authorizationHeader = responseHeaders.getFirst("Authorization");
-		return authorizationHeader.replace("Bearer ", "");
+		return Objects.requireNonNull(authorizationHeader).replace("Bearer ", "");
 	}
 	
 	/**
