@@ -82,9 +82,8 @@ public class JWTUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
 		String password = usernamePasswordAuth.getPassword();
 		
 		Authentication auth = new UsernamePasswordAuthenticationToken(username, password);
-		Authentication authenticateUser = this.authenticationManager.authenticate(auth);
-		
-		return authenticateUser;
+
+		return this.authenticationManager.authenticate(auth);
 		
 	}
 
