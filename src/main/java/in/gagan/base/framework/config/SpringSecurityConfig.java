@@ -25,6 +25,7 @@ import static in.gagan.base.framework.enums.UserRoles.USER;
 import static in.gagan.base.framework.enums.UserRoles.USER_BASIC;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -112,7 +113,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	public CorsFilter corsFilter() {
 	    CorsConfiguration config = new CorsConfiguration();
 	    config.setAllowCredentials(true);
-	    config.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+	    config.setAllowedOrigins(List.of("http://localhost:4200"));
 	    config.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
 				"Accept", "Authorization", "Origin, Accept", "X-Requested-With",
 				"Access-Control-Request-Method", "Access-Control-Request-Headers"));

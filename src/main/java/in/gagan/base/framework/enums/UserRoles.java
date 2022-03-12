@@ -21,6 +21,7 @@ package in.gagan.base.framework.enums;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static in.gagan.base.framework.enums.UserPermissions.*;
@@ -39,7 +40,7 @@ public enum UserRoles {
 	
 	// User
 	USER(new HashSet<>(Arrays.asList(USER_WRITE, USER_READ))),
-	USER_BASIC(new HashSet<>(Arrays.asList(USER_READ))),
+	USER_BASIC(new HashSet<>(List.of(USER_READ))),
 	
 	// Empty
 	EMPTY(new HashSet<>());
