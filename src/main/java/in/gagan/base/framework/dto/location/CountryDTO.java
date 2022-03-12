@@ -17,10 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.dto;
+package in.gagan.base.framework.dto.location;
 
-import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -29,12 +29,7 @@ import java.util.Set;
  * @author gaganthind
  *
  */
-public final class CountryDTO implements Serializable {
-
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = -6852622873535636645L;
+public final class CountryDTO {
 	
 	private final String id;
 	
@@ -74,30 +69,20 @@ public final class CountryDTO implements Serializable {
 		if (null == this.regions) {
 			this.regions = new HashSet<>();
 		}
-		
+
 		this.regions.add(region);
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		CountryDTO that = (CountryDTO) o;
+		return id.equals(that.id);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CountryDTO other = (CountryDTO) obj;
-		if (id == null) {
-			return other.id == null;
-		} else return id.equals(other.id);
+	public int hashCode() {
+		return Objects.hash(id);
 	}
-
 }

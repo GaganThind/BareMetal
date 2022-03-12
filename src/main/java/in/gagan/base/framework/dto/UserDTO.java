@@ -22,6 +22,7 @@ package in.gagan.base.framework.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
@@ -45,12 +46,7 @@ import in.gagan.base.framework.validator.PasswordMatches;
  *
  */
 @PasswordMatches
-public class UserDTO implements Serializable {
-	
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = 870412525303714142L;
+public class UserDTO {
 
 	@NotNull(message = "{message.registration.first.name}")
 	@Size(min = 1, max = 25, message = "{message.registration.first.name.length}")
@@ -278,25 +274,15 @@ public class UserDTO implements Serializable {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		return result;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		UserDTO userDTO = (UserDTO) o;
+		return email.equals(userDTO.email);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UserDTO other = (UserDTO) obj;
-		if (email == null) {
-			return other.email == null;
-		} else return email.equals(other.email);
+	public int hashCode() {
+		return Objects.hash(email);
 	}
-
 }

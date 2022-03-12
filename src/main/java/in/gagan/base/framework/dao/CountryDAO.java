@@ -21,7 +21,7 @@ package in.gagan.base.framework.dao;
 
 import java.util.Optional;
 
-import in.gagan.base.framework.dto.ZipcodeDTO;
+import in.gagan.base.framework.dto.location.ZipcodeDTO;
 import in.gagan.base.framework.entity.location.City;
 import in.gagan.base.framework.entity.location.Country;
 import in.gagan.base.framework.entity.location.Region;

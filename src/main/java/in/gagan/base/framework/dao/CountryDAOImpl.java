@@ -29,7 +29,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
-import in.gagan.base.framework.dto.ZipcodeDTO;
+import in.gagan.base.framework.dto.location.ZipcodeDTO;
 import in.gagan.base.framework.entity.location.City;
 import in.gagan.base.framework.entity.location.Country;
 import in.gagan.base.framework.entity.location.Region;

@@ -19,14 +19,14 @@
 
 package in.gagan.base.framework.dto;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.util.UserHelperUtil;
+
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * This DTO captures the user details from the user entity object to be used to authentication by the spring security.
@@ -34,12 +34,7 @@ import in.gagan.base.framework.util.UserHelperUtil;
  * @author gaganthind
  *
  */
-public class UserDetailsDTO implements Serializable {
-
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = 2898127193811921189L;
+public class UserDetailsDTO {
 
 	private String password;
 	
@@ -93,26 +88,15 @@ public class UserDetailsDTO implements Serializable {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		return result;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		UserDetailsDTO that = (UserDetailsDTO) o;
+		return email.equals(that.email);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		
-		UserDetailsDTO other = (UserDetailsDTO) obj;
-		if (email == null) {
-			return other.email == null;
-		} else return email.equals(other.email);
+	public int hashCode() {
+		return Objects.hash(email);
 	}
-	
 }
