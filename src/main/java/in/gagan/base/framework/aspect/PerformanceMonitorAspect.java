@@ -42,7 +42,7 @@ import in.gagan.base.framework.constant.ApplicationConstants;
 @Component
 public class PerformanceMonitorAspect {
 	
-	Logger logger = LoggerFactory.getLogger(PerformanceMonitorAspect.class);
+	final Logger logger = LoggerFactory.getLogger(PerformanceMonitorAspect.class);
 	
 	@Value("${application.performance.monitor}")
 	private String performanceMonitoring;

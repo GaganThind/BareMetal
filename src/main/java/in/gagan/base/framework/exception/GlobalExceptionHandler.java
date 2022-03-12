@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
 		this.exceptionMonitoringSvc = exceptionMonitoringSvc;
 	}
 
-	Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+	final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 	
 	/**
 	 * Convert the thrown exception into custom format using the Exception details class and log it
