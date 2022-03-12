@@ -53,8 +53,8 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	protected static final String LITERAL_UPDATE = "UPDATE ";
 	protected static final String LITERAL_DISTINCT = "DISTINCT ";
 	protected static final String LITERAL_FROM = "FROM ";
-	protected static final String LITREAL_WHERE = " WHERE ";
-	protected static final String LITREAL_AND = " AND ";
+	protected static final String LITERAL_WHERE = " WHERE ";
+	protected static final String LITERAL_AND = " AND ";
 
 	@PersistenceContext
 	protected EntityManager entityManager;

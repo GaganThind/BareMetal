@@ -63,7 +63,7 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 		StringBuilder selectQuery = new StringBuilder();
 		selectQuery.append(LITERAL_FROM);
 		selectQuery.append(getTableName());
-		selectQuery.append(LITREAL_WHERE);
+		selectQuery.append(LITERAL_WHERE);
 		selectQuery.append(COUNTRY_CLAUSE);
 		
 		TypedQuery<Country> query = entityManager.createQuery(selectQuery.toString(), Country.class);
@@ -87,9 +87,9 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 		selectQuery.append("regions.* ");
 		selectQuery.append(LITERAL_FROM);
 		selectQuery.append(TABLE_COUNTRIES).append(" countries ").append("INNER JOIN ").append(TABLE_REGIONS).append(" regions ");
-		selectQuery.append(LITREAL_WHERE);
+		selectQuery.append(LITERAL_WHERE);
 		selectQuery.append(" countries.country_id = regions.country_id ");
-		selectQuery.append(LITREAL_AND);
+		selectQuery.append(LITERAL_AND);
 		selectQuery.append(" countries.country_name = :countryName ");
 		
 		Query query = entityManager.createNativeQuery(selectQuery.toString(), Region.class);
@@ -115,11 +115,11 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 		selectQuery.append("regions.* ");
 		selectQuery.append(LITERAL_FROM);
 		selectQuery.append(TABLE_COUNTRIES).append(" countries ").append("INNER JOIN ").append(TABLE_REGIONS).append(" regions ");
-		selectQuery.append(LITREAL_WHERE);
+		selectQuery.append(LITERAL_WHERE);
 		selectQuery.append(" countries.country_id = regions.country_id ");
-		selectQuery.append(LITREAL_AND);
+		selectQuery.append(LITERAL_AND);
 		selectQuery.append(" countries.country_name = :countryName ");
-		selectQuery.append(LITREAL_AND);
+		selectQuery.append(LITERAL_AND);
 		selectQuery.append(" regions.region_name = :regionName ");
 		
 		Query query = entityManager.createNativeQuery(selectQuery.toString(), Region.class);
@@ -150,11 +150,11 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 		selectQuery.append(" On countries.country_id = regions.country_id ");
 		selectQuery.append("INNER JOIN ").append(TABLE_CITIES).append(" cities ");
 		selectQuery.append(" On regions.region_id = cities.region_id ");
-		selectQuery.append(LITREAL_WHERE);
+		selectQuery.append(LITERAL_WHERE);
 		selectQuery.append(" countries.country_name = :countryName ");
-		selectQuery.append(LITREAL_AND);
+		selectQuery.append(LITERAL_AND);
 		selectQuery.append(" regions.region_name = :regionName ");
-		selectQuery.append(LITREAL_AND);
+		selectQuery.append(LITERAL_AND);
 		selectQuery.append(" cities.city_name = :cityName ");
 		
 		Query query = entityManager.createNativeQuery(selectQuery.toString(), City.class);
@@ -185,9 +185,9 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 		selectQuery.append(" On countries.country_id = regions.country_id ");
 		selectQuery.append("INNER JOIN ").append(TABLE_CITIES).append(" cities ");
 		selectQuery.append(" On regions.region_id = cities.region_id ");
-		selectQuery.append(LITREAL_WHERE);
+		selectQuery.append(LITERAL_WHERE);
 		selectQuery.append(" countries.country_name = :countryName ");
-		selectQuery.append(LITREAL_AND);
+		selectQuery.append(LITERAL_AND);
 		selectQuery.append(" cities.zipcode LIKE CONCAT('%',:zipcode,'%')");
 		
 		Query query = entityManager.createNativeQuery(selectQuery.toString());
