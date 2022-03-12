@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
 	 * @param ex - Exception thrown in application
 	 * @return ExceptionDetailDTO - Exception Details object thrown to user
 	 */
-	private final <T extends Exception> ExceptionDetailDTO handleException(final T ex) {
+	private <T extends Exception> ExceptionDetailDTO handleException(final T ex) {
 		ExceptionDetailDTO exceptionDetailDTO = new ExceptionDetailDTO(ex);
 		ExceptionMonitorDTO exceptionMonitorDTO = new ExceptionMonitorDTO(ex);
 		this.exceptionMonitoringSvc.insertException(exceptionMonitorDTO);
@@ -86,7 +86,7 @@ public class GlobalExceptionHandler {
 	 * @param ex - Exception thrown in application
 	 * @return ExceptionDetailDTO - Exception Details object thrown to user
 	 */
-	private final <T extends Exception> ExceptionDetailDTO handleExceptionWithoutLogging(final T ex) {
+	private <T extends Exception> ExceptionDetailDTO handleExceptionWithoutLogging(final T ex) {
 		return new ExceptionDetailDTO(ex);
 	}
 	
