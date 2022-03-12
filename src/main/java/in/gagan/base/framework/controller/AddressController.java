@@ -68,7 +68,7 @@ public class AddressController extends AbstractController {
 		Optional<Set<CountryDTO>> countryDTOs = this.addressSvc.getCountries();
 		Set<CountryDTO> countries = countryDTOs.orElseThrow(noSuchElementExceptionSupplier(
 				message.getMessage("message.address.countries.list.empty", null, Locale.ENGLISH)));
-		return new ResponseEntity<Set<CountryDTO>>(countries, HttpStatus.OK);
+		return new ResponseEntity<>(countries, HttpStatus.OK);
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class AddressController extends AbstractController {
 		Optional<Set<CountryDTO>> countryDTOs = this.addressSvc.getCountries();
 		Set<CountryDTO> countries = countryDTOs.orElseThrow(noSuchElementExceptionSupplier(
 				message.getMessage("message.address.countries.list.empty", null, Locale.ENGLISH)));
-		return new ResponseEntity<Set<CountryDTO>>(countries, HttpStatus.OK);
+		return new ResponseEntity<>(countries, HttpStatus.OK);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class AddressController extends AbstractController {
 		Optional<CountryDTO> countryDTO = this.addressSvc.getCountry(countryId);
 		CountryDTO country = countryDTO.orElseThrow(noSuchElementExceptionSupplier(
 				message.getMessage("message.address.country.not.found", new Object[] { countryId }, Locale.ENGLISH)));
-		return new ResponseEntity<CountryDTO>(country, HttpStatus.OK);
+		return new ResponseEntity<>(country, HttpStatus.OK);
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class AddressController extends AbstractController {
 		Optional<Set<RegionDTO>> regionDTOs = this.addressSvc.getRegions(countryId);
 		Set<RegionDTO> regions = regionDTOs.orElseThrow(noSuchElementExceptionSupplier(
 				message.getMessage("message.address.states.not.found", new Object[] { countryId }, Locale.ENGLISH)));
-		return new ResponseEntity<Set<RegionDTO>>(regions, HttpStatus.OK);
+		return new ResponseEntity<>(regions, HttpStatus.OK);
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class AddressController extends AbstractController {
 		Optional<RegionDTO> regionDTO = this.addressSvc.getRegion(countryId, stateId);
 		RegionDTO state = regionDTO.orElseThrow(noSuchElementExceptionSupplier(message
 				.getMessage("message.address.state.not.found", new Object[] { stateId, countryId }, Locale.ENGLISH)));
-		return new ResponseEntity<RegionDTO>(state, HttpStatus.OK);
+		return new ResponseEntity<>(state, HttpStatus.OK);
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class AddressController extends AbstractController {
 		Optional<Set<CityDTO>> cityDTOs = this.addressSvc.getCities(countryId, stateId);
 		Set<CityDTO> cities = cityDTOs.orElseThrow(noSuchElementExceptionSupplier(message
 				.getMessage("message.address.cities.not.found", new Object[] { stateId, countryId }, Locale.ENGLISH)));
-		return new ResponseEntity<Set<CityDTO>>(cities, HttpStatus.OK);
+		return new ResponseEntity<>(cities, HttpStatus.OK);
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class AddressController extends AbstractController {
 		CityDTO city = cityDTO
 				.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.city.not.found",
 						new Object[] { cityId, stateId, countryId }, Locale.ENGLISH)));
-		return new ResponseEntity<CityDTO>(city, HttpStatus.OK);
+		return new ResponseEntity<>(city, HttpStatus.OK);
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class AddressController extends AbstractController {
 		Optional<ZipcodeDTO> zipcodeDTO = this.addressSvc.getDataBasedOnZipcode(countryId, zipcode);
 		ZipcodeDTO zipcodeObj = zipcodeDTO.orElseThrow(noSuchElementExceptionSupplier(message
 				.getMessage("message.address.zipcode.not.found", new Object[] { zipcode, countryId }, Locale.ENGLISH)));
-		return new ResponseEntity<ZipcodeDTO>(zipcodeObj, HttpStatus.OK);
+		return new ResponseEntity<>(zipcodeObj, HttpStatus.OK);
 	}
 
 	private Supplier<? extends NoSuchElementException> noSuchElementExceptionSupplier(String message) {

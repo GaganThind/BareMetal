@@ -179,9 +179,8 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	 */
 	@Override
 	public <S extends E> void saveAll(Iterable<S> entities) {
-		Iterator<S> iterator = entities.iterator();
-		while(iterator.hasNext()) {
-			save(iterator.next());
+		for (S entity : entities) {
+			save(entity);
 		}
 	}
 
@@ -194,7 +193,7 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	 */
 	@Override
 	public void hardDeleteById(K id) {
-		findById(id).ifPresent(e -> hardDelete(e));
+		findById(id).ifPresent(this::hardDelete);
 	}
 
 	/**
@@ -218,9 +217,8 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	 */
 	@Override
 	public void hardDeleteAll(Iterable<E> entities) {
-		Iterator<E> iterator = entities.iterator();
-		while(iterator.hasNext()) {
-			hardDelete(iterator.next());
+		for (E entity : entities) {
+			hardDelete(entity);
 		}
 	}
 
@@ -229,7 +227,7 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	 */
 	@Override
 	public void hardDeleteAll() {
-		findAll().ifPresent(e -> hardDeleteAll(e));
+		findAll().ifPresent(this::hardDeleteAll);
 	}
 	
 	/**
@@ -240,7 +238,7 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	 */
 	@Override
 	public void deleteById(K id) {
-		findById(id).ifPresent(e -> delete(e));
+		findById(id).ifPresent(this::delete);
 	}
 
 	/**
@@ -263,9 +261,8 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	 */
 	@Override
 	public void deleteAll(Iterable<E> entities) {
-		Iterator<E> iterator = entities.iterator();
-		while(iterator.hasNext()) {
-			delete(iterator.next());
+		for (E entity : entities) {
+			delete(entity);
 		}
 	}
 
@@ -274,7 +271,7 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	 */
 	@Override
 	public void deleteAll() {
-		findAll().ifPresent(e -> deleteAll(e));
+		findAll().ifPresent(this::deleteAll);
 	}
 	
 }

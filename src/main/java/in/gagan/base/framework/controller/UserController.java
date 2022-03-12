@@ -74,10 +74,10 @@ public class UserController extends AbstractController {
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO userDTO) throws UsernameExistException {
 		this.userRegistrationSvc.registerNewUser(userDTO);
-		return new ResponseEntity<String>(message.getMessage("message.registration.successfull", 
-															new Object[]{ userDTO.getEmail() }, 
-															Locale.ENGLISH), 
-											HttpStatus.CREATED);
+		return new ResponseEntity<>(message.getMessage("message.registration.successfull",
+				new Object[]{userDTO.getEmail()},
+				Locale.ENGLISH),
+				HttpStatus.CREATED);
 	}
 	
 	/**
@@ -89,7 +89,7 @@ public class UserController extends AbstractController {
 	@GetMapping(value = "/{email}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UserDTO> fetchUser(@EmailValidator @PathVariable String email) {
 		UserDTO userDTO = this.userRegistrationSvc.fetchUser(email);
-		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
+		return new ResponseEntity<>(userDTO, HttpStatus.OK);
 	}
 	
 	/**
@@ -103,7 +103,7 @@ public class UserController extends AbstractController {
 	public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UpdateUserDTO updateUserDTO) throws IllegalAccessException {
 		UserHelperUtil.actionAllowed(updateUserDTO.getEmail());
 		UserDTO updatedUserDTO = this.userRegistrationSvc.updateUser(updateUserDTO);
-		return new ResponseEntity<UserDTO>(updatedUserDTO, HttpStatus.OK);
+		return new ResponseEntity<>(updatedUserDTO, HttpStatus.OK);
 	}
 	
 	/**
@@ -117,7 +117,7 @@ public class UserController extends AbstractController {
 	public ResponseEntity<String> deleteUser(@EmailValidator @PathVariable String email) throws IllegalAccessException {
 		UserHelperUtil.actionAllowed(email);
 		this.userRegistrationSvc.deleteUser(email);
-		return new ResponseEntity<String>("Deleted Successfully!!!", HttpStatus.OK);
+		return new ResponseEntity<>("Deleted Successfully!!!", HttpStatus.OK);
 	}
 	
 	/**
@@ -129,10 +129,10 @@ public class UserController extends AbstractController {
 	@PatchMapping(value = "/register/verify/{token}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> verifyUser(@NotNull @NotEmpty @PathVariable String token) {
 		this.userRegistrationSvc.confirmUserRegisteration(token);
-		return new ResponseEntity<String>(message.getMessage("message.registration.user.verified", 
-															null,
-															Locale.ENGLISH), 
-											HttpStatus.OK);
+		return new ResponseEntity<>(message.getMessage("message.registration.user.verified",
+				null,
+				Locale.ENGLISH),
+				HttpStatus.OK);
 	}
 	
 }

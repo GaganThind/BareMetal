@@ -97,7 +97,8 @@ public class AdminControllerIntegrationTest {
 		HttpHeaders headers = createHttpHeader(MediaType.TEXT_PLAIN, bearerToken);
 		HttpEntity<UserDTO> httpEntity = new HttpEntity<>(headers);
 		
-		return this.restTemplate.exchange(url, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<UserDTO>>() { });
+		return this.restTemplate.exchange(url, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>() {
+		});
 	}
 	
 	/**
@@ -109,7 +110,7 @@ public class AdminControllerIntegrationTest {
 	 */
 	private <T> ResponseEntity<String> postEntity(T inputDTO, String url) {
 		HttpHeaders requestHeaders = createHttpHeader(MediaType.APPLICATION_JSON);
-		HttpEntity<T> httpEntity = new HttpEntity<T>(inputDTO, requestHeaders);
+		HttpEntity<T> httpEntity = new HttpEntity<>(inputDTO, requestHeaders);
 		return this.restTemplate.postForEntity(url, httpEntity, String.class);
 	}
 	

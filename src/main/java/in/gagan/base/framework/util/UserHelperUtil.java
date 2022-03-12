@@ -69,7 +69,7 @@ public final class UserHelperUtil {
 	 */
 	public static Set<UserRoleDTO> convertRoleToDTO(Set<Role> roles) {
 		return roles.stream()
-					.map(role -> role.getRoleName())
+					.map(Role::getRoleName)
 					.map(UserRoleDTO::new)
 					.collect(Collectors.toSet());
 	}
@@ -82,7 +82,7 @@ public final class UserHelperUtil {
 	 */
 	public static Set<Role> convertDTOToRole(Set<UserRoleDTO> roles) {
 		return roles.stream()
-					.map(role -> role.getRoleName())
+					.map(UserRoleDTO::getRoleName)
 					.map(Role::new)
 					.collect(Collectors.toSet());
 	}

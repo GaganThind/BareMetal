@@ -69,7 +69,7 @@ public class PasswordManagerController {
 		String email = passwordResetDTO.getEmail();
 		UserHelperUtil.actionAllowed(email);
 		this.passwordManagerService.resetPassword(passwordResetDTO, email);
-		return new ResponseEntity<String>("Password Reset Successfull!!!", HttpStatus.OK);
+		return new ResponseEntity<>("Password Reset Successfull!!!", HttpStatus.OK);
 	}
 	
 	/**
@@ -81,7 +81,7 @@ public class PasswordManagerController {
 	@PostMapping(value = "/token/{email}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> generateForgotPasswordToken(@EmailValidator @PathVariable String email) {
 		this.passwordManagerService.generateForgotPasswordToken(email);
-		return new ResponseEntity<String>("Password Reset Token Successfully Generated!!!", HttpStatus.OK);
+		return new ResponseEntity<>("Password Reset Token Successfully Generated!!!", HttpStatus.OK);
 	}
 	
 	/**
@@ -94,7 +94,7 @@ public class PasswordManagerController {
 	@PatchMapping(value = "/forgot/{token}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> forgotPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO,@NotNull @NotEmpty @PathVariable String token) {
 		this.passwordManagerService.forgotPassword(passwordResetDTO, token);
-		return new ResponseEntity<String>("Password Reset Successfull!!!", HttpStatus.OK);
+		return new ResponseEntity<>("Password Reset Successfull!!!", HttpStatus.OK);
 	}
 
 }
