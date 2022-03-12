@@ -61,7 +61,7 @@ public class AdminServiceImpl implements AdminService {
 	public void createAdminUser() {
 		User user = this.adminAccount.getAdminDetails();
 		
-		if (!this.userDAO.findUserByEmail(user.getEmail()).isPresent()) {
+		if (this.userDAO.findUserByEmail(user.getEmail()).isEmpty()) {
 			this.userDAO.save(user);
 		}
 	}
