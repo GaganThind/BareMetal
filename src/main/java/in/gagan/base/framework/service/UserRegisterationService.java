@@ -38,7 +38,7 @@ public interface UserRegisterationService {
 	 * @return String - username is returned
 	 * @throws UsernameExistException - If User with email already present
 	 */
-	public String registerNewUser(UserDTO user) throws UsernameExistException;
+	String registerNewUser(UserDTO user) throws UsernameExistException;
 	
 	/**
 	 * This method returns the user data from provided email.
@@ -46,7 +46,7 @@ public interface UserRegisterationService {
 	 * @param email - User email address
 	 * @return UserDTO - User DTO object with user details
 	 */
-	public UserDTO fetchUser(String email);
+	UserDTO fetchUser(String email);
 	
 	/**
 	 * This method is used to either update the record(if present) or insert the record.
@@ -54,21 +54,21 @@ public interface UserRegisterationService {
 	 * @param updateUserDTO - User DTO object with user details to update
 	 * @return UserDTO - User DTO object with user details
 	 */
-	public UserDTO updateUser(UpdateUserDTO updateUserDTO);
+	UserDTO updateUser(UpdateUserDTO updateUserDTO);
 
 	/**
 	 * This method is used to soft delete the user record using provided email.
 	 * 
 	 * @param email - Email address of user
 	 */
-	public void deleteUser(String email);
+	void deleteUser(String email);
 
 	/**
 	 * This method is used to confirm the user registration by accepting a token.
 	 * 
 	 * @param token - Random token generated for activating user
 	 */
-	public void confirmUserRegisteration(String token);
+	void confirmUserRegisteration(String token);
 
 	/**
 	 * This method is used to send account verification email with random token for user verification.
@@ -76,13 +76,13 @@ public interface UserRegisterationService {
 	 * @param email - Email address of user
 	 * @param token - Random token generated for activating user
 	 */
-	public void sendAccountVerificationEmail(String email, String token);
+	void sendAccountVerificationEmail(String email, String token);
 
 	/**
 	 * This method is used to send account successfully verified email.
 	 * 
 	 * @param email - Email address of user
 	 */
-	public void sendSuccessfullAccountVerificationEmail(String email);
+	void sendSuccessfullAccountVerificationEmail(String email);
 
 }

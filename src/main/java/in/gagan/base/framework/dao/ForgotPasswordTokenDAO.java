@@ -37,6 +37,6 @@ public interface ForgotPasswordTokenDAO extends BaseDAO<ForgotPasswordToken, Lon
 	 * @param token - token to fetch record
 	 * @return Optional<ForgotPasswordToken> - ForgotPasswordToken record
 	 */
-	public Optional<ForgotPasswordToken> fetchByToken(String token);
+	Optional<ForgotPasswordToken> fetchByToken(String token);
 
 }

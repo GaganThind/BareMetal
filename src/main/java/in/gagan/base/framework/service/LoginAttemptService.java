@@ -34,13 +34,13 @@ public interface LoginAttemptService {
 	 * 
 	 * @param auth - Authentication object containing user info
 	 */
-	public void loginFailed(Authentication auth);
+	void loginFailed(Authentication auth);
 
 	/**
 	 * This method is used to perform some operation when user authentication succeeds.
 	 * 
 	 * @param auth - Authentication object containing user info
 	 */
-	public void loginSucceeded(Authentication auth);
+	void loginSucceeded(Authentication auth);
 
 }

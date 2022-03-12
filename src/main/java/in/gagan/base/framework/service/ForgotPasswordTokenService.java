@@ -36,7 +36,7 @@ public interface ForgotPasswordTokenService {
 	 * @param User - User entity object
 	 * @return String - Random password token
 	 */
-	public String generateForgotPasswordToken(User user);
+	String generateForgotPasswordToken(User user);
 	
 	/**
 	 * This method is used to fetch the provided token in the system.
@@ -44,7 +44,7 @@ public interface ForgotPasswordTokenService {
 	 * @param token - Random verification token already sent in email
 	 * @return ForgotPasswordToken - ForgotPasswordToken record from database
 	 */
-	public ForgotPasswordToken fetchByToken(String token);
+	ForgotPasswordToken fetchByToken(String token);
 	
 	/**
 	 * This method is used to delete the token once successfully verified.

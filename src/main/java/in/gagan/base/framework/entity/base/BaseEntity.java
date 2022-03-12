@@ -32,13 +32,13 @@ public interface BaseEntity {
 	 * 
 	 * @return activeSw: Activation status i.e. Y is Active and N is inactive
 	 */
-	public char isActive();
+	char isActive();
 
 	/**
 	 * Method used to set the entity activation status.
 	 * 
 	 * @param activeSw: Activation status i.e. Y is Active and N is inactive
 	 */
-	public void setActiveSw(char activeSw);
+	void setActiveSw(char activeSw);
 	
 }

@@ -36,7 +36,7 @@ public interface VerificationTokenService {
 	 * @param user - User record to insert
 	 * @return String - Random verification token
 	 */
-	public String generateTokenForUser(User user);
+	String generateTokenForUser(User user);
 	
 	/**
 	 * This method is used to fetch the provided token in the system.
@@ -44,7 +44,7 @@ public interface VerificationTokenService {
 	 * @param token - Random verification token already sent in email
 	 * @return VerificationToken - Verification_Token record from database
 	 */
-	public VerificationToken fetchByToken(String token);
+	VerificationToken fetchByToken(String token);
 	
 	/**
 	 * This method is used to delete the token once successfully verified.
