@@ -20,6 +20,7 @@
 package in.gagan.base.framework.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * This DTO captures the zipcode specific data
@@ -63,6 +64,19 @@ public class ZipcodeDTO implements Serializable {
 
 	public String getCountry() {
 		return countryId;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ZipcodeDTO that = (ZipcodeDTO) o;
+		return zipcode == that.zipcode && Objects.equals(cityId, that.cityId) && Objects.equals(stateId, that.stateId)
+				&& Objects.equals(countryId, that.countryId);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(zipcode, cityId, stateId, countryId);
 	}
 	
 }
