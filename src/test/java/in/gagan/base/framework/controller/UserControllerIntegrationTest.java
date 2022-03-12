@@ -314,7 +314,7 @@ public class UserControllerIntegrationTest {
 	 * Method used to post data to UserController
 	 * 
 	 * @param <T> - Input DTO class
-	 * @param inputUserDTO - User DTO object with user details
+	 * @param inputDTO - User DTO object with user details
 	 * @return ResponseEntity<String> - Message from server
 	 */
 	private <T> ResponseEntity<String> postEntity(T inputDTO, String url) {
