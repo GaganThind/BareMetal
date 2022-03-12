@@ -62,7 +62,7 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	/**
 	 * Persistence class. This variable store the model object class
 	 */
-	private Class<E> persistentClass;
+	private final Class<E> persistentClass;
 	
 	/**
 	 * AbstractBaseDAO Constructor

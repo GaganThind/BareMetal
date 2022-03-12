@@ -34,13 +34,13 @@ public class ZipcodeDTO implements Serializable {
 	 */
 	private static final long serialVersionUID = -1354685243128420186L;
 	
-	private long zipcode;
+	private final long zipcode;
 	
-	private String cityId;
+	private final String cityId;
 	
-	private String stateId;
+	private final String stateId;
 	
-	private String countryId;
+	private final String countryId;
 
 	public ZipcodeDTO(long zipcode, String cityId, String stateId, String countryId) {
 		this.zipcode = zipcode;
