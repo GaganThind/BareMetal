@@ -77,7 +77,7 @@ public class AddressServiceImpl implements AddressService {
 										message.getMessage("message.address.countries.list.empty", null, Locale.ENGLISH)));
 
 		Set<CountryDTO> countryDTOs = convertToDTO(countries);
-		return Optional.ofNullable(countryDTOs);
+		return Optional.of(countryDTOs);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class AddressServiceImpl implements AddressService {
 		for (Country country: countries) {
 			countryDTOs.add(new CountryDTO(country.getCountryName()));
 		}
-		return Optional.ofNullable(countryDTOs);
+		return Optional.of(countryDTOs);
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class AddressServiceImpl implements AddressService {
 		Set<RegionDTO> sortedSet = new TreeSet<>(Comparator.comparing(RegionDTO::getName));
 		sortedSet.addAll(regionDTOs);
 		
-		return Optional.ofNullable(new CountryDTO(country.getCountryName(), sortedSet));
+		return Optional.of(new CountryDTO(country.getCountryName(), sortedSet));
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class AddressServiceImpl implements AddressService {
 	 * Method used to return the city based on country, state and city.
 	 * 
 	 * @param countryId - country id for which data is to be searched
-	 * @param stateId   - state id for which data is to be searched
+	 * @param regionId   - region id for which data is to be searched
 	 * @return city - data consisting of city details
 	 */
 	@Override
@@ -225,6 +225,7 @@ public class AddressServiceImpl implements AddressService {
 		}
 		
 		// Sort zipcodes
+		assert cityDTO != null;
 		Set<Long> sortedSet = new TreeSet<>(cityDTO.getZipcodes());
 		cityDTO.setZipcodes(sortedSet);
 
