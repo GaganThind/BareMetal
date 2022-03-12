@@ -17,9 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.dto;
+package in.gagan.base.framework.dto.location;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -28,12 +27,7 @@ import java.util.Objects;
  * @author gaganthind
  *
  */
-public class ZipcodeDTO implements Serializable {
-
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = -1354685243128420186L;
+public class ZipcodeDTO {
 	
 	private final long zipcode;
 	

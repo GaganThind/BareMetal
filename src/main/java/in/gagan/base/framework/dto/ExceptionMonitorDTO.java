@@ -19,11 +19,10 @@
 
 package in.gagan.base.framework.dto;
 
-import java.io.Serializable;
+import org.apache.commons.lang3.StringUtils;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * This DTO captures the exception details and log them in database. 
@@ -31,12 +30,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author gaganthind
  *
  */
-public final class ExceptionMonitorDTO implements Serializable {
-
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = -2490654778345545308L;
+public final class ExceptionMonitorDTO {
 	
 	// Create date
 	private final LocalDateTime createDt;

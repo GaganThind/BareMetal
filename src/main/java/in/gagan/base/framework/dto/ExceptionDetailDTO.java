@@ -28,12 +28,7 @@ import java.time.LocalDateTime;
  * @author gaganthind
  *
  */
-public final class ExceptionDetailDTO implements Serializable {
-
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = 360375444649679577L;
+public final class ExceptionDetailDTO {
 
 	// Create date
 	private final LocalDateTime createDt;

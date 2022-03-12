@@ -19,16 +19,14 @@
 
 package in.gagan.base.framework.dto;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import in.gagan.base.framework.enums.Gender;
+import in.gagan.base.framework.validator.EmailValidator;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import in.gagan.base.framework.enums.Gender;
-import in.gagan.base.framework.validator.EmailValidator;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This DTO captures the user details from user entity for updating user details and is used for internal data transfer.
@@ -36,13 +34,8 @@ import in.gagan.base.framework.validator.EmailValidator;
  * @author gaganthind
  *
  */
-public class UpdateUserDTO implements Serializable {
+public class UpdateUserDTO {
 
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = -4616881598623678171L;
-	
 	private String firstName;
 
 	private String lastName;

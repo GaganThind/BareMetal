@@ -35,10 +35,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import in.gagan.base.framework.dao.CountryDAO;
-import in.gagan.base.framework.dto.CityDTO;
-import in.gagan.base.framework.dto.CountryDTO;
-import in.gagan.base.framework.dto.RegionDTO;
-import in.gagan.base.framework.dto.ZipcodeDTO;
+import in.gagan.base.framework.dto.location.CityDTO;
+import in.gagan.base.framework.dto.location.CountryDTO;
+import in.gagan.base.framework.dto.location.RegionDTO;
+import in.gagan.base.framework.dto.location.ZipcodeDTO;
 import in.gagan.base.framework.entity.location.City;
 import in.gagan.base.framework.entity.location.Country;
 import in.gagan.base.framework.entity.location.Region;

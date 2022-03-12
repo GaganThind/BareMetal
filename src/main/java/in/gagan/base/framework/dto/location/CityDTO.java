@@ -17,10 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.dto;
+package in.gagan.base.framework.dto.location;
 
-import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -29,12 +29,7 @@ import java.util.Set;
  * @author gaganthind
  *
  */
-public final class CityDTO implements Serializable {
-
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = -6915127657521583329L;
+public final class CityDTO {
 	
 	private final String id;
 	
@@ -70,28 +65,6 @@ public final class CityDTO implements Serializable {
 		this.zipcodes.add(zipcode);
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CityDTO other = (CityDTO) obj;
-		if (id == null) {
-			return other.id == null;
-		} else return id.equals(other.id);
-	}
-
 	public String getId() {
 		return id;
 	}
@@ -100,4 +73,16 @@ public final class CityDTO implements Serializable {
 		return name;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		CityDTO cityDTO = (CityDTO) o;
+		return id.equals(cityDTO.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
 }

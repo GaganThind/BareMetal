@@ -34,10 +34,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import in.gagan.base.framework.dto.CityDTO;
-import in.gagan.base.framework.dto.CountryDTO;
-import in.gagan.base.framework.dto.RegionDTO;
-import in.gagan.base.framework.dto.ZipcodeDTO;
+import in.gagan.base.framework.dto.location.CityDTO;
+import in.gagan.base.framework.dto.location.CountryDTO;
+import in.gagan.base.framework.dto.location.RegionDTO;
+import in.gagan.base.framework.dto.location.ZipcodeDTO;
 import in.gagan.base.framework.service.AddressService;
 
 /**

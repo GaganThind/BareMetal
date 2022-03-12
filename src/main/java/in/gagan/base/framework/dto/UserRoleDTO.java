@@ -19,9 +19,9 @@
 
 package in.gagan.base.framework.dto;
 
-import java.io.Serializable;
-
 import in.gagan.base.framework.enums.UserRoles;
+
+import java.util.Objects;
 
 /**
  * This DTO captures the user role details from role entity and is used for internal data transfer.
@@ -29,12 +29,8 @@ import in.gagan.base.framework.enums.UserRoles;
  * @author gaganthind
  *
  */
-public class UserRoleDTO implements Serializable {
-	
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = -807666354682392231L;
+public class UserRoleDTO {
+
 	private UserRoles roleName;
 	
 	public UserRoleDTO() { }
@@ -48,25 +44,15 @@ public class UserRoleDTO implements Serializable {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((roleName == null) ? 0 : roleName.hashCode());
-		return result;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		UserRoleDTO that = (UserRoleDTO) o;
+		return roleName == that.roleName;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UserRoleDTO other = (UserRoleDTO) obj;
-		if (roleName == null) {
-			return other.roleName == null;
-		} else return roleName.equals(other.roleName);
+	public int hashCode() {
+		return Objects.hash(roleName);
 	}
-	
 }

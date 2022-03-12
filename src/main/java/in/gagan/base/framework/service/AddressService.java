@@ -22,10 +22,10 @@ package in.gagan.base.framework.service;
 import java.util.Optional;
 import java.util.Set;
 
-import in.gagan.base.framework.dto.CityDTO;
-import in.gagan.base.framework.dto.CountryDTO;
-import in.gagan.base.framework.dto.RegionDTO;
-import in.gagan.base.framework.dto.ZipcodeDTO;
+import in.gagan.base.framework.dto.location.CityDTO;
+import in.gagan.base.framework.dto.location.CountryDTO;
+import in.gagan.base.framework.dto.location.RegionDTO;
+import in.gagan.base.framework.dto.location.ZipcodeDTO;
 
 /**
  * This Service interface provides the operations for address functionality.

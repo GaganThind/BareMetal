@@ -19,14 +19,12 @@
 
 package in.gagan.base.framework.dto;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import in.gagan.base.framework.validator.EmailValidator;
 import in.gagan.base.framework.validator.Password;
 import in.gagan.base.framework.validator.PasswordMatches;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * This DTO captures the password reset details.
@@ -35,12 +33,7 @@ import in.gagan.base.framework.validator.PasswordMatches;
  *
  */
 @PasswordMatches
-public class PasswordResetDTO implements Serializable {
-	
-	/**
-	 * Serial Version
-	 */
-	private static final long serialVersionUID = -7115804187656427800L;
+public class PasswordResetDTO {
 
 	@Password
 	@NotNull(message = "{message.registration.password}")

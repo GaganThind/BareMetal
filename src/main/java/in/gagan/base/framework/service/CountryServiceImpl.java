@@ -41,7 +41,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dao.CountryDAO;
-import in.gagan.base.framework.dto.CountryInputDTO;
+import in.gagan.base.framework.dto.location.CountryInputDTO;
 import in.gagan.base.framework.entity.location.City;
 import in.gagan.base.framework.entity.location.Country;
 import in.gagan.base.framework.entity.location.Region;
