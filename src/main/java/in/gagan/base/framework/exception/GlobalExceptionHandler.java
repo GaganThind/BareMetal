@@ -74,7 +74,7 @@ public class GlobalExceptionHandler {
 		ExceptionDetailDTO exceptionDetailDTO = new ExceptionDetailDTO(ex);
 		ExceptionMonitorDTO exceptionMonitorDTO = new ExceptionMonitorDTO(ex);
 		this.exceptionMonitoringSvc.insertException(exceptionMonitorDTO);
-		logger.error("Exception with cause = {}", exceptionMonitorDTO.toString());
+		logger.error("Exception with cause = {}", exceptionMonitorDTO);
 		
 		return exceptionDetailDTO;
 	}
