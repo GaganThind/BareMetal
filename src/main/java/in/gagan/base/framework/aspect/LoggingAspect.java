@@ -40,7 +40,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoggingAspect {
 
-	Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
+	final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
 	/**
 	 * Pointcut that matches all repositories, services and Web REST endpoints.
