@@ -27,7 +27,7 @@ import org.springframework.data.domain.AuditorAware;
 import in.gagan.base.framework.util.UserHelperUtil;
 
 /**
- * This class is used to provide the principal/logged-in user name for database operation.
+ * This class is used to provide the principal/logged-in username for database operation.
  * 
  * @author gaganthind
  *
@@ -35,7 +35,7 @@ import in.gagan.base.framework.util.UserHelperUtil;
 public class AuditorAwareImpl implements AuditorAware<String> {
 
 	/**
-	 * This method is  used to get the name of the current logged in user.
+	 * This method is  used to get the name of the current logged-in user.
 	 * 
 	 * @return Optional<String> - Logged-in username
 	 */

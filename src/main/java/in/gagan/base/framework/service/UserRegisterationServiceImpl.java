@@ -149,7 +149,7 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 		this.verificationTokenSvc.deleteToken(verificationToken);
 		
 		// Send confirmation email
-		sendSuccessfullAccountVerificationEmail(user.getEmail());
+		sendSuccessfulAccountVerificationEmail(user.getEmail());
 	}
 	
 	/**
@@ -171,7 +171,7 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	 * @param email - Email address of user
 	 */
 	@Override
-	public void sendSuccessfullAccountVerificationEmail(String email) {
+	public void sendSuccessfulAccountVerificationEmail(String email) {
 		String subject = "Account Successfully Verified";
 		String message = "";
 		this.emailSvc.sendEmail(email, subject, message);

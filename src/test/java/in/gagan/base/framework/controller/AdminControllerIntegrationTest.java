@@ -87,7 +87,7 @@ public class AdminControllerIntegrationTest {
 	}
 	
 	/**
-	 * Method used to send a get request for fetching user detaiils.
+	 * Method used to send a get request for fetching user details.
 	 * 
 	 * @param url - Url to hit
 	 * @return ResponseEntity<UserDTO> - User details DTO

@@ -34,7 +34,7 @@ import in.gagan.base.framework.entity.Role;
 import in.gagan.base.framework.entity.User;
 
 /**
- * This class provides the implementation of DummyDataServide interface and provides operations for creating dummy data.
+ * This class provides the implementation of DummyDataService interface and provides operations for creating dummy data.
  * 
  * @author gaganthind
  *

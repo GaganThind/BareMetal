@@ -33,6 +33,6 @@ public final class JWTSecurityConstants {
 	public static final String BLANK = "";
 	public static final String SINGLE_SPACE = " ";
 	public static final String AUTHORITIES = "authorities";
-	public static final String AUTHORITIY = "authority";
+	public static final String AUTHORITY = "authority";
 
 }

@@ -59,7 +59,7 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 	 * @return countries: countries data consisting of state, cities and zipcodes
 	 */
 	@Override
-	public Optional<Country> findbyCountryId(String countryId) {
+	public Optional<Country> findByCountryId(String countryId) {
 		StringBuilder selectQuery = new StringBuilder();
 		selectQuery.append(LITERAL_FROM);
 		selectQuery.append(getTableName());
@@ -109,7 +109,7 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Optional<Region> findRegionbyCountryIdAndRegionId(String countryId, String regionId) {
+	public Optional<Region> findRegionByCountryIdAndRegionId(String countryId, String regionId) {
 		StringBuilder selectQuery = new StringBuilder();
 		selectQuery.append(LITERAL_SELECT);
 		selectQuery.append("regions.* ");
@@ -141,7 +141,7 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Optional<Iterable<City>> findCitybyCountryIdStateIdAndCityId(String countryId, String regionId, String cityId) {
+	public Optional<Iterable<City>> findCityByCountryIdStateIdAndCityId(String countryId, String regionId, String cityId) {
 		StringBuilder selectQuery = new StringBuilder();
 		selectQuery.append(LITERAL_SELECT);
 		selectQuery.append("cities.* ");
@@ -176,7 +176,7 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public Optional<ZipcodeDTO> findZipcodeDatabyCountryIdAndZipcode(String countryId, long zipcode) {
+	public Optional<ZipcodeDTO> findZipcodeDataByCountryIdAndZipcode(String countryId, long zipcode) {
 		StringBuilder selectQuery = new StringBuilder();
 		selectQuery.append(LITERAL_SELECT);
 		selectQuery.append(" countries.country_name, regions.region_name, cities.city_name, cities.zipcode ");
