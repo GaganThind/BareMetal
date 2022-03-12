@@ -55,7 +55,7 @@ public class VerificationTokenProps {
 	/**
 	 * Method to get the expiry date for newly created token from current time.
 	 * 
-	 * @return
+	 * @return localDateTime verification token expiry time
 	 */
 	public LocalDateTime getExpiryTimeFromNow() {
 		return LocalDateTime.now().plusDays(getVerificationTokenExpiryDays());
