@@ -20,7 +20,7 @@
 package in.gagan.base.framework.service;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -101,7 +101,7 @@ public class UserDataServiceImpl implements UserDataService {
 	 */
 	@Override
 	public void deleteUser(String email) {
-		this.userDAO.deleteUsers(Arrays.asList(email));
+		this.userDAO.deleteUsers(List.of(email));
 	}
 	
 	/**
