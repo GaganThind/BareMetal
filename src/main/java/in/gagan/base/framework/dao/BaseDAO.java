@@ -39,7 +39,6 @@ public interface BaseDAO<E extends BaseEntity, K extends Serializable> {
 	 *
 	 * @param id must not be {@literal null}.
 	 * @return the entity with the given id or {@literal Optional#empty()} if none found
-	 * @throws IllegalArgumentException if {@code id} is {@literal null}.
 	 */
 	Optional<E> findById(K id);
 
@@ -48,7 +47,6 @@ public interface BaseDAO<E extends BaseEntity, K extends Serializable> {
 	 *
 	 * @param id must not be {@literal null}.
 	 * @return {@literal true} if an entity with the given id exists, {@literal false} otherwise.
-	 * @throws IllegalArgumentException if {@code id} is {@literal null}.
 	 */
 	boolean existsById(K id);
 
@@ -62,8 +60,8 @@ public interface BaseDAO<E extends BaseEntity, K extends Serializable> {
 	/**
 	 * Returns all instances of the type with the given IDs.
 	 *
-	 * @param ids
-	 * @return
+	 * @param ids iterable of ids to be searched
+	 * @return All entities with passed ids
 	 */
 	Optional<Iterable<E>> findAllById(Iterable<K> ids);
 
@@ -85,8 +83,6 @@ public interface BaseDAO<E extends BaseEntity, K extends Serializable> {
 	 * Saves all given entities.
 	 *
 	 * @param entities must not be {@literal null}.
-	 * @return the saved entities will never be {@literal null}.
-	 * @throws IllegalArgumentException in case the given entity is {@literal null}.
 	 */
 	<S extends E> void saveAll(Iterable<S> entities);
 	
@@ -94,23 +90,20 @@ public interface BaseDAO<E extends BaseEntity, K extends Serializable> {
 	 * Mark the active SW as N for this id.
 	 *
 	 * @param id must not be {@literal null}.
-	 * @throws IllegalArgumentException in case the given {@code id} is {@literal null}
 	 */
 	void deleteById(K id);
 
 	/**
 	 * Mark the active SW as N for this given entity.
 	 *
-	 * @param entity
-	 * @throws IllegalArgumentException in case the given entity is {@literal null}.
+	 * @param entity Entity object for deletion from database
 	 */
 	void delete(E entity);
 
 	/**
 	 * Mark the active SW as N for these entities.
 	 *
-	 * @param entities
-	 * @throws IllegalArgumentException in case the given {@link Iterable} is {@literal null}.
+	 * @param entities Entity objects for deletion from database
 	 */
 	void deleteAll(Iterable<E> entities);
 
@@ -123,23 +116,20 @@ public interface BaseDAO<E extends BaseEntity, K extends Serializable> {
 	 * Deletes the entity with the given id.
 	 *
 	 * @param id must not be {@literal null}.
-	 * @throws IllegalArgumentException in case the given {@code id} is {@literal null}
 	 */
 	void hardDeleteById(K id);
 
 	/**
 	 * Deletes a given entity.
 	 *
-	 * @param entity
-	 * @throws IllegalArgumentException in case the given entity is {@literal null}.
+	 * @param entity Entity object for permanent deletion from database
 	 */
 	void hardDelete(E entity);
 
 	/**
 	 * Deletes the given entities.
 	 *
-	 * @param entities
-	 * @throws IllegalArgumentException in case the given {@link Iterable} is {@literal null}.
+	 * @param entities Entity objects for permanent deletion from database
 	 */
 	void hardDeleteAll(Iterable<E> entities);
 

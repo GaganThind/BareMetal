@@ -104,7 +104,6 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	 * @param id must not be {@literal null}.
 	 * @return the entity with the given id or {@literal Optional#empty()} if none
 	 *         found
-	 * @throws IllegalArgumentException if {@code id} is {@literal null}.
 	 */
 	@Override
 	public Optional<E> findById(K id) {
@@ -117,7 +116,6 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	 * @param id must not be {@literal null}.
 	 * @return {@literal true} if an entity with the given id exists,
 	 *         {@literal false} otherwise.
-	 * @throws IllegalArgumentException if {@code id} is {@literal null}.
 	 */
 	@Override
 	public boolean existsById(K id) {
@@ -147,10 +145,9 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	/**
 	 * Refresh the instance
 	 * 
-	 * @param <S>
+	 * @param <S> Entity object to be refreshed from database
 	 *
 	 * @param entity must not be {@literal null}.
-	 * @return the saved entity will never be {@literal null}.
 	 */
 	public <S extends E> void refresh(S entity) {
 		entityManager.refresh(entity);
@@ -159,10 +156,9 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	/**
 	 * Save the instance.
 	 * 
-	 * @param <S>
+	 * @param <S> Entity object to be saved from database
 	 *
 	 * @param entity must not be {@literal null}.
-	 * @return the saved entity will never be {@literal null}.
 	 */
 	@Override
 	public <S extends E> void save(S entity) {
@@ -173,8 +169,6 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	 * Saves all given entities.
 	 *
 	 * @param entities must not be {@literal null}.
-	 * @return the saved entities will never be {@literal null}.
-	 * @throws IllegalArgumentException in case the given entity is {@literal null}.
 	 */
 	@Override
 	public <S extends E> void saveAll(Iterable<S> entities) {
@@ -187,8 +181,6 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	 * Deletes the entity with the given id.
 	 *
 	 * @param id must not be {@literal null}.
-	 * @throws IllegalArgumentException in case the given {@code id} is
-	 *                                  {@literal null}
 	 */
 	@Override
 	public void hardDeleteById(K id) {
@@ -198,8 +190,7 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	/**
 	 * Deletes a given entity.
 	 *
-	 * @param entity
-	 * @throws IllegalArgumentException in case the given entity is {@literal null}.
+	 * @param entity Entity object for permanent deletion from database
 	 */
 	@Override
 	public void hardDelete(E entity) {
@@ -210,9 +201,7 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	/**
 	 * Deletes the given entities.
 	 *
-	 * @param entities
-	 * @throws IllegalArgumentException in case the given {@link Iterable} is
-	 *                                  {@literal null}.
+	 * @param entities Entity objects for permanent deletion from database
 	 */
 	@Override
 	public void hardDeleteAll(Iterable<E> entities) {
@@ -233,7 +222,6 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	 * Mark the active SW as N for this id.
 	 *
 	 * @param id must not be {@literal null}.
-	 * @throws IllegalArgumentException in case the given {@code id} is {@literal null}
 	 */
 	@Override
 	public void deleteById(K id) {
@@ -243,8 +231,7 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	/**
 	 * Mark the active SW as N for this given entity.
 	 *
-	 * @param entity
-	 * @throws IllegalArgumentException in case the given entity is {@literal null}.
+	 * @param entity Entity object for deletion from database
 	 */
 	@Override
 	public void delete(E entity) {
@@ -255,8 +242,7 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	/**
 	 * Mark the active SW as N for these entities.
 	 *
-	 * @param entities
-	 * @throws IllegalArgumentException in case the given {@link Iterable} is {@literal null}.
+	 * @param entities Entity objects for deletion from database
 	 */
 	@Override
 	public void deleteAll(Iterable<E> entities) {
