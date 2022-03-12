@@ -29,5 +29,5 @@ public enum UserPermissions {
 	ADMIN_WRITE,
 	ADMIN_READ,
 	USER_WRITE,
-	USER_READ;
+	USER_READ
 }
