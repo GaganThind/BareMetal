@@ -65,7 +65,7 @@ public class AddressServiceImpl implements AddressService {
 	}
 	
 	/**
-	 * Method used to return all the countries data containing states and cities for admin purpose.
+	 * Method used to return all the countries' data containing states and cities for admin purpose.
 	 * 
 	 * @return countries - data consisting of all the countries
 	 */
@@ -108,7 +108,7 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public Optional<CountryDTO> getCountry(String countryId) {
 		Country country = 
-				this.countryDAO.findbyCountryId(countryId)
+				this.countryDAO.findByCountryId(countryId)
 								.orElseThrow(noSuchElementExceptionSupplier(
 										message.getMessage("message.address.country.not.found", 
 															new Object[] { countryId }, Locale.ENGLISH)));
@@ -152,7 +152,7 @@ public class AddressServiceImpl implements AddressService {
 
 	/**
 	 * Method used to return the region data along with city details based on passed
-	 * countryid and regionId.
+	 * countryId and regionId.
 	 * 
 	 * @param countryId - country id for which data is to be searched
 	 * @param regionId  - region/state id for which data is to be searched
@@ -160,7 +160,7 @@ public class AddressServiceImpl implements AddressService {
 	 */
 	@Override
 	public Optional<RegionDTO> getRegion(String countryId, String regionId) {
-		Region region = this.countryDAO.findRegionbyCountryIdAndRegionId(countryId, regionId)
+		Region region = this.countryDAO.findRegionByCountryIdAndRegionId(countryId, regionId)
 				.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.state.not.found",
 						new Object[] { regionId, countryId }, Locale.ENGLISH)));
 		RegionDTO regionDTO = new RegionDTO(region.getRegionName());
@@ -211,7 +211,7 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public Optional<CityDTO> getCity(String countryId, String regionId, String cityId) {
 		Iterable<City> city = 
-				this.countryDAO.findCitybyCountryIdStateIdAndCityId(countryId, regionId, cityId)
+				this.countryDAO.findCityByCountryIdStateIdAndCityId(countryId, regionId, cityId)
 								.orElseThrow(noSuchElementExceptionSupplier(message.getMessage("message.address.city.not.found",
 											new Object[] { cityId, regionId, countryId }, Locale.ENGLISH)));
 
@@ -240,7 +240,7 @@ public class AddressServiceImpl implements AddressService {
 	 */
 	@Override
 	public Optional<ZipcodeDTO> getDataBasedOnZipcode(String countryId, long zipcode) {
-		return this.countryDAO.findZipcodeDatabyCountryIdAndZipcode(countryId, zipcode);
+		return this.countryDAO.findZipcodeDataByCountryIdAndZipcode(countryId, zipcode);
 	}
 
 	private Supplier<? extends NoSuchElementException> noSuchElementExceptionSupplier(String message) {

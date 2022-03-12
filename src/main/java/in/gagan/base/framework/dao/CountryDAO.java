@@ -40,7 +40,7 @@ public interface CountryDAO extends BaseDAO<Country, Long> {
 	 * @param countryId: country to search
 	 * @return country: country data consisting of state, cities and zipcodes
 	 */
-	Optional<Country> findbyCountryId(String countryId);
+	Optional<Country> findByCountryId(String countryId);
 	
 	/**
 	 * Method used to find region data (only) based on countryId.
@@ -57,7 +57,7 @@ public interface CountryDAO extends BaseDAO<Country, Long> {
 	 * @param regionId: region to search
 	 * @return region: data consisting of the region/state
 	 */
-	Optional<Region> findRegionbyCountryIdAndRegionId(String countryId, String regionId);
+	Optional<Region> findRegionByCountryIdAndRegionId(String countryId, String regionId);
 	
 	/**
 	 * Method used to find city data based on countryId, regionId and cityId
@@ -67,7 +67,7 @@ public interface CountryDAO extends BaseDAO<Country, Long> {
 	 * @param cityId: city to search
 	 * @return city: data consisting of city details
 	 */
-	Optional<Iterable<City>> findCitybyCountryIdStateIdAndCityId(String countryId, String regionId, String cityId);
+	Optional<Iterable<City>> findCityByCountryIdStateIdAndCityId(String countryId, String regionId, String cityId);
 	
 	/**
 	 * Method used to find country data based on countryId and zipcode
@@ -76,6 +76,6 @@ public interface CountryDAO extends BaseDAO<Country, Long> {
 	 * @param zipcode: zipcode to search
 	 * @return zipcodeDTO: zipcode data consisting of region/state, city and country names
 	 */
-	Optional<ZipcodeDTO> findZipcodeDatabyCountryIdAndZipcode(String countryId, long zipcode);
+	Optional<ZipcodeDTO> findZipcodeDataByCountryIdAndZipcode(String countryId, long zipcode);
 
 }

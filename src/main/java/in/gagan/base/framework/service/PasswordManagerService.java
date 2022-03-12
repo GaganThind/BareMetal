@@ -53,7 +53,7 @@ public interface PasswordManagerService {
 	void forgotPassword(PasswordResetDTO passwordResetDTO, String token);
 
 	/**
-	 * This method is used to send password successfully re-setted email.
+	 * This method is used to send password successfully reset email.
 	 * 
 	 * @param email - Email address of user
 	 */

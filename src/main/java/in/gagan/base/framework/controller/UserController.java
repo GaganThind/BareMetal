@@ -74,7 +74,7 @@ public class UserController extends AbstractController {
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO userDTO) throws UsernameExistException {
 		this.userRegistrationSvc.registerNewUser(userDTO);
-		return new ResponseEntity<>(message.getMessage("message.registration.successfull",
+		return new ResponseEntity<>(message.getMessage("message.registration.successful",
 				new Object[]{userDTO.getEmail()},
 				Locale.ENGLISH),
 				HttpStatus.CREATED);
@@ -97,7 +97,7 @@ public class UserController extends AbstractController {
 	 * 
 	 * @param updateUserDTO - the user data represented in form of a DTO
 	 * @return ResponseEntity<UserDTO> - User details from database
-	 * @throws IllegalAccessException - Logged-In User is different from updation user 
+	 * @throws IllegalAccessException - Logged-In User is different from updating user
 	 */
 	@PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UpdateUserDTO updateUserDTO) throws IllegalAccessException {
@@ -111,7 +111,7 @@ public class UserController extends AbstractController {
 	 * 
 	 * @param email - Input email to delete the user
 	 * @return ResponseEntity<String> - Success message
-	 * @throws IllegalAccessException - Logged-In User is different from updation user 
+	 * @throws IllegalAccessException - Logged-In User is different from updating user
 	 */
 	@DeleteMapping(value = "/{email}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> deleteUser(@EmailValidator @PathVariable String email) throws IllegalAccessException {

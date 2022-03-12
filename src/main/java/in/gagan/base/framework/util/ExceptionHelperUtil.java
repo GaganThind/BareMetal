@@ -32,7 +32,7 @@ public final class ExceptionHelperUtil {
 	private ExceptionHelperUtil() { }
 	
 	/**
-	 * This method returns new User name not found exception.
+	 * This method returns new username not found exception.
 	 * 
 	 * @param email - Email id to be included in exception
 	 * @return UsernameNotFoundException - exception

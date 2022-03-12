@@ -86,7 +86,7 @@ public class UserControllerIntegrationTest {
 		ResponseEntity<String> responseEntity = postEntity(userDTO, url);
 		
 		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-		assertEquals("Test User: user Registration Successfull!!!", responseEntity.getBody());
+		assertEquals("Test User: user Registration Successful!!!", responseEntity.getBody());
 	}
 	
 	/**

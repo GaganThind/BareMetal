@@ -129,9 +129,9 @@ public class GlobalExceptionHandler {
 														.map(ObjectError::getDefaultMessage)
 														.collect(Collectors.toUnmodifiableList());
 		
-		Exception exption = new IllegalArgumentException(errorMessages.toString());
+		Exception exception = new IllegalArgumentException(errorMessages.toString());
 		
-		return new ResponseEntity<>(handleException(exption), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(handleException(exception), HttpStatus.BAD_REQUEST);
 	}
 	
 	/**
@@ -146,20 +146,20 @@ public class GlobalExceptionHandler {
 		
 		final String INVALID_JSON = "Invalid JSON";
 		Throwable throwable = ex.getCause();
-		Exception excption = ex;
+		Exception exception = ex;
 		
 		if (throwable instanceof JsonParseException) {
-			excption = new IllegalArgumentException(INVALID_JSON);
+			exception = new IllegalArgumentException(INVALID_JSON);
 		} else if (throwable instanceof InvalidFormatException) {
 			
 			if (throwable.getMessage().contains("value not one of declared Enum instance names")) {
-				excption = new IllegalArgumentException(INVALID_JSON + ": Incorect Enum values present");
+				exception = new IllegalArgumentException(INVALID_JSON + ": Incorrect Enum values present");
 			} else {
-				excption = new IllegalArgumentException(INVALID_JSON);
+				exception = new IllegalArgumentException(INVALID_JSON);
 			}
 		}
 		
-		return new ResponseEntity<>(handleException(excption), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(handleException(exception), HttpStatus.BAD_REQUEST);
 	}
 	
 	/**

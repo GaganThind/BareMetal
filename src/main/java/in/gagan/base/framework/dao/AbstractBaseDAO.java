@@ -128,8 +128,8 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	/**
 	 * Returns all instances of the type with the given IDs.
 	 *
-	 * @param ids
-	 * @return
+	 * @param ids iterable of ids to be searched
+	 * @return All entities with passed ids
 	 */
 	@Override
 	public Optional<Iterable<E>> findAllById(Iterable<K> ids) {

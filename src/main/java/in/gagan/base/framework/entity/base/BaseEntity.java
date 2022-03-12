@@ -30,14 +30,14 @@ public interface BaseEntity {
 	/**
 	 * Method used to get if the entity is active or not.
 	 * 
-	 * @return activeSw: Activation status i.e. Y is Active and N is inactive
+	 * @return activeSw Activation status i.e. Y is Active and N is inactive
 	 */
 	char isActive();
 
 	/**
 	 * Method used to set the entity activation status.
 	 * 
-	 * @param activeSw: Activation status i.e. Y is Active and N is inactive
+	 * @param activeSw Activation status i.e. Y is Active and N is inactive
 	 */
 	void setActiveSw(char activeSw);
 	

@@ -39,7 +39,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
 
 /**
- * This class is used to provide meaningful exception messages incase of login failure.
+ * This class is used to provide meaningful exception messages in case of login failure.
  * 
  * @author gaganthind
  *

@@ -83,6 +83,6 @@ public interface UserRegisterationService {
 	 * 
 	 * @param email - Email address of user
 	 */
-	void sendSuccessfullAccountVerificationEmail(String email);
+	void sendSuccessfulAccountVerificationEmail(String email);
 
 }

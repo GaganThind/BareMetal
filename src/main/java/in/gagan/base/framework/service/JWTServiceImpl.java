@@ -89,7 +89,7 @@ public class JWTServiceImpl implements JWTService {
 		List<Map<String, String>> authorities = (List<Map<String, String>>) getClaims(token).get(JWTSecurityConstants.AUTHORITIES);
 		
 		return authorities.stream()
-							.map(role -> role.get(JWTSecurityConstants.AUTHORITIY))
+							.map(role -> role.get(JWTSecurityConstants.AUTHORITY))
 							.map(SimpleGrantedAuthority::new)
 							.collect(Collectors.toUnmodifiableSet());
 	}
