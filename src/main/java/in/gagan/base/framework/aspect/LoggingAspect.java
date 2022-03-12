@@ -49,7 +49,7 @@ public class LoggingAspect {
 			+ "|| within(@org.springframework.stereotype.Service *)"
 			+ "|| within(@org.springframework.web.bind.annotation.RestController *)")
 	private void springBeanPointcut() {
-		/** Dummy method for Pointcut, the implementations are in the advices. */
+		/* Dummy method for Pointcut, the implementations are in the advices. */
 	}
 	
 	/**
@@ -59,7 +59,7 @@ public class LoggingAspect {
 			+ "|| execution(* in.gagan.base.framework.controller.*.*(..)) "
 			+ "|| execution(* in.gagan.base.framework.dao.*.*(..))")
 	private void baseFrameworkPointcut() {
-		/** Dummy method for Pointcut, the implementations are in the advices. */
+		/* Dummy method for Pointcut, the implementations are in the advices. */
 	}
 	
 	/**
@@ -69,7 +69,7 @@ public class LoggingAspect {
 			+ "|| execution(* in.gagan.application.controller.*.*(..)) "
 			+ "|| execution(* in.gagan.application.dao.*.*(..)) ")
 	private void applicationPointcut() {
-		/** Dummy method for Pointcut, the implementations are in the advices. */
+		/* Dummy method for Pointcut, the implementations are in the advices. */
 	}
 	
 	/**

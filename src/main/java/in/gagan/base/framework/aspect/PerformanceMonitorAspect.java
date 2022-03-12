@@ -54,7 +54,7 @@ public class PerformanceMonitorAspect {
 			+ "|| execution(* in.gagan.base.framework.controller.*.*(..)) "
 			+ "|| execution(* in.gagan.base.framework.dao.*.*(..))")
 	private void baseFrameworkPointcut() {
-		/** Dummy method for Pointcut, the implementations are in the advices. */
+		/* Dummy method for Pointcut, the implementations are in the advices. */
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public class PerformanceMonitorAspect {
 			+ "|| execution(* in.gagan.application.controller.*.*(..)) "
 			+ "|| execution(* in.gagan.application.dao.*.*(..)) ")
 	private void applicationPointcut() {
-		/** Dummy method for Pointcut, the implementations are in the advices. */
+		/* Dummy method for Pointcut, the implementations are in the advices. */
 	}
 	
 	/**
