@@ -45,13 +45,13 @@ public class ExceptionMonitor extends AuditableEntity implements BaseEntity {
 	@Column(name="EXCEPTION_ID", nullable = false, unique = true, length = 10)
 	private long exceptionId;
 	
-	@Column(name = "EXCEPTION_DETAILS", nullable = true, length = 500)
+	@Column(name = "EXCEPTION_DETAILS", length = 500)
 	private String exceptionDetails;
 	
-	@Column(name = "EXCEPTION_MESSAGE", nullable = true, length = 500)
+	@Column(name = "EXCEPTION_MESSAGE", length = 500)
 	private String exceptionMessage;
 	
-	@Column(name = "STACK_TRACE", nullable = true, length = 500)
+	@Column(name = "STACK_TRACE", length = 500)
 	private String stackTrace;
 	
 	public ExceptionMonitor() {

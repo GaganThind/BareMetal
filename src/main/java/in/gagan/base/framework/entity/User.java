@@ -70,14 +70,14 @@ public class User extends AuditableEntity implements BaseEntity {
 	@Column(name = "EMAIL", nullable = false, unique = true, length = 50)
 	private String email;
 	
-	@Column(name = "DOB", nullable = true)
+	@Column(name = "DOB")
 	private LocalDate dob;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "GENDER", nullable = true)
+	@Column(name = "GENDER")
 	private Gender gender;
 	
-	@Column(name="PHONE_NUMBER", nullable = true)
+	@Column(name="PHONE_NUMBER")
 	private long phoneNumber;
 	
 	@Column(name = "PASSWORD", nullable = false, length = 100)
@@ -92,22 +92,22 @@ public class User extends AuditableEntity implements BaseEntity {
 	@Column(name = "ACCOUNT_LOCKED", nullable = false)
 	private char accountLocked = ApplicationConstants.CHAR_N;
 	
-	@Column(name = "ADDRESS_LINE_1", nullable = true)
+	@Column(name = "ADDRESS_LINE_1")
 	private String addressLine1;
 	
-	@Column(name = "ADDRESS_LINE_2", nullable = true)
+	@Column(name = "ADDRESS_LINE_2")
 	private String addressLine2;
 	
-	@Column(name = "COUNTRY", nullable = true)
+	@Column(name = "COUNTRY")
 	private String country;
 	
-	@Column(name = "STATE", nullable = true)
+	@Column(name = "STATE")
 	private String state;
 	
-	@Column(name = "CITY", nullable = true)
+	@Column(name = "CITY")
 	private String city;
 	
-	@Column(name = "ZIPCODE", nullable = true)
+	@Column(name = "ZIPCODE")
 	private long zipcode;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
