@@ -73,8 +73,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		this.authenticationFailureHandler = authenticationFailureHandler;
 	}
 	
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsSvc).passwordEncoder(passwordEncoder());
 	}
 	
@@ -86,6 +86,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf().disable()
 		.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
 		.and()
 			.addFilter(jwtUsernamePasswordAuthFilter())
 			.addFilter(new JWTTokenAuthenticationFilter(authenticationManager(), this.jwtProps, this.jwtSvc))
