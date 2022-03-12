@@ -66,7 +66,7 @@ public class JWTTokenAuthenticationFilter extends BasicAuthenticationFilter {
 	 * 
 	 * @param request - contains request parameters
 	 * @param response - contains response parameters
-	 * @param chain - filter chain to execute other filters
+	 * @param filterChain - filter chain to execute other filters
 	 * @exception ServletException - Servlet exception
 	 * @exception IOException - IO exception
 	 * 

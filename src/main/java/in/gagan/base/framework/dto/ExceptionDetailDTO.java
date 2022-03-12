@@ -47,7 +47,7 @@ public final class ExceptionDetailDTO implements Serializable {
 	/**
 	 * Param constructor
 	 * 
-	 * @param ex
+	 * @param ex exception object
 	 */
 	public ExceptionDetailDTO(Exception ex) {
 		this.createDt = LocalDateTime.now();

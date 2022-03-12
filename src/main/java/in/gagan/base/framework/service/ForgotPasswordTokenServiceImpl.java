@@ -53,7 +53,7 @@ public class ForgotPasswordTokenServiceImpl implements ForgotPasswordTokenServic
 	/**
 	 * This method generates random token for account verification.
 	 * 
-	 * @param User - User entity object
+	 * @param user - User entity object
 	 * @return String - Random Password token
 	 */
 	@Override

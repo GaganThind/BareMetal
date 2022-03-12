@@ -33,7 +33,7 @@ public interface ForgotPasswordTokenService {
 	/**
 	 * This method generates random token for account verification.
 	 * 
-	 * @param User - User entity object
+	 * @param user - User entity object
 	 * @return String - Random password token
 	 */
 	String generateForgotPasswordToken(User user);

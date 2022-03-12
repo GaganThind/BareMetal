@@ -178,8 +178,8 @@ public class JWTServiceImpl implements JWTService {
 	/**
 	 * This method based on the JWT token gets the user details.
 	 * 
-	 * @param authHeader - JWT token with prefix
-	 * @return Jws<Claims> - Claims details
+	 * @param token - JWT token with prefix
+	 * @return Claims - Claims details
 	 */
 	private Claims getClaims(String token) {
 		return Jwts.parserBuilder()
