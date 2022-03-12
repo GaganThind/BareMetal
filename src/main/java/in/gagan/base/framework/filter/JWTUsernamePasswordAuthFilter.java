@@ -100,7 +100,7 @@ public class JWTUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
 	 */
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, 
-			FilterChain chain, Authentication authResult) throws IOException, ServletException {
+			FilterChain chain, Authentication authResult) throws ServletException {
 		
 		String ipAddress = StringUtils.defaultIfBlank(request.getHeader("X-FORWARDED-FOR"), request.getRemoteAddr());
 		String userAgent = StringUtils.defaultIfBlank(request.getHeader("User-Agent"), ApplicationConstants.BLANK);
