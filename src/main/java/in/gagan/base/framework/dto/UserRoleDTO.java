@@ -65,11 +65,8 @@ public class UserRoleDTO implements Serializable {
 			return false;
 		UserRoleDTO other = (UserRoleDTO) obj;
 		if (roleName == null) {
-			if (other.roleName != null)
-				return false;
-		} else if (!roleName.equals(other.roleName))
-			return false;
-		return true;
+			return other.roleName == null;
+		} else return roleName.equals(other.roleName);
 	}
 	
 }

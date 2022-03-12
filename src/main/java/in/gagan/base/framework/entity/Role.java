@@ -98,11 +98,8 @@ public class Role extends AuditableEntity implements BaseEntity {
 		if (roleId != other.roleId)
 			return false;
 		if (roleName == null) {
-			if (other.roleName != null)
-				return false;
-		} else if (!roleName.equals(other.roleName))
-			return false;
-		return true;
+			return other.roleName == null;
+		} else return roleName.equals(other.roleName);
 	}
 	
 }
