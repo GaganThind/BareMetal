@@ -62,7 +62,7 @@ public abstract class AuditableEntity implements BaseEntity {
 	 * Record update date
 	 */
 	@LastModifiedDate
-	@Column(name="UPDATE_DT", nullable = true)
+	@Column(name="UPDATE_DT")
 	private LocalDateTime updateDt;
 	
 	/**
@@ -76,7 +76,7 @@ public abstract class AuditableEntity implements BaseEntity {
 	 * Record update user id
 	 */
 	@LastModifiedBy
-	@Column(name="UPDATE_USER_ID", nullable = true)
+	@Column(name="UPDATE_USER_ID")
 	private String updateUserId;
 	
 	@Override
