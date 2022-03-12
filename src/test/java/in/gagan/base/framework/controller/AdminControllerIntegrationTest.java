@@ -70,8 +70,7 @@ public class AdminControllerIntegrationTest {
 	 */
 	//@Test
 	public void testFetchAllUsers() throws Exception {
-		String url = ADMIN_BASE_URL;
-		ResponseEntity<List<UserDTO>> responseEntity = getEntity(url);
+		ResponseEntity<List<UserDTO>> responseEntity = getEntity(ADMIN_BASE_URL);
 		
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertTrue(responseEntity.getBody().size() > 0);
@@ -111,8 +110,7 @@ public class AdminControllerIntegrationTest {
 	private <T> ResponseEntity<String> postEntity(T inputDTO, String url) {
 		HttpHeaders requestHeaders = createHttpHeader(MediaType.APPLICATION_JSON);
 		HttpEntity<T> httpEntity = new HttpEntity<T>(inputDTO, requestHeaders);
-		ResponseEntity<String> responseEntity = this.restTemplate.postForEntity(url, httpEntity, String.class);
-		return responseEntity;
+		return this.restTemplate.postForEntity(url, httpEntity, String.class);
 	}
 	
 	/**

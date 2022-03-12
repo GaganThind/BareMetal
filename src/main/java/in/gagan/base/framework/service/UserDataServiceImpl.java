@@ -66,9 +66,8 @@ public class UserDataServiceImpl implements UserDataService {
 	 */
 	@Override
 	public User fetchUserByEmail(String email) throws UsernameNotFoundException {
-		User user = this.userDAO.findUserByEmail(email)
+		return this.userDAO.findUserByEmail(email)
 								.orElseThrow(() -> ExceptionHelperUtil.throwUserNotFound(email));
-		return user;
 	}
 	
 	/**

@@ -55,8 +55,7 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
 		}
 		
         boolean passwordNull = StringUtils.isEmpty(password) || StringUtils.isEmpty(matchingPassword);
-        boolean passwordEqual = !passwordNull && password.equals(matchingPassword);
-        return passwordEqual;
+		return !passwordNull && password.equals(matchingPassword);
     }
 	
 }
