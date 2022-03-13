@@ -19,6 +19,7 @@
 
 package in.gagan.base.framework.controller;
 
+import in.gagan.base.framework.controller.base.AbstractController;
 import in.gagan.base.framework.dto.location.CityDTO;
 import in.gagan.base.framework.dto.location.CountryDTO;
 import in.gagan.base.framework.dto.location.RegionDTO;

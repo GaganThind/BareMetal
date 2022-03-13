@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.controller;
+package in.gagan.base.framework.controller.base;
 
 /**
  * Root interface for all the controllers
