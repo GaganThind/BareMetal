@@ -17,40 +17,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.service;
+package in.gagan.base.framework.service.user;
 
+import in.gagan.base.framework.entity.ForgotPasswordToken;
 import in.gagan.base.framework.entity.User;
-import in.gagan.base.framework.entity.VerificationToken;
 
 /**
- * This Service interface defines the basic CRUD operations on a VERIFICATION_TOKEN table.
+ * This Service interface defines the basic CRUD operations on a FORGOT_PASSWORD_TOKEN table.
  * 
  * @author gaganthind
  *
  */
-public interface VerificationTokenService {
+public interface ForgotPasswordTokenService {
 	
 	/**
 	 * This method generates random token for account verification.
 	 * 
-	 * @param user - User record to insert
-	 * @return String - Random verification token
+	 * @param user - User entity object
+	 * @return String - Random password token
 	 */
-	String generateTokenForUser(User user);
+	String generateForgotPasswordToken(User user);
 	
 	/**
 	 * This method is used to fetch the provided token in the system.
 	 * 
 	 * @param token - Random verification token already sent in email
-	 * @return VerificationToken - Verification_Token record from database
+	 * @return ForgotPasswordToken - ForgotPasswordToken record from database
 	 */
-	VerificationToken fetchByToken(String token);
+	ForgotPasswordToken fetchByToken(String token);
 	
 	/**
 	 * This method is used to delete the token once successfully verified.
 	 * 
-	 * @param verificationToken - Verification_Token record from database
+	 * @param forgotPasswordToken - ForgotPasswordToken record from database
 	 */
-	void deleteToken(VerificationToken verificationToken);
+	void deleteToken(ForgotPasswordToken forgotPasswordToken);
 
 }

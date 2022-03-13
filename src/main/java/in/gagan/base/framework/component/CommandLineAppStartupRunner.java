@@ -23,8 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import in.gagan.base.framework.service.AdminService;
-import in.gagan.base.framework.service.CountryService;
+import in.gagan.base.framework.service.admin.AdminService;
+import in.gagan.base.framework.service.location.CountryService;
 import in.gagan.base.framework.service.DummyDataService;
 
 /**

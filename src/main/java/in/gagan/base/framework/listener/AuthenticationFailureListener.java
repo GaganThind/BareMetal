@@ -25,7 +25,7 @@ import org.springframework.security.authentication.event.AuthenticationFailureBa
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import in.gagan.base.framework.service.LoginAttemptService;
+import in.gagan.base.framework.service.user.LoginAttemptService;
 
 /**
  * This listener class is used to provide functionality for authentication failure.

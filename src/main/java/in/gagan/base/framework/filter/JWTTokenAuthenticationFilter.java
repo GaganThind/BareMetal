@@ -41,7 +41,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import in.gagan.base.framework.component.JWTProps;
 import in.gagan.base.framework.constant.ApplicationConstants;
-import in.gagan.base.framework.service.JWTService;
+import in.gagan.base.framework.service.user.JWTService;
 
 /**
  * This filter class is used to validate JWT token on all requests.

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.service;
+package in.gagan.base.framework.service.user;
 
 import static in.gagan.base.framework.constant.JWTSecurityConstants.AUTHORITIES;
 

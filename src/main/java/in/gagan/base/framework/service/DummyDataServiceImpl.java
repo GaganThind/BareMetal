@@ -26,6 +26,8 @@ import static in.gagan.base.framework.enums.UserRoles.USER_BASIC;
 
 import javax.transaction.Transactional;
 
+import in.gagan.base.framework.service.user.UserDataService;
+import in.gagan.base.framework.service.user.VerificationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

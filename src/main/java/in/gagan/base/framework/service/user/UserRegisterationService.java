@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.service;
+package in.gagan.base.framework.service.user;
 
 import in.gagan.base.framework.dto.UpdateUserDTO;
 import in.gagan.base.framework.dto.UserDTO;

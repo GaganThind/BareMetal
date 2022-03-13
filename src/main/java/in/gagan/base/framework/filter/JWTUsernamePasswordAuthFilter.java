@@ -44,7 +44,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import in.gagan.base.framework.component.JWTProps;
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dto.UsernamePasswordAuthDTO;
-import in.gagan.base.framework.service.JWTService;
+import in.gagan.base.framework.service.user.JWTService;
 
 /**
  * This filter class is used to provide authentication of credentials and creation of JWT token.
