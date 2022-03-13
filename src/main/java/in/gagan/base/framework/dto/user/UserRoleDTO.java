@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.dto;
+package in.gagan.base.framework.dto.user;
 
 import in.gagan.base.framework.enums.UserRoles;
 

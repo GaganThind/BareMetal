@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import in.gagan.base.framework.dto.UserDTO;
+import in.gagan.base.framework.dto.user.UserDTO;
 import in.gagan.base.framework.service.admin.AdminService;
 
 /**

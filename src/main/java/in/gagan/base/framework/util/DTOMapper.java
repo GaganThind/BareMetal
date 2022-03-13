@@ -1,7 +1,7 @@
 package in.gagan.base.framework.util;
 
-import in.gagan.base.framework.dto.UserDTO;
-import in.gagan.base.framework.dto.UserRoleDTO;
+import in.gagan.base.framework.dto.user.UserDTO;
+import in.gagan.base.framework.dto.user.UserRoleDTO;
 import in.gagan.base.framework.entity.Role;
 import in.gagan.base.framework.entity.User;
 import org.springframework.beans.BeanUtils;

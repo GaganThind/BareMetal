@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,8 +41,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import in.gagan.base.framework.SpringBootHibernateFrameworkApplication;
-import in.gagan.base.framework.dto.UserDTO;
-import in.gagan.base.framework.dto.UsernamePasswordAuthDTO;
+import in.gagan.base.framework.dto.user.UserDTO;
+import in.gagan.base.framework.dto.user.UsernamePasswordAuthDTO;
 
 /**
  * This class is used to test the functionality of the AdminController class.

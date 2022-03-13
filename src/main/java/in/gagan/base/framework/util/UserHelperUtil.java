@@ -20,7 +20,7 @@
 package in.gagan.base.framework.util;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
-import in.gagan.base.framework.dto.UpdateUserDTO;
+import in.gagan.base.framework.dto.user.UpdateUserDTO;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.enums.UserRoles;
 import org.apache.commons.lang3.StringUtils;
