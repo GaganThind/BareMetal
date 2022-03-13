@@ -28,8 +28,8 @@ import org.springframework.stereotype.Service;
 
 import in.gagan.base.framework.component.VerificationTokenProps;
 import in.gagan.base.framework.dao.user.ForgotPasswordTokenDAO;
-import in.gagan.base.framework.entity.ForgotPasswordToken;
-import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.entity.user.ForgotPasswordToken;
+import in.gagan.base.framework.entity.user.User;
 
 /**
  * This class provides the implementation of ForgotPasswordTokenService interface and provides operations for forgot password functionality.

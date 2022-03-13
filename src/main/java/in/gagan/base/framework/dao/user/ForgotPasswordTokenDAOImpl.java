@@ -28,7 +28,7 @@ import in.gagan.base.framework.dao.base.AbstractBaseDAO;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
-import in.gagan.base.framework.entity.ForgotPasswordToken;
+import in.gagan.base.framework.entity.user.ForgotPasswordToken;
 
 /**
  * This class provides CRUD operations on the FORGOT_PASSWORD_TOKEN table using DAO pattern.

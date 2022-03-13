@@ -21,7 +21,7 @@ package in.gagan.base.framework.service.admin;
 
 import in.gagan.base.framework.component.AdminAccount;
 import in.gagan.base.framework.dao.user.UserDAO;
-import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.entity.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

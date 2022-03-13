@@ -28,8 +28,8 @@ import org.springframework.stereotype.Service;
 
 import in.gagan.base.framework.component.VerificationTokenProps;
 import in.gagan.base.framework.dao.user.VerificationTokenDAO;
-import in.gagan.base.framework.entity.User;
-import in.gagan.base.framework.entity.VerificationToken;
+import in.gagan.base.framework.entity.user.User;
+import in.gagan.base.framework.entity.user.VerificationToken;
 
 /**
  * This class provides the implementation of VerificationTokenService interface and provides operations for Account Verification functionality.

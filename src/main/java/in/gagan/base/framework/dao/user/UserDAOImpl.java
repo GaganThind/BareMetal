@@ -28,7 +28,7 @@ import in.gagan.base.framework.dao.base.AbstractBaseDAO;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
-import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.entity.user.User;
 
 /**
  * This class provides CRUD operations on the USERS table using DAO pattern.

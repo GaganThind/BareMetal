@@ -28,8 +28,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
-import in.gagan.base.framework.entity.Role;
-import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.entity.user.Role;
+import in.gagan.base.framework.entity.user.User;
 
 /**
  * This class provides the admin account details 

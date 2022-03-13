@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import in.gagan.base.framework.dao.base.BaseDAO;
-import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.entity.user.User;
 
 /**
  * This DAO interface provides the CRUD operations for USERS table.

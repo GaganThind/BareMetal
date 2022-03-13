@@ -19,7 +19,7 @@
 
 package in.gagan.base.framework.service.admin;
 
-import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.entity.user.User;
 
 import java.util.List;
 import java.util.Optional;

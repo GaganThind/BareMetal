@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.entity;
+package in.gagan.base.framework.entity.user;
 
 import java.time.LocalDateTime;
 
@@ -37,14 +37,14 @@ import in.gagan.base.framework.entity.base.AuditableEntity;
 import in.gagan.base.framework.entity.base.BaseEntity;
 
 /**
- * Entity representing the FORGOT_PASSWORD_TOKEN table 
+ * Entity representing the VERIFICATION_TOKEN table 
  * 
  * @author gaganthind
  *
  */
 @Entity
-@Table(name="FORGOT_PASSWORD_TOKEN")
-public class ForgotPasswordToken extends AuditableEntity implements BaseEntity {
+@Table(name="VERIFICATION_TOKEN")
+public class VerificationToken extends AuditableEntity implements BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,16 +60,16 @@ public class ForgotPasswordToken extends AuditableEntity implements BaseEntity {
 	
 	@Column(name="EXPIRY_DATE", nullable = false)
 	private LocalDateTime expiryDate;
-	
-	public ForgotPasswordToken() {
+
+	public VerificationToken() {
 		super(ApplicationConstants.CHAR_Y);
 	}
 	
-	public ForgotPasswordToken(String token) { 
+	public VerificationToken(String token) { 
 		super(ApplicationConstants.CHAR_Y);
 		this.token = token;
 	}
-	
+
 	public long getTokenId() {
 		return tokenId;
 	}
@@ -122,10 +122,10 @@ public class ForgotPasswordToken extends AuditableEntity implements BaseEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ForgotPasswordToken other = (ForgotPasswordToken) obj;
+		VerificationToken other = (VerificationToken) obj;
 		if (token == null) {
 			return other.token == null;
 		} else return token.equals(other.token);
 	}
-
+	
 }

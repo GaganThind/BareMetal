@@ -20,7 +20,7 @@
 package in.gagan.base.framework.dao.user;
 
 import in.gagan.base.framework.dao.base.BaseDAO;
-import in.gagan.base.framework.entity.Role;
+import in.gagan.base.framework.entity.user.Role;
 
 /**
  * This DAO interface provides the CRUD operations for ROLES table.
