@@ -44,7 +44,7 @@ import org.springframework.web.bind.annotation.RestController;
 import in.gagan.base.framework.dto.UpdateUserDTO;
 import in.gagan.base.framework.dto.UserDTO;
 import in.gagan.base.framework.exception.UsernameExistException;
-import in.gagan.base.framework.service.UserRegisterationService;
+import in.gagan.base.framework.service.user.UserRegisterationService;
 import in.gagan.base.framework.util.UserHelperUtil;
 import in.gagan.base.framework.validator.EmailValidator;
 

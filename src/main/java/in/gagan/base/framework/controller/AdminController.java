@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.util.DTOMapper;
-import in.gagan.base.framework.util.UserHelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import in.gagan.base.framework.dto.UserDTO;
-import in.gagan.base.framework.service.AdminService;
+import in.gagan.base.framework.service.admin.AdminService;
 
 /**
  * This controller class provides the functionality for the admin module.

@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import in.gagan.base.framework.dto.PasswordResetDTO;
-import in.gagan.base.framework.service.PasswordManagerService;
+import in.gagan.base.framework.service.user.PasswordManagerService;
 import in.gagan.base.framework.util.UserHelperUtil;
 import in.gagan.base.framework.validator.EmailValidator;
 

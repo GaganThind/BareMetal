@@ -47,8 +47,8 @@ import in.gagan.base.framework.component.CustomAuthenticationFailureHandler;
 import in.gagan.base.framework.component.JWTProps;
 import in.gagan.base.framework.filter.JWTTokenAuthenticationFilter;
 import in.gagan.base.framework.filter.JWTUsernamePasswordAuthFilter;
-import in.gagan.base.framework.service.CustomUserDetailsService;
-import in.gagan.base.framework.service.JWTService;
+import in.gagan.base.framework.service.user.CustomUserDetailsService;
+import in.gagan.base.framework.service.user.JWTService;
 
 /**
  * This class provides the spring security configurations.

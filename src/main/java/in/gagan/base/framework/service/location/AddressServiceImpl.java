@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.service;
+package in.gagan.base.framework.service.location;
 
 import in.gagan.base.framework.dao.CountryDAO;
 import in.gagan.base.framework.dto.location.ZipcodeDTO;
