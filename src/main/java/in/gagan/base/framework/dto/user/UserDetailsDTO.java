@@ -17,12 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.dto;
+package in.gagan.base.framework.dto.user;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.util.DTOMapper;
-import in.gagan.base.framework.util.UserHelperUtil;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;

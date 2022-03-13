@@ -19,8 +19,6 @@
 
 package in.gagan.base.framework.service.user;
 
-import in.gagan.base.framework.dto.PasswordResetDTO;
-
 /**
  * This Service interface defines the basic actions that is used to manage password actions.
  * 

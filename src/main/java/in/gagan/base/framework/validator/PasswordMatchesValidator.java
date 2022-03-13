@@ -24,9 +24,8 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.lang3.StringUtils;
 
-import in.gagan.base.framework.constant.ApplicationConstants;
-import in.gagan.base.framework.dto.PasswordResetDTO;
-import in.gagan.base.framework.dto.UserDTO;
+import in.gagan.base.framework.dto.user.PasswordResetDTO;
+import in.gagan.base.framework.dto.user.UserDTO;
 
 /**
  * This Validator class is used to validate if password and matchingPassword are equal.

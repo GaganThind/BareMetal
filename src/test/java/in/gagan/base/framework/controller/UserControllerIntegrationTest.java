@@ -44,9 +44,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import in.gagan.base.framework.SpringBootHibernateFrameworkApplication;
-import in.gagan.base.framework.dto.UserDTO;
-import in.gagan.base.framework.dto.UserRoleDTO;
-import in.gagan.base.framework.dto.UsernamePasswordAuthDTO;
+import in.gagan.base.framework.dto.user.UserDTO;
+import in.gagan.base.framework.dto.user.UserRoleDTO;
+import in.gagan.base.framework.dto.user.UsernamePasswordAuthDTO;
 import in.gagan.base.framework.enums.Gender;
 import in.gagan.base.framework.enums.UserRoles;
 
