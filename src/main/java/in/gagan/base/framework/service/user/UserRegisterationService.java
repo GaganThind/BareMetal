@@ -21,7 +21,7 @@ package in.gagan.base.framework.service.user;
 
 import in.gagan.base.framework.dto.user.UpdateUserDTO;
 import in.gagan.base.framework.dto.user.UserDTO;
-import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.entity.user.User;
 import in.gagan.base.framework.exception.UsernameExistException;
 
 /**

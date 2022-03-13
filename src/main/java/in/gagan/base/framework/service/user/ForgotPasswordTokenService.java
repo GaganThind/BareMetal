@@ -19,8 +19,8 @@
 
 package in.gagan.base.framework.service.user;
 
-import in.gagan.base.framework.entity.ForgotPasswordToken;
-import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.entity.user.ForgotPasswordToken;
+import in.gagan.base.framework.entity.user.User;
 
 /**
  * This Service interface defines the basic CRUD operations on a FORGOT_PASSWORD_TOKEN table.

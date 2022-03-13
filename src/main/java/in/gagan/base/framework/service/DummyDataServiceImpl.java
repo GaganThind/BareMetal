@@ -32,8 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
-import in.gagan.base.framework.entity.Role;
-import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.entity.user.Role;
+import in.gagan.base.framework.entity.user.User;
 
 /**
  * This class provides the implementation of DummyDataService interface and provides operations for creating dummy data.

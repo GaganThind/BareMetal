@@ -28,7 +28,7 @@ import in.gagan.base.framework.dao.base.AbstractBaseDAO;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
-import in.gagan.base.framework.entity.VerificationToken;
+import in.gagan.base.framework.entity.user.VerificationToken;
 
 /**
  * This class provides CRUD operations on the VERIFICATION_TOKEN table using DAO pattern.

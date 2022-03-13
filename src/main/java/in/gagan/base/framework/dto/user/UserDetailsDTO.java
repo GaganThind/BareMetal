@@ -20,7 +20,7 @@
 package in.gagan.base.framework.dto.user;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
-import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.entity.user.User;
 import in.gagan.base.framework.util.DTOMapper;
 
 import java.time.LocalDateTime;

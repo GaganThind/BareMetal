@@ -22,7 +22,7 @@ package in.gagan.base.framework.dao.user;
 import java.util.Optional;
 
 import in.gagan.base.framework.dao.base.BaseDAO;
-import in.gagan.base.framework.entity.VerificationToken;
+import in.gagan.base.framework.entity.user.VerificationToken;
 
 /**
  * This DAO interface provides the CRUD operations for VERIFICATION_TOKEN table.

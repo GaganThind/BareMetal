@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.entity;
+package in.gagan.base.framework.entity.user;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

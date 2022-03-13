@@ -25,8 +25,8 @@ import in.gagan.base.framework.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import in.gagan.base.framework.entity.ForgotPasswordToken;
-import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.entity.user.ForgotPasswordToken;
+import in.gagan.base.framework.entity.user.User;
 
 /**
  * This class provides the implementation of PasswordManagerService interface and provides operations for Password reset functionality.

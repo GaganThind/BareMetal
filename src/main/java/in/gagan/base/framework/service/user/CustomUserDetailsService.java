@@ -65,7 +65,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		
-		in.gagan.base.framework.entity.User user = this.userDAO.findUserByEmail(email)
+		in.gagan.base.framework.entity.user.User user = this.userDAO.findUserByEmail(email)
 																.orElseThrow(() -> ExceptionHelperUtil.throwUserNotFound(email));
 		
 		UserDetailsDTO userDetails = new UserDetailsDTO(user);

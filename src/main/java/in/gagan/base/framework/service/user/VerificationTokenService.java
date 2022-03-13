@@ -19,8 +19,8 @@
 
 package in.gagan.base.framework.service.user;
 
-import in.gagan.base.framework.entity.User;
-import in.gagan.base.framework.entity.VerificationToken;
+import in.gagan.base.framework.entity.user.User;
+import in.gagan.base.framework.entity.user.VerificationToken;
 
 /**
  * This Service interface defines the basic CRUD operations on a VERIFICATION_TOKEN table.

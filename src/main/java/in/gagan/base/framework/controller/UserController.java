@@ -25,7 +25,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.entity.user.User;
 import in.gagan.base.framework.util.DTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

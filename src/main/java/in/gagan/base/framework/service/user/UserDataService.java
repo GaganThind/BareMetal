@@ -21,7 +21,7 @@ package in.gagan.base.framework.service.user;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.entity.user.User;
 
 /**
  * This Service interface provides the basic CRUD operations on a User table from user account perspective.

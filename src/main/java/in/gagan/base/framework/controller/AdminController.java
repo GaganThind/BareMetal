@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.entity.user.User;
 import in.gagan.base.framework.util.DTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

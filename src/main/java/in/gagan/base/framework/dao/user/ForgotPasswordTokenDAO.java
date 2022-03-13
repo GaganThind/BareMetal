@@ -22,7 +22,7 @@ package in.gagan.base.framework.dao.user;
 import java.util.Optional;
 
 import in.gagan.base.framework.dao.base.BaseDAO;
-import in.gagan.base.framework.entity.ForgotPasswordToken;
+import in.gagan.base.framework.entity.user.ForgotPasswordToken;
 
 /**
  * This DAO interface provides the CRUD operations for FORGOT_PASSWORD_TOKEN table.
