@@ -19,6 +19,7 @@
 
 package in.gagan.base.framework.dao;
 
+import in.gagan.base.framework.dao.base.BaseDAO;
 import in.gagan.base.framework.entity.ExceptionMonitor;
 
 /**

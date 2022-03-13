@@ -26,6 +26,7 @@ import java.util.Optional;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import in.gagan.base.framework.dao.base.AbstractBaseDAO;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 

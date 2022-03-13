@@ -17,13 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.dao;
+package in.gagan.base.framework.dao.user;
 
 import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.Query;
 
+import in.gagan.base.framework.dao.base.AbstractBaseDAO;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 

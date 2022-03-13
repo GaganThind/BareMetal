@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.dao;
+package in.gagan.base.framework.dao.base;
 
 import java.io.Serializable;
 import java.util.Optional;

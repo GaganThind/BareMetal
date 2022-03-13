@@ -17,11 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.dao;
+package in.gagan.base.framework.dao.user;
 
 import java.util.List;
 import java.util.Optional;
 
+import in.gagan.base.framework.dao.base.BaseDAO;
 import in.gagan.base.framework.entity.User;
 
 /**

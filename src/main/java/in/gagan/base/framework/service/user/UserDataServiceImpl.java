@@ -30,7 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import in.gagan.base.framework.component.PasswordProps;
-import in.gagan.base.framework.dao.UserDAO;
+import in.gagan.base.framework.dao.user.UserDAO;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.util.ExceptionHelperUtil;
 
