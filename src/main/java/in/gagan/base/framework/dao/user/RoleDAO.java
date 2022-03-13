@@ -17,19 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework.dao;
+package in.gagan.base.framework.dao.user;
 
-import org.springframework.stereotype.Repository;
-
+import in.gagan.base.framework.dao.base.BaseDAO;
 import in.gagan.base.framework.entity.Role;
 
 /**
- * This class provides CRUD operations on the ROLES table using DAO pattern.
+ * This DAO interface provides the CRUD operations for ROLES table.
  * 
  * @author gaganthind
  *
  */
-@Repository
-public class RoleDAOImpl extends AbstractBaseDAO<Role, Long> implements RoleDAO {
+public interface RoleDAO extends BaseDAO<Role, Long> {
 
 }

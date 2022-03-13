@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import in.gagan.base.framework.component.VerificationTokenProps;
-import in.gagan.base.framework.dao.VerificationTokenDAO;
+import in.gagan.base.framework.dao.user.VerificationTokenDAO;
 import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.entity.VerificationToken;
 

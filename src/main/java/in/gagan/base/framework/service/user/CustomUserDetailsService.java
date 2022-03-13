@@ -33,7 +33,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import in.gagan.base.framework.dao.UserDAO;
+import in.gagan.base.framework.dao.user.UserDAO;
 import in.gagan.base.framework.dto.UserDetailsDTO;
 import in.gagan.base.framework.dto.UserRoleDTO;
 import in.gagan.base.framework.util.ExceptionHelperUtil;
