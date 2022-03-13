@@ -86,7 +86,8 @@ public class JWTServiceImpl implements JWTService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Set<SimpleGrantedAuthority> getRoles(String token) {
-		List<Map<String, String>> authorities = (List<Map<String, String>>) getClaims(token).get(JWTSecurityConstants.AUTHORITIES);
+		List<Map<String, String>> authorities =
+				(List<Map<String, String>>) getClaims(token).get(JWTSecurityConstants.AUTHORITIES);
 		
 		return authorities.stream()
 							.map(role -> role.get(JWTSecurityConstants.AUTHORITY))

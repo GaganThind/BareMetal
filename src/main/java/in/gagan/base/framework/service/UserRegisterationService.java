@@ -21,6 +21,7 @@ package in.gagan.base.framework.service;
 
 import in.gagan.base.framework.dto.UpdateUserDTO;
 import in.gagan.base.framework.dto.UserDTO;
+import in.gagan.base.framework.entity.User;
 import in.gagan.base.framework.exception.UsernameExistException;
 
 /**
@@ -30,15 +31,15 @@ import in.gagan.base.framework.exception.UsernameExistException;
  *
  */
 public interface UserRegisterationService {
-	
+
 	/**
 	 * This method is used to register a new user in the system.
-	 * 
+	 *
 	 * @param user - User DTO object with mandatory details
 	 * @return String - username is returned
 	 * @throws UsernameExistException - If User with email already present
 	 */
-	String registerNewUser(UserDTO user) throws UsernameExistException;
+	String registerNewUser(User user) throws UsernameExistException;
 	
 	/**
 	 * This method returns the user data from provided email.

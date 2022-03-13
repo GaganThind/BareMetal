@@ -19,13 +19,12 @@
 
 package in.gagan.base.framework.service;
 
-import java.util.Optional;
-import java.util.Set;
-
-import in.gagan.base.framework.dto.location.CityDTO;
-import in.gagan.base.framework.dto.location.CountryDTO;
-import in.gagan.base.framework.dto.location.RegionDTO;
 import in.gagan.base.framework.dto.location.ZipcodeDTO;
+import in.gagan.base.framework.entity.location.City;
+import in.gagan.base.framework.entity.location.Country;
+import in.gagan.base.framework.entity.location.Region;
+
+import java.util.Optional;
 
 /**
  * This Service interface provides the operations for address functionality.
@@ -40,14 +39,14 @@ public interface AddressService {
 	 *
 	 * @return countries - data consisting of all the countries
 	 */
-	Optional<Set<CountryDTO>> getCountriesForAdmin();
+	Optional<Iterable<Country>> getCountriesForAdmin();
 
 	/**
 	 * Method used to return all the countries names.
 	 *
 	 * @return countries - data consisting of all the countries
 	 */
-	Optional<Set<CountryDTO>> getCountries();
+	Optional<Iterable<Country>> getCountries();
 
 	/**
 	 * Method used to return the country data containing states and cities.
@@ -55,7 +54,7 @@ public interface AddressService {
 	 * @param countryId - country id for which data is to be searched
 	 * @return country - data consisting of all the states and respective cities
 	 */
-	Optional<CountryDTO> getCountry(String countryId);
+	Optional<Country> getCountry(String countryId);
 
 	/**
 	 * Method used to return all the region data based on passed country.
@@ -63,7 +62,7 @@ public interface AddressService {
 	 * @param countryId - country id for which data is to be searched
 	 * @return regions - data consisting of all the region/states of the country
 	 */
-	Optional<Set<RegionDTO>> getRegions(String countryId);
+	Optional<Iterable<Region>> getRegions(String countryId);
 
 	/**
 	 * Method used to return the region data along with city details based on passed countryId and regionId.
@@ -72,7 +71,7 @@ public interface AddressService {
 	 * @param regionId - region/state id for which data is to be searched
 	 * @return region - data consisting of the region/state
 	 */
-	Optional<RegionDTO> getRegion(String countryId, String regionId);
+	Optional<Region> getRegion(String countryId, String regionId);
 
 	/**
 	 * Method used to return the cities based on country and state.
@@ -81,7 +80,7 @@ public interface AddressService {
 	 * @param regionId - region/state id for which data is to be searched
 	 * @return cities - data consisting of all the cities of the state
 	 */
-	Optional<Set<CityDTO>> getCities(String countryId, String regionId);
+	Optional<Iterable<City>> getCities(String countryId, String regionId);
 
 	/**
 	 * Method used to return the city based on country, state and city.
@@ -90,7 +89,7 @@ public interface AddressService {
 	 * @param regionId - region/state id for which data is to be searched
 	 * @return city - data consisting of city
 	 */
-	Optional<CityDTO> getCity(String countryId, String regionId, String cityId);
+	Optional<Iterable<City>> getCity(String countryId, String regionId, String cityId);
 
 	/**
 	 * Method used to return data based on passed zipcode.

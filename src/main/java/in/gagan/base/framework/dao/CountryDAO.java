@@ -58,6 +58,15 @@ public interface CountryDAO extends BaseDAO<Country, Long> {
 	 * @return region: data consisting of the region/state
 	 */
 	Optional<Region> findRegionByCountryIdAndRegionId(String countryId, String regionId);
+
+	/**
+	 * Method used to find cities data based on country id and region id
+	 *
+	 * @param countryId: country to search
+	 * @param regionId: region to search
+	 * @return cities: data consisting of the cities of region/state
+	 */
+	Optional<Iterable<City>> findCitiesByCountryIdAndRegionId(String countryId, String regionId);
 	
 	/**
 	 * Method used to find city data based on countryId, regionId and cityId

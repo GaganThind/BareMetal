@@ -21,6 +21,7 @@ package in.gagan.base.framework.dto;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.util.DTOMapper;
 import in.gagan.base.framework.util.UserHelperUtil;
 
 import java.time.LocalDateTime;
@@ -56,7 +57,7 @@ public class UserDetailsDTO {
 		this.email = user.getEmail();
 		this.accountLocked = user.isAccountLocked() == ApplicationConstants.CHAR_Y;
 		this.activeSw = user.isActive() == ApplicationConstants.CHAR_Y;
-		this.userRole = UserHelperUtil.convertRoleToDTO(user.getUserRole());
+		this.userRole = DTOMapper.convertRoleToDTO(user.getUserRole());
 	}
 
 	public String getPassword() {

@@ -75,8 +75,9 @@ public class ForgotPasswordTokenServiceImpl implements ForgotPasswordTokenServic
 	 */
 	@Override
 	public ForgotPasswordToken fetchByToken(String token) {
-		ForgotPasswordToken forgotPasswordToken = this.forgotPasswordTokenDAO.fetchByToken(token)
-																				.orElseThrow(() -> new IllegalArgumentException("Invalid token!!!"));
+		ForgotPasswordToken forgotPasswordToken =
+				this.forgotPasswordTokenDAO.fetchByToken(token)
+						.orElseThrow(() -> new IllegalArgumentException("Invalid token!!!"));
 		
 		if (forgotPasswordToken.isExpiredToken()) {
 			String newToken = UUID.randomUUID().toString();

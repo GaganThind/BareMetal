@@ -19,7 +19,6 @@
 
 package in.gagan.base.framework.dto;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
