@@ -19,20 +19,15 @@
 
 package in.gagan.base.framework.service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
-
+import in.gagan.base.framework.component.AdminAccount;
+import in.gagan.base.framework.dao.UserDAO;
+import in.gagan.base.framework.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import in.gagan.base.framework.component.AdminAccount;
-import in.gagan.base.framework.dao.UserDAO;
-import in.gagan.base.framework.dto.UserDTO;
-import in.gagan.base.framework.entity.User;
-import in.gagan.base.framework.util.UserHelperUtil;
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * This class provides the implementation of AdminService interface and provides operations for Admin functionality.
@@ -72,12 +67,8 @@ public class AdminServiceImpl implements AdminService {
 	 * @return List<UserDTO> - list of all users
 	 */
 	@Override
-	public List<UserDTO> fetchAllUsers() {
-		List<User> users = (List<User>) this.userDAO.findAll()
-													.orElse(Collections.emptyList());
-		return users.stream()
-					.map(UserHelperUtil::convertUserToUserDTO)
-					.collect(Collectors.toList());
+	public Optional<Iterable<User>> fetchAllUsers() {
+		return this.userDAO.findAll();
 	}
 
 	/**

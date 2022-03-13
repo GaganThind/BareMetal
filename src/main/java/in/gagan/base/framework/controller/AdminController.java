@@ -19,8 +19,13 @@
 
 package in.gagan.base.framework.controller;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.util.DTOMapper;
+import in.gagan.base.framework.util.UserHelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -59,7 +64,13 @@ public class AdminController {
 	 */
 	@GetMapping(value = "/users", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UserDTO>> fetchAllUsers() {
-		List<UserDTO> userDTOs = this.adminSvc.fetchAllUsers();
+		List<User> users = (List<User>) this.adminSvc.fetchAllUsers()
+													.orElse(Collections.emptyList());
+
+		List<UserDTO> userDTOs = users.stream()
+									.map(DTOMapper::convertUserToUserDTO)
+									.collect(Collectors.toList());
+
 		return new ResponseEntity<>(userDTOs, HttpStatus.OK);
 	}
 	

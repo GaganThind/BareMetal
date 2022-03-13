@@ -19,26 +19,19 @@
 
 package in.gagan.base.framework.util;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import in.gagan.base.framework.constant.ApplicationConstants;
+import in.gagan.base.framework.dto.UpdateUserDTO;
+import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.enums.UserRoles;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import in.gagan.base.framework.constant.ApplicationConstants;
-import in.gagan.base.framework.dto.UpdateUserDTO;
-import in.gagan.base.framework.dto.UserDTO;
-import in.gagan.base.framework.dto.UserRoleDTO;
-import in.gagan.base.framework.entity.Role;
-import in.gagan.base.framework.entity.User;
-import in.gagan.base.framework.enums.UserRoles;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
 
 /**
  * Utility class for user entity. This class contains methods for user to DTO conversions.
@@ -51,43 +44,6 @@ public final class UserHelperUtil {
 	private UserHelperUtil() { }
 	
 	/**
-	 * Convert UserDTO to User entity object.
-	 * 
-	 * @param userDTO - Input DTO from client
-	 * @param user - Output User entity object
-	 */
-	public static void convertUserDTOToUser(UserDTO userDTO, User user) {
-		BeanUtils.copyProperties(userDTO, user);
-		user.setUserRole(convertDTOToRole(userDTO.getUserRole()));
-	}
-	
-	/**
-	 * Convert Role entity to RoleDTO.
-	 * 
-	 * @param roles - set of roles 
-	 * @return Set<UserRolesDTO> - set of userRoleDTO
-	 */
-	public static Set<UserRoleDTO> convertRoleToDTO(Set<Role> roles) {
-		return roles.stream()
-					.map(Role::getRoleName)
-					.map(UserRoleDTO::new)
-					.collect(Collectors.toSet());
-	}
-	
-	/**
-	 * Convert RoleDTO to Role entity.
-	 * 
-	 * @param roles - set of userRoleDTO
-	 * @return Set<Role> - set of roles
-	 */
-	public static Set<Role> convertDTOToRole(Set<UserRoleDTO> roles) {
-		return roles.stream()
-					.map(UserRoleDTO::getRoleName)
-					.map(Role::new)
-					.collect(Collectors.toSet());
-	}
-	
-	/**
 	 * Calculate age based on input date.
 	 * 
 	 * @param inputDate - date to check
@@ -98,30 +54,6 @@ public final class UserHelperUtil {
 			return 0;
 		}
 		return Period.between(inputDate, LocalDate.now()).getYears();
-	}
-	
-	/**
-	 * Convert User entity object toUserDTO object.
-	 * 
-	 * @param user - User entity object
-	 * @param userDTO - Output UserDTO object
-	 */
-	public static void convertUserToUserDTO(User user, UserDTO userDTO) {
-		BeanUtils.copyProperties(user, userDTO,"password", "userRole");
-		userDTO.setUserRole(convertRoleToDTO(user.getUserRole()));
-	}
-	
-	/**
-	 * Convert User entity object toUserDTO object.
-	 * 
-	 * @param user - User entity object
-	 * @return UserDTO - Output UserDTO object
-	 */
-	public static UserDTO convertUserToUserDTO(User user) {
-		UserDTO userDTO = new UserDTO();
-		BeanUtils.copyProperties(user, userDTO,"password", "userRole");
-		userDTO.setUserRole(convertRoleToDTO(user.getUserRole()));
-		return userDTO;
 	}
 
 	/**
@@ -148,7 +80,7 @@ public final class UserHelperUtil {
 		}
 		
 		if (null != updateUserDTO.getUserRole() && !updateUserDTO.getUserRole().isEmpty()) {
-			user.setUserRole(convertDTOToRole(updateUserDTO.getUserRole()));
+			user.setUserRole(DTOMapper.convertDTOToRole(updateUserDTO.getUserRole()));
 		}
 		
 	}
@@ -201,6 +133,18 @@ public final class UserHelperUtil {
 		if (!isAdminAccount && !StringUtils.equalsIgnoreCase(email, username)) {
 			throw new IllegalAccessException("User can only update own password.");
 		}
+	}
+
+	/**
+	 *
+	 * Method used to get the username from passed user object.
+	 *
+	 * @param user - user object
+	 * @return username - firstname and lastname
+	 */
+	public static String getUsername(User user) {
+		return new StringBuilder(user.getFirstName()).append(ApplicationConstants.BLANK)
+				.append(user.getLastName()).toString();
 	}
 	
 }

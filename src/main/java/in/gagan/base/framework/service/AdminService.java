@@ -19,9 +19,10 @@
 
 package in.gagan.base.framework.service;
 
-import java.util.List;
+import in.gagan.base.framework.entity.User;
 
-import in.gagan.base.framework.dto.UserDTO;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * This Service interface provides the operations for Admin functionality.
@@ -39,9 +40,9 @@ public interface AdminService {
 	/**
 	 * Method used to fetch all the users of the application.
 	 * 
-	 * @return List<UserDTO> - list of all users
+	 * @return users - list of all users
 	 */
-	List<UserDTO> fetchAllUsers();
+	Optional<Iterable<User>> fetchAllUsers();
 	
 	/**
 	 * Method used to unlock user account(s).

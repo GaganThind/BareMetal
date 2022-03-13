@@ -54,14 +54,14 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 	/**
 	 * This method is used to reset password of existing user.
 	 * 
-	 * @param passwordResetDTO - Object to transfer password and confirm password
+	 * @param password - user defined password
 	 * @param  email - User email address
 	 */
 	@Override
-	public void resetPassword(PasswordResetDTO passwordResetDTO, String email) {
+	public void resetPassword(String password, String email) {
 		User user = this.userDataSvc.fetchUserByEmail(email);
 		
-		user.setPassword(passwordResetDTO.getPassword());
+		user.setPassword(password);
 		user.setPasswordExpireDate(null); // Let the system determine itself to add new password expiry date.
 		
 		this.userDataSvc.saveUser(user);
@@ -86,15 +86,15 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 	/**
 	 * This method is used to reset password in case a user has forgotten the password.
 	 * 
-	 * @param passwordResetDTO - Object to transfer password and confirm password
+	 * @param password - user defined password
 	 * @param token - Unique token string 
 	 */
 	@Override
-	public void forgotPassword(PasswordResetDTO passwordResetDTO, String token) {
+	public void forgotPassword(String password, String token) {
 		ForgotPasswordToken forgotPasswordToken = this.forgotPasswordTokenService.fetchByToken(token);
 		User user = forgotPasswordToken.getUser();
 		
-		user.setPassword(passwordResetDTO.getPassword());
+		user.setPassword(password);
 		user.setPasswordExpireDate(null); // Let the system determine itself to add new password expiry date.
 		
 		this.userDataSvc.saveUser(user);

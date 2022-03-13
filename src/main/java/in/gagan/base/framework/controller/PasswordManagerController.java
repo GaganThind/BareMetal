@@ -68,7 +68,7 @@ public class PasswordManagerController {
 			throws IllegalAccessException {
 		String email = passwordResetDTO.getEmail();
 		UserHelperUtil.actionAllowed(email);
-		this.passwordManagerService.resetPassword(passwordResetDTO, email);
+		this.passwordManagerService.resetPassword(passwordResetDTO.getPassword(), email);
 		return new ResponseEntity<>("Password Reset Successful!!!", HttpStatus.OK);
 	}
 	
@@ -93,7 +93,7 @@ public class PasswordManagerController {
 	 */
 	@PatchMapping(value = "/forgot/{token}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> forgotPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO,@NotNull @NotEmpty @PathVariable String token) {
-		this.passwordManagerService.forgotPassword(passwordResetDTO, token);
+		this.passwordManagerService.forgotPassword(passwordResetDTO.getPassword(), token);
 		return new ResponseEntity<>("Password Reset Successful!!!", HttpStatus.OK);
 	}
 

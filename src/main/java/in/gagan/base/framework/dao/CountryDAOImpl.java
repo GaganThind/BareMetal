@@ -130,6 +130,38 @@ public class CountryDAOImpl extends AbstractBaseDAO<Country, Long> implements Co
 		
 		return !CollectionUtils.isEmpty(regions) ? Optional.of(regions.get(0)) : Optional.empty();
 	}
+
+	/**
+	 * Method used to find cities data based on country id and region id
+	 *
+	 * @param countryId: country to search
+	 * @param regionId: region to search
+	 * @return cities: data consisting of the cities of region/state
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Optional<Iterable<City>> findCitiesByCountryIdAndRegionId(String countryId, String regionId) {
+		StringBuilder selectQuery = new StringBuilder();
+		selectQuery.append(LITERAL_SELECT);
+		selectQuery.append("cities.* ");
+		selectQuery.append(LITERAL_FROM);
+		selectQuery.append(TABLE_COUNTRIES).append(" countries ").append("INNER JOIN ").append(TABLE_REGIONS).append(" regions ");
+		selectQuery.append(" On countries.country_id = regions.country_id ");
+		selectQuery.append("INNER JOIN ").append(TABLE_CITIES).append(" cities ");
+		selectQuery.append(" On regions.region_id = cities.region_id ");
+		selectQuery.append(LITERAL_WHERE);
+		selectQuery.append(" countries.country_name = :countryName ");
+		selectQuery.append(LITERAL_AND);
+		selectQuery.append(" regions.region_name = :regionName ");
+
+		Query query = entityManager.createNativeQuery(selectQuery.toString(), City.class);
+		query.setParameter(COUNTRY, countryId);
+		query.setParameter(REGION, regionId);
+
+		List<City> cities = query.getResultList();
+
+		return !CollectionUtils.isEmpty(cities) ? Optional.of(cities) : Optional.empty();
+	}
 	
 	/**
 	 * Method used to find city data based on countryId, regionId and cityId

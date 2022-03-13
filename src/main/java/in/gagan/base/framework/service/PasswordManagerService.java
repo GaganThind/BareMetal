@@ -28,14 +28,14 @@ import in.gagan.base.framework.dto.PasswordResetDTO;
  *
  */
 public interface PasswordManagerService {
-	
+
 	/**
 	 * This method is used to reset password of existing user.
-	 * 
-	 * @param passwordResetDTO - Object to transfer password and confirm password
+	 *
+	 * @param password - user defined password
 	 * @param  email - User email address
 	 */
-	void resetPassword(PasswordResetDTO passwordResetDTO, String email);
+	void resetPassword(String password, String email);
 	
 	/**
 	 * This method is used to generate forgot password token for existing user.
@@ -43,14 +43,14 @@ public interface PasswordManagerService {
 	 * @param email - User email address
 	 */
 	void generateForgotPasswordToken(String email);
-	
+
 	/**
 	 * This method is used to reset password in case a user has forgotten the password.
-	 * 
-	 * @param passwordResetDTO - Object to transfer password and confirm password
-	 * @param token - Unique token string 
+	 *
+	 * @param password - user defined password
+	 * @param token - Unique token string
 	 */
-	void forgotPassword(PasswordResetDTO passwordResetDTO, String token);
+	void forgotPassword(String password, String token);
 
 	/**
 	 * This method is used to send password successfully reset email.

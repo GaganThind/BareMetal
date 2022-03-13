@@ -25,6 +25,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import in.gagan.base.framework.entity.User;
+import in.gagan.base.framework.util.DTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -73,11 +75,11 @@ public class UserController extends AbstractController {
 	 */
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO userDTO) throws UsernameExistException {
-		this.userRegistrationSvc.registerNewUser(userDTO);
-		return new ResponseEntity<>(message.getMessage("message.registration.successful",
-				new Object[]{userDTO.getEmail()},
-				Locale.ENGLISH),
-				HttpStatus.CREATED);
+		User user = DTOMapper.convertUserDTOToUser(userDTO);
+		this.userRegistrationSvc.registerNewUser(user);
+		return new ResponseEntity<>(
+					message.getMessage("message.registration.successful", new Object[]{userDTO.getEmail()},
+							Locale.ENGLISH), HttpStatus.CREATED);
 	}
 	
 	/**

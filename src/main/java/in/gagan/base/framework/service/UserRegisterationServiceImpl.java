@@ -21,6 +21,7 @@ package in.gagan.base.framework.service;
 
 import javax.transaction.Transactional;
 
+import in.gagan.base.framework.util.DTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,14 +64,20 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	 * @throws UsernameExistException - If User with email already present
 	 */
 	@Override
-	public String registerNewUser(UserDTO user) throws UsernameExistException {
+	public String registerNewUser(User user) throws UsernameExistException {
 		if (this.userDataSvc.isUserPresent(user.getEmail())) {
 			throw new UsernameExistException(user.getEmail());
 		}
+
+		this.userDataSvc.saveUser(user);
+
+		// Generate random verification token
+		String token = this.verificationTokenSvc.generateTokenForUser(user);
+
+		// Send verification email
+		sendAccountVerificationEmail(user.getEmail(), token);
 		
-		insertUser(user);
-		
-		return user.getUsername();
+		return UserHelperUtil.getUsername(user);
 	}
 	
 	/**
@@ -81,10 +88,8 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	 */
 	@Override
 	public UserDTO fetchUser(String email) {
-		UserDTO userDTO = new UserDTO();
 		User user = this.userDataSvc.fetchUserByEmail(email.toLowerCase());
-		UserHelperUtil.convertUserToUserDTO(user, userDTO);
-		return userDTO;
+		return DTOMapper.convertUserToUserDTO(user);
 	}
 	
 	/**
@@ -101,9 +106,7 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 		UserHelperUtil.updateUserWithUpdateUserDTO(updateUserDTO, user);
 		this.userDataSvc.updateUser(user);
 		
-		UserDTO userDTO = new UserDTO();
-		UserHelperUtil.convertUserToUserDTO(user, userDTO);
-		return userDTO;
+		return DTOMapper.convertUserToUserDTO(user);
 	}
 	
 	/**
@@ -114,23 +117,6 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	@Override
 	public void deleteUser(String email) {
 		this.userDataSvc.deleteUser(email.toLowerCase());
-	}
-	
-	/**
-	 * This method is used to register a new user in the system.
-	 * 
-	 * @param userDTO - User DTO object with user details to insert
-	 */
-	private void insertUser(UserDTO userDTO) {
-		User user = new User();
-		UserHelperUtil.convertUserDTOToUser(userDTO, user);
-		this.userDataSvc.saveUser(user);
-		
-		// Generate random verification token
-		String token = this.verificationTokenSvc.generateTokenForUser(user);
-		
-		// Send verification email
-		sendAccountVerificationEmail(user.getEmail(), token);
 	}
 	
 	/**
