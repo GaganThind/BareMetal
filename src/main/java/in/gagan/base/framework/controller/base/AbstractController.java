@@ -22,7 +22,8 @@ package in.gagan.base.framework.controller.base;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.LocaleResolver;
+
+import java.util.Locale;
 
 /**
  * This abstract controller class provides the common functionality.
@@ -35,8 +36,16 @@ public abstract class AbstractController implements BaseController {
 
 	@Autowired
 	protected MessageSource message;
-	
-	@Autowired
-	protected LocaleResolver localeResolver;
+
+	/**
+	 * Method used to get the message text from the message property file.
+	 *
+	 * @param message - message key corresponding to the message text
+	 * @param tokens - any input token to be added to message text
+	 * @return messageString - returns the complete message to be shown to user
+	 */
+	protected String getMessage(String message, Object... tokens) {
+		return this.message.getMessage(message, tokens, Locale.ENGLISH);
+	}
 	
 }
