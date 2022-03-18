@@ -195,7 +195,7 @@ public class AddressController extends AbstractController {
 						.orElseThrow(noSuchElementExceptionSupplier(message));
 
 		Set<Long> zipcodes = stream(cities.spliterator(), false)
-								.map(city -> city.getZipcode())
+								.map(City::getZipcode)
 								.sorted()
 								.collect(Collectors.toCollection(LinkedHashSet::new));
 
@@ -223,7 +223,7 @@ public class AddressController extends AbstractController {
 
 	private Set<RegionDTO> getSortedRegionDTOS(Iterable<Region> regions) {
 		return stream(regions.spliterator(), false)
-				.map(region -> region.getRegionName())
+				.map(Region::getRegionName)
 				.map(RegionDTO::new)
 				.sorted(Comparator.comparing(RegionDTO::getName))
 				.collect(Collectors.toCollection(LinkedHashSet::new));
@@ -231,7 +231,7 @@ public class AddressController extends AbstractController {
 
 	private Set<CityDTO> getSortedCityDTOS(Iterable<City> cities) {
 		return stream(cities.spliterator(), false)
-				.map(city-> city.getCityName())
+				.map(City::getCityName)
 				.map(CityDTO::new)
 				.sorted(Comparator.comparing(CityDTO::getName))
 				.collect(Collectors.toCollection(LinkedHashSet::new));
