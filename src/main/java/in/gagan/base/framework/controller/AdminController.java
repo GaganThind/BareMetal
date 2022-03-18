@@ -19,25 +19,21 @@
 
 package in.gagan.base.framework.controller;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import in.gagan.base.framework.controller.base.AbstractController;
+import in.gagan.base.framework.dto.user.UserDTO;
 import in.gagan.base.framework.entity.user.User;
+import in.gagan.base.framework.service.admin.AdminService;
 import in.gagan.base.framework.util.DTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import in.gagan.base.framework.dto.user.UserDTO;
-import in.gagan.base.framework.service.admin.AdminService;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * This controller class provides the functionality for the admin module.
@@ -47,7 +43,7 @@ import in.gagan.base.framework.service.admin.AdminService;
  */
 @RestController
 @RequestMapping(path = "/v1/admin")
-public class AdminController {
+public class AdminController extends AbstractController {
 	
 	private final AdminService adminSvc;
 
@@ -57,38 +53,58 @@ public class AdminController {
 	}
 
 	/**
-	 * This method returns all the users currently present in the system.
+	 * Method used to return all the users currently present in the system.
 	 * 
-	 * @return ResponseEntity<List<UserDTO>> - List of all the users in the system.
+	 * @return list of all the users in the system.
 	 */
 	@GetMapping(value = "/users", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UserDTO>> fetchAllUsers() {
-		List<User> users = (List<User>) this.adminSvc.fetchAllUsers()
+		final Iterable<User> users = this.adminSvc.fetchAllUsers()
 													.orElse(Collections.emptyList());
-
-		List<UserDTO> userDTOs = users.stream()
-									.map(DTOMapper::convertUserToUserDTO)
-									.collect(Collectors.toList());
+		List<UserDTO> userDTOs = StreamSupport.stream(users.spliterator(), false)
+												.map(DTOMapper::convertUserToUserDTO)
+												.collect(Collectors.toList());
 
 		return new ResponseEntity<>(userDTOs, HttpStatus.OK);
 	}
-	
+
+	/**
+	 * Method used to unlock user account based on provided emails.
+	 *
+	 * @param emails - emails of the accounts to be unlocked
+	 * @return success message
+	 */
 	@PatchMapping(value = "/account/unlock", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> unlockUserAccounts(@RequestBody List<String> emails) {
 		this.adminSvc.unlockUserAccounts(emails);
-		return new ResponseEntity<>("User Account(s) Unlocked Successfully!!!", HttpStatus.OK);
+		final String message = getMessage("message.admin.users.unlock");
+		return new ResponseEntity<>(message, HttpStatus.OK);
 	}
-	
+
+	/**
+	 * Method used to delete user accounts based on provided emails.
+	 *
+	 * @param emails - emails of the accounts to be deleted
+	 * @return success message
+	 */
 	@DeleteMapping(value = "/account/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> deleteUserAccounts(@RequestBody List<String> emails) {
 		this.adminSvc.deleteUsers(emails);
-		return new ResponseEntity<>("User Accounts(s) Deleted Successfully!!!", HttpStatus.OK);
+		final String message = getMessage("message.admin.users.delete");
+		return new ResponseEntity<>(message, HttpStatus.OK);
 	}
-	
+
+	/**
+	 * Method used to permanently delete user accounts based on provided emails.
+	 *
+	 * @param emails - emails of the accounts to be permanently deleted
+	 * @return success message
+	 */
 	@DeleteMapping(value = "/account/hardDelete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> hardDeleteUserAccounts(@RequestBody List<String> emails) {
 		this.adminSvc.hardDeleteUsers(emails);
-		return new ResponseEntity<>("User Accounts(s) Hard Deleted Successfully!!!", HttpStatus.OK);
+		final String message = getMessage("message.admin.users.perm.delete");
+		return new ResponseEntity<>(message, HttpStatus.OK);
 	}
 
 }
