@@ -17,7 +17,7 @@ public final class DTOMapper {
      * Convert UserDTO to User entity object.
      *
      * @param userDTO - Input DTO from client
-     * @retun user - Output User entity object
+     * @return user - Output User entity object
      */
     public static User convertUserDTOToUser(UserDTO userDTO) {
         User user = new User();
