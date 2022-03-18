@@ -25,7 +25,6 @@ import in.gagan.base.framework.entity.location.City;
 import in.gagan.base.framework.entity.location.Country;
 import in.gagan.base.framework.entity.location.Region;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -44,12 +43,9 @@ public class AddressServiceImpl implements AddressService {
 
 	private final CountryDAO countryDAO;
 
-	private final MessageSource message;
-
 	@Autowired
-	public AddressServiceImpl(CountryDAO countryDAO, MessageSource message) {
+	public AddressServiceImpl(CountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
-		this.message = message;
 	}
 	
 	/**
