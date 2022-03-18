@@ -82,7 +82,7 @@ public class AddressController extends AbstractController {
 	}
 
 	/**
-	 * Method used get all the countries.
+	 * Method used get all the countries' names.
 	 * 
 	 * @return countries - data consisting of all the countries
 	 */
