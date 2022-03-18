@@ -21,6 +21,9 @@ package in.gagan.base.framework.util;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.NoSuchElementException;
+import java.util.function.Supplier;
+
 /**
  * Utility class for providing exception related helper methods.
  * 
@@ -43,6 +46,16 @@ public final class ExceptionHelperUtil {
 		  .append(email)
 		  .append(" not found");
 		return new UsernameNotFoundException(message.toString());
+	}
+
+	/**
+	 * Method used to generate NoSuchElementException with message text provided by user.
+	 *
+	 * @param message - message text to be thrown to user
+	 * @return Supplier<? extends NoSuchElementException> - supplier for NoSuchElementException
+	 */
+	public static Supplier<? extends NoSuchElementException> noSuchElementExceptionSupplier(String message) {
+		return () -> new NoSuchElementException(message);
 	}
 
 }
