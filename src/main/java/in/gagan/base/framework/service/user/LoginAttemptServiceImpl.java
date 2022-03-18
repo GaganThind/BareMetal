@@ -23,15 +23,14 @@ import in.gagan.base.framework.component.PasswordProps;
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dao.user.UserDAO;
 import in.gagan.base.framework.entity.user.User;
-import in.gagan.base.framework.util.ExceptionHelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 import static in.gagan.base.framework.util.ExceptionHelperUtil.noSuchElementExceptionSupplier;
+import static in.gagan.base.framework.util.ExceptionHelperUtil.noUserNotFoundExceptionSupplier;
 
 /**
  * This class provides the implementation of LoginAttemptService interface and provides operations for Login Attempt functionality.
@@ -66,7 +65,8 @@ public class LoginAttemptServiceImpl implements LoginAttemptService {
 		// String ipAddress = webAuthenticationDetails.getRemoteAddress();
 		
 		String email = auth.getName();
-		User user = this.userDAO.findUserByEmail(email).orElseThrow(() -> ExceptionHelperUtil.throwUserNotFound(email));
+		User user = this.userDAO.findUserByEmail(email)
+				.orElseThrow(noUserNotFoundExceptionSupplier(email));
 		
 		short failedLoginAttempts = user.getFailedLoginAttempts();
 		short maxFailedLoginAttempts = this.passwordProps.getMaxFailedLoginAttempts();

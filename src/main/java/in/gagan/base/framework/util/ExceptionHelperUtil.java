@@ -33,19 +33,19 @@ import java.util.function.Supplier;
 public final class ExceptionHelperUtil {
 	
 	private ExceptionHelperUtil() { }
-	
+
 	/**
-	 * This method returns new username not found exception.
-	 * 
+	 * Method used to generate NoSuchElementException with message text provided by user.
+	 *
 	 * @param email - Email id to be included in exception
 	 * @return UsernameNotFoundException - exception
 	 */
-	public static UsernameNotFoundException throwUserNotFound(String email) {
+	public static Supplier<? extends UsernameNotFoundException> noUserNotFoundExceptionSupplier(String email) {
 		StringBuilder message = new StringBuilder();
 		message.append("Username/Email: ")
-		  .append(email)
-		  .append(" not found");
-		return new UsernameNotFoundException(message.toString());
+				.append(email)
+				.append(" not found");
+		return () -> new UsernameNotFoundException(message.toString());
 	}
 
 	/**

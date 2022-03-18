@@ -19,11 +19,9 @@
 
 package in.gagan.base.framework.service.user;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
-
+import in.gagan.base.framework.dao.user.UserDAO;
+import in.gagan.base.framework.dto.user.UserDetailsDTO;
+import in.gagan.base.framework.dto.user.UserRoleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,10 +31,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import in.gagan.base.framework.dao.user.UserDAO;
-import in.gagan.base.framework.dto.user.UserDetailsDTO;
-import in.gagan.base.framework.dto.user.UserRoleDTO;
-import in.gagan.base.framework.util.ExceptionHelperUtil;
+import javax.transaction.Transactional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static in.gagan.base.framework.util.ExceptionHelperUtil.noUserNotFoundExceptionSupplier;
 
 /**
  * This class provides the implementation of UserDetailsService interface and provides the functionality of user Authentication.
@@ -66,7 +65,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		
 		in.gagan.base.framework.entity.user.User user = this.userDAO.findUserByEmail(email)
-																.orElseThrow(() -> ExceptionHelperUtil.throwUserNotFound(email));
+																.orElseThrow(noUserNotFoundExceptionSupplier(email));
 		
 		UserDetailsDTO userDetails = new UserDetailsDTO(user);
 		Set<UserRoleDTO> roles = userDetails.getUserRole();

@@ -19,20 +19,19 @@
 
 package in.gagan.base.framework.service.user;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.transaction.Transactional;
-
+import in.gagan.base.framework.component.PasswordProps;
+import in.gagan.base.framework.dao.user.UserDAO;
+import in.gagan.base.framework.entity.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import in.gagan.base.framework.component.PasswordProps;
-import in.gagan.base.framework.dao.user.UserDAO;
-import in.gagan.base.framework.entity.user.User;
-import in.gagan.base.framework.util.ExceptionHelperUtil;
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static in.gagan.base.framework.util.ExceptionHelperUtil.noUserNotFoundExceptionSupplier;
 
 /**
  * This class provides the implementation of UserDataService interface and provides operations for User management functionality.
@@ -67,7 +66,7 @@ public class UserDataServiceImpl implements UserDataService {
 	@Override
 	public User fetchUserByEmail(String email) throws UsernameNotFoundException {
 		return this.userDAO.findUserByEmail(email)
-								.orElseThrow(() -> ExceptionHelperUtil.throwUserNotFound(email));
+								.orElseThrow(noUserNotFoundExceptionSupplier(email));
 	}
 	
 	/**
