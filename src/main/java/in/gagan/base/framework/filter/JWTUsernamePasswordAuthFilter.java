@@ -94,7 +94,6 @@ public class JWTUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
 	 * @param response - contains response parameters
 	 * @param chain - filter chain to execute other filters
 	 * @param authResult - Authentication object containing user details
-	 * @exception IOException - IO exception
 	 * @exception ServletException - Servlet exception
 	 *  
 	 */
