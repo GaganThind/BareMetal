@@ -19,6 +19,21 @@
 
 package in.gagan.base.framework.service.location;
 
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import in.gagan.base.framework.constant.ApplicationConstants;
+import in.gagan.base.framework.dao.CountryDAO;
+import in.gagan.base.framework.dto.location.CountryInputDTO;
+import in.gagan.base.framework.entity.location.City;
+import in.gagan.base.framework.entity.location.Country;
+import in.gagan.base.framework.entity.location.Region;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,24 +42,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import javax.transaction.Transactional;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-
-import in.gagan.base.framework.constant.ApplicationConstants;
-import in.gagan.base.framework.dao.CountryDAO;
-import in.gagan.base.framework.dto.location.CountryInputDTO;
-import in.gagan.base.framework.entity.location.City;
-import in.gagan.base.framework.entity.location.Country;
-import in.gagan.base.framework.entity.location.Region;
 
 @Transactional
 @Service
@@ -116,16 +113,15 @@ public class CountryServiceImpl implements CountryService {
 		
 		return countrySet;
 	}
-	
-}
 
-class CsvUtils {
-	
-    private static final CsvMapper mapper = new CsvMapper();
-    
-    public static <T> List<T> read(Class<T> clazz, InputStream stream) throws IOException {
-        CsvSchema schema = mapper.schemaFor(clazz).withHeader().withColumnReordering(true);
-        ObjectReader reader = mapper.readerFor(clazz).with(schema);
-        return reader.<T>readValues(stream).readAll();
-    }
+	private static class CsvUtils {
+
+		private static final CsvMapper mapper = new CsvMapper();
+
+		public static <T> List<T> read(Class<T> clazz, InputStream stream) throws IOException {
+			CsvSchema schema = mapper.schemaFor(clazz).withHeader().withColumnReordering(true);
+			ObjectReader reader = mapper.readerFor(clazz).with(schema);
+			return reader.<T>readValues(stream).readAll();
+		}
+	}
 }
