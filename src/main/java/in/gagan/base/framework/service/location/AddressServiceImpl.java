@@ -29,9 +29,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 /**
  * This class provides the implementation of AddressService interface and
@@ -143,10 +141,6 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public Optional<ZipcodeDTO> getDataBasedOnZipcode(String countryId, long zipcode) {
 		return this.countryDAO.findZipcodeDataByCountryIdAndZipcode(countryId, zipcode);
-	}
-
-	private Supplier<? extends NoSuchElementException> noSuchElementExceptionSupplier(String message) {
-		return () -> new NoSuchElementException(message);
 	}
 
 }
