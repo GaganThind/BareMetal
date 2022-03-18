@@ -19,7 +19,6 @@
 
 package in.gagan.base.framework.dto;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
