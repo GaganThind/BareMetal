@@ -87,7 +87,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf().disable()
 		.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
 		.and()
 			.addFilter(jwtUsernamePasswordAuthFilter())
 			.addFilter(new JWTTokenAuthenticationFilter(authenticationManager(), this.jwtProps, this.jwtSvc))
@@ -131,6 +130,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	public JWTUsernamePasswordAuthFilter jwtUsernamePasswordAuthFilter() throws Exception {
 		JWTUsernamePasswordAuthFilter jwtUsernamePasswordAuthFilter = new JWTUsernamePasswordAuthFilter(authenticationManager(), this.jwtProps, this.jwtSvc);
 		jwtUsernamePasswordAuthFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+		//jwtUsernamePasswordAuthFilter.setFilterProcessesUrl("/api/auth/login");
 		return jwtUsernamePasswordAuthFilter;
 	}
 
