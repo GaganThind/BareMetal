@@ -19,7 +19,22 @@
 
 package in.gagan.base.framework.controller;
 
-import static org.junit.Assert.assertEquals;
+import in.gagan.base.framework.SpringBootHibernateFrameworkApplication;
+import in.gagan.base.framework.dto.user.UpdateUserDTO;
+import in.gagan.base.framework.dto.user.UserDTO;
+import in.gagan.base.framework.dto.user.UserRoleDTO;
+import in.gagan.base.framework.dto.user.UsernamePasswordAuthDTO;
+import in.gagan.base.framework.enums.Gender;
+import in.gagan.base.framework.enums.UserRoles;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.*;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -28,27 +43,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import in.gagan.base.framework.SpringBootHibernateFrameworkApplication;
-import in.gagan.base.framework.dto.user.UserDTO;
-import in.gagan.base.framework.dto.user.UserRoleDTO;
-import in.gagan.base.framework.dto.user.UsernamePasswordAuthDTO;
-import in.gagan.base.framework.enums.Gender;
-import in.gagan.base.framework.enums.UserRoles;
+import static org.junit.Assert.assertEquals;
 
 /**
  * This class is used to test the functionality of the UserController class.
@@ -87,7 +82,6 @@ public class UserControllerIntegrationTest {
 		ResponseEntity<String> responseEntity = postEntity(userDTO, url);
 		
 		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-		assertEquals("Test User: user Registration Successful!!!", responseEntity.getBody());
 	}
 	
 	/**
@@ -175,7 +169,7 @@ public class UserControllerIntegrationTest {
 		
 		UserDTO inputUserDTO = createUser(INTEGRATION_TEST_USER, dob);
 		
-		ResponseEntity<UserDTO> responseEntity = putEntity(inputUserDTO);
+		ResponseEntity<UserDTO> responseEntity = patchEntity(inputUserDTO);
 		
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals(INTEGRATION_TEST_USER, responseEntity.getBody().getEmail());
@@ -191,7 +185,7 @@ public class UserControllerIntegrationTest {
 	public void testUpdateUser_WithOtherRegisteredEmail_NonAdmin() throws Exception {
 		UserDTO inputUserDTO = createUser("dummytesting@e.com", LocalDate.of(1984, Month.JUNE, 3));
 		
-		ResponseEntity<UserDTO> responseEntity = putEntity(inputUserDTO);
+		ResponseEntity<UserDTO> responseEntity = patchEntity(inputUserDTO);
 		
 		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
 	}
@@ -211,7 +205,7 @@ public class UserControllerIntegrationTest {
 		HttpHeaders headers = createHttpHeader(MediaType.APPLICATION_JSON, bearerToken);
 		HttpEntity<UserDTO> httpEntity = new HttpEntity<>(inputUserDTO, headers);
 		
-		ResponseEntity<UserDTO> responseEntity = this.restTemplate.exchange(USER_BASE_URL, HttpMethod.PUT, httpEntity, UserDTO.class);
+		ResponseEntity<UserDTO> responseEntity = this.restTemplate.exchange(USER_BASE_URL, HttpMethod.PATCH, httpEntity, UserDTO.class);
 		
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals("dummytesting@e.com", responseEntity.getBody().getEmail());
@@ -227,7 +221,7 @@ public class UserControllerIntegrationTest {
 	public void testUpdateUser_WithOtherUnRegisteredEmail() throws Exception {
 		UserDTO inputUserDTO = createUser("unregisteres@e.com", LocalDate.of(1984, Month.AUGUST, 9));
 		
-		ResponseEntity<UserDTO> responseEntity = putEntity(inputUserDTO);
+		ResponseEntity<UserDTO> responseEntity = patchEntity(inputUserDTO);
 		
 		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
 	}
@@ -244,7 +238,6 @@ public class UserControllerIntegrationTest {
 		ResponseEntity<String> responseEntity = deleteEntity(url, "deletetesting@e.com", "TestUser@123");
 		
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals("Deleted Successfully!!!", responseEntity.getBody());
 	}
 	
 	/**
@@ -273,7 +266,6 @@ public class UserControllerIntegrationTest {
 		ResponseEntity<String> responseEntity = deleteEntity(url, "admintesting@e.com", "TestUser@123");
 		
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals("Deleted Successfully!!!", responseEntity.getBody());
 	}
 	
 	/**
@@ -364,7 +356,21 @@ public class UserControllerIntegrationTest {
 		HttpEntity<UserDTO> httpEntity = new HttpEntity<>(inputUserDTO, headers);
 		
 		return this.restTemplate.exchange(USER_BASE_URL, HttpMethod.PUT, httpEntity, UserDTO.class);
-	} 
+	}
+
+	/**
+	 * Method used to update already existing user details.
+	 *
+	 * @param inputUserDTO - UserDTO object
+	 * @return ResponseEntity<UserDTO> - Updated User Details object
+	 */
+	private ResponseEntity<UserDTO> patchEntity(UserDTO inputUserDTO) {
+		String bearerToken = getBearerToken();
+		HttpHeaders headers = createHttpHeader(MediaType.APPLICATION_JSON, bearerToken);
+		HttpEntity<UserDTO> httpEntity = new HttpEntity<>(inputUserDTO, headers);
+
+		return this.restTemplate.exchange(USER_BASE_URL, HttpMethod.PATCH, httpEntity, UserDTO.class);
+	}
 	
 	/**
 	 * Method used to create a new userDTO object to be sent to the controller class.
@@ -389,6 +395,10 @@ public class UserControllerIntegrationTest {
 		UserDTO inputUserDTO = new UserDTO();
 		inputUserDTO.setEmail(email);
 		inputUserDTO.setDob(dob);
+		inputUserDTO.setFirstName("Test");
+		inputUserDTO.setLastName("Test");
+		inputUserDTO.setPassword("Qwerty@123");
+		inputUserDTO.setMatchingPassword("Qwerty@123");
 		return inputUserDTO;
 	}
 	
