@@ -38,7 +38,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
-import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import static in.gagan.base.framework.util.ExceptionHelperUtil.noSuchElementExceptionSupplier;
+import static java.util.stream.StreamSupport.stream;
 
 /**
  * This controller class provides the functionality for retrieving city, state,
@@ -65,14 +68,16 @@ public class AddressController extends AbstractController {
 	 */
 	@GetMapping(value = "/admin/country", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Set<CountryDTO>> getCountriesForAdmin() {
+		final String message = getMessage("message.address.countries.list.empty");
 		Iterable<Country> countries =
 				this.addressSvc.getCountriesForAdmin()
-						.orElseThrow(noSuchElementExceptionSupplier(
-										message.getMessage("message.address.countries.list.empty", null,
-												Locale.ENGLISH)));
+								.orElseThrow(noSuchElementExceptionSupplier(message));
 
 		// return all data inside country object including regions/states and cities
-		Set<CountryDTO> countryDTOs = convertToDTO(countries);
+		Set<CountryDTO> countryDTOs = stream(countries.spliterator(), false)
+										.map(this::convertToDTO)
+										.collect(Collectors.toSet());
+
 		return new ResponseEntity<>(countryDTOs, HttpStatus.OK);
 	}
 
@@ -83,17 +88,15 @@ public class AddressController extends AbstractController {
 	 */
 	@GetMapping(value = "/country", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Set<CountryDTO>> getCountries() {
+		final String message = getMessage("message.address.countries.list.empty");
 		Iterable<Country> countries =
 				this.addressSvc.getCountries()
-						.orElseThrow(noSuchElementExceptionSupplier(
-								message.getMessage("message.address.countries.list.empty", null,
-										Locale.ENGLISH)));
+						.orElseThrow(noSuchElementExceptionSupplier(message));
 
 		// Return only names
-		Set<CountryDTO> countryDTOs = new HashSet<>();
-		for (Country country: countries) {
-			countryDTOs.add(new CountryDTO(country.getCountryName()));
-		}
+		Set<CountryDTO> countryDTOs = stream(countries.spliterator(), false)
+										.map(country -> new CountryDTO(country.getCountryName()))
+										.collect(Collectors.toSet());
 
 		return new ResponseEntity<>(countryDTOs, HttpStatus.OK);
 	}
@@ -107,11 +110,10 @@ public class AddressController extends AbstractController {
 	 */
 	@GetMapping(value = "/country/{countryId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CountryDTO> getCountry(@PathVariable String countryId) {
+		final String message = getMessage("message.address.country.not.found", countryId);
 		Country country =
 				this.addressSvc.getCountry(countryId)
-						.orElseThrow(noSuchElementExceptionSupplier(
-								message.getMessage("message.address.country.not.found",
-										new Object[] { countryId }, Locale.ENGLISH)));
+						.orElseThrow(noSuchElementExceptionSupplier(message));
 
 		Set<RegionDTO> sortedSet = getSortedRegionDTOS(country.getRegions());
 		CountryDTO countryDTO = new CountryDTO(country.getCountryName(), sortedSet);
@@ -128,11 +130,10 @@ public class AddressController extends AbstractController {
 	 */
 	@GetMapping(value = "/country/{countryId}/states", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Set<RegionDTO>> getRegions(@PathVariable String countryId) {
+		final String message = getMessage("message.address.states.not.found", countryId);
 		Iterable<Region> regions =
 				this.addressSvc.getRegions(countryId)
-						.orElseThrow(
-								noSuchElementExceptionSupplier(message.getMessage("message.address.states.not.found",
-										new Object[] { countryId }, Locale.ENGLISH)));
+						.orElseThrow(noSuchElementExceptionSupplier(message));
 
 		Set<RegionDTO> sortedSet = getSortedRegionDTOS(regions);
 
@@ -148,11 +149,10 @@ public class AddressController extends AbstractController {
 	 */
 	@GetMapping(value = "/country/{countryId}/states/{stateId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RegionDTO> getRegion(@PathVariable String countryId, @PathVariable String stateId) {
+		final String message = getMessage("message.address.state.not.found", stateId, countryId);
 		Region region =
 				this.addressSvc.getRegion(countryId, stateId)
-						.orElseThrow(noSuchElementExceptionSupplier(
-								message.getMessage("message.address.state.not.found",
-										new Object[] { stateId, countryId }, Locale.ENGLISH)));
+						.orElseThrow(noSuchElementExceptionSupplier(message));
 
 		Set<CityDTO> sortedSet = getSortedCityDTOS(region.getCities());
 		RegionDTO regionDTO = new RegionDTO(region.getRegionName(), sortedSet);
@@ -169,11 +169,10 @@ public class AddressController extends AbstractController {
 	 */
 	@GetMapping(value = "/country/{countryId}/states/{stateId}/cities", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Set<CityDTO>> getCities(@PathVariable String countryId, @PathVariable String stateId) {
+		final String message = getMessage("message.address.cities.not.found", stateId, countryId);
 		Iterable<City> cities =
 				this.addressSvc.getCities(countryId, stateId)
-						.orElseThrow(noSuchElementExceptionSupplier(
-								message.getMessage("message.address.cities.not.found",
-										new Object[] { stateId, countryId }, Locale.ENGLISH)));
+						.orElseThrow(noSuchElementExceptionSupplier(message));
 
 		Set<CityDTO> sortedSet = getSortedCityDTOS(cities);
 
@@ -190,19 +189,17 @@ public class AddressController extends AbstractController {
 	@GetMapping(value = "/country/{countryId}/states/{stateId}/cities/{cityId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CityDTO> getCity(@PathVariable String countryId, @PathVariable String stateId,
 			@PathVariable String cityId) {
-		Iterable<City> city =
+		final String message = getMessage("message.address.city.not.found", cityId, stateId, countryId);
+		Iterable<City> cities =
 				this.addressSvc.getCity(countryId, stateId, cityId)
-						.orElseThrow(noSuchElementExceptionSupplier(
-									message.getMessage("message.address.city.not.found",
-											new Object[] { cityId, stateId, countryId }, Locale.ENGLISH)));
+						.orElseThrow(noSuchElementExceptionSupplier(message));
 
-		CityDTO cityDTO = new CityDTO(((List<City>) city).get(0).getCityName());
+		Set<Long> zipcodes = stream(cities.spliterator(), false)
+								.map(city -> city.getZipcode())
+								.sorted()
+								.collect(Collectors.toCollection(LinkedHashSet::new));
 
-		for (City ct : city) {
-			cityDTO.addZipcode(ct.getZipcode());
-		}
-
-		cityDTO.setZipcodes(new TreeSet<>(cityDTO.getZipcodes()));
+		CityDTO cityDTO = new CityDTO(((List<City>) cities).get(0).getCityName(), zipcodes);
 
 		return new ResponseEntity<>(cityDTO, HttpStatus.OK);
 	}
@@ -216,54 +213,28 @@ public class AddressController extends AbstractController {
 	 */
 	@GetMapping(value = "/country/{countryId}/zipcode/{zipcode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ZipcodeDTO> getDataBasedOnZipCode(@PathVariable String countryId, @PathVariable Long zipcode) {
-		Optional<ZipcodeDTO> zipcodeDTO = this.addressSvc.getDataBasedOnZipcode(countryId, zipcode);
+		final String message = getMessage("message.address.zipcode.not.found", zipcode, countryId);
 		ZipcodeDTO zipcodeObj =
-				zipcodeDTO
-						.orElseThrow(noSuchElementExceptionSupplier(
-										message.getMessage("message.address.zipcode.not.found",
-												new Object[] { zipcode, countryId }, Locale.ENGLISH)));
+				this.addressSvc.getDataBasedOnZipcode(countryId, zipcode)
+								.orElseThrow(noSuchElementExceptionSupplier(message));
 
 		return new ResponseEntity<>(zipcodeObj, HttpStatus.OK);
 	}
 
 	private Set<RegionDTO> getSortedRegionDTOS(Iterable<Region> regions) {
-		Set<RegionDTO> regionDTOs = new HashSet<>();
-		for (Region region : regions) {
-			regionDTOs.add(new RegionDTO(region.getRegionName()));
-		}
-
-		// Sort region
-		Set<RegionDTO> sortedSet = new TreeSet<>(Comparator.comparing(RegionDTO::getName));
-		sortedSet.addAll(regionDTOs);
-
-		return sortedSet;
+		return stream(regions.spliterator(), false)
+				.map(region -> region.getRegionName())
+				.map(RegionDTO::new)
+				.sorted(Comparator.comparing(RegionDTO::getName))
+				.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 	private Set<CityDTO> getSortedCityDTOS(Iterable<City> cities) {
-		Set<CityDTO> cityDTOs = new HashSet<>();
-		for (City city : cities) {
-			cityDTOs.add(new CityDTO(city.getCityName()));
-		}
-
-		// Sort cities
-		Set<CityDTO> sortedSet = new TreeSet<>(Comparator.comparing(CityDTO::getName));
-		sortedSet.addAll(cityDTOs);
-
-		return sortedSet;
-	}
-
-	private Supplier<? extends NoSuchElementException> noSuchElementExceptionSupplier(String message) {
-		return () -> new NoSuchElementException(message);
-	}
-
-	private Set<CountryDTO> convertToDTO(Iterable<Country> countries) {
-		Set<CountryDTO> countryDTOs = new HashSet<>();
-
-		for (Country country : countries) {
-			countryDTOs.add(convertToDTO(country));
-		}
-
-		return countryDTOs;
+		return stream(cities.spliterator(), false)
+				.map(city-> city.getCityName())
+				.map(CityDTO::new)
+				.sorted(Comparator.comparing(CityDTO::getName))
+				.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 	private CountryDTO convertToDTO(Country country) {
@@ -276,7 +247,9 @@ public class AddressController extends AbstractController {
 				Set<CityDTO> cityDTOs = regionDTO.getCities();
 				String cityName = city.getCityName();
 
-				Optional<CityDTO> cityOpt = cityDTOs.stream().filter(c -> c.getName().equals(cityName)).findFirst();
+				Optional<CityDTO> cityOpt = cityDTOs.stream()
+													.filter(c -> c.getName().equals(cityName))
+													.findFirst();
 
 				CityDTO cityDTO = cityOpt.orElse(new CityDTO(cityName));
 				cityDTO.addZipcode(city.getZipcode());
