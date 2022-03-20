@@ -1,4 +1,4 @@
-# SpringBoot_Hibernate_Framework
+# BareMetal
 <p>
     Bare metal SpringBoot application which can be used as base for creating new applications by adding into it. The application provides below capabilities out of the box.
 </p>
