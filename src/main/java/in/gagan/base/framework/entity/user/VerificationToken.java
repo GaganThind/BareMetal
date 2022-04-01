@@ -1,6 +1,4 @@
 /*
- * SpringBoot_Hibernate_Framework
- * 
  * Copyright (C) 2020-2022  Gagan Thind
 
  * This program is free software: you can redistribute it and/or modify
