@@ -33,10 +33,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAspectJAutoProxy
 @EnableAsync
 @SpringBootApplication
-public class SpringBootHibernateFrameworkApplication {
+public class BareMetalApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootHibernateFrameworkApplication.class, args);
+		SpringApplication.run(BareMetalApplication.class, args);
 	}
 
 }

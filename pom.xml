@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>in.gagan.base.framework</groupId>
-	<artifactId>spring-boot-hibernate-framework</artifactId>
+	<artifactId>bare-metal</artifactId>
 	<version>1.0.0</version>
 	<name>BaseFramework</name>
 	<description>Base framework with spring boot, spring aop and hibernate</description>

@@ -40,7 +40,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import in.gagan.base.framework.SpringBootHibernateFrameworkApplication;
+import in.gagan.base.framework.BareMetalApplication;
 import in.gagan.base.framework.dto.user.UserDTO;
 import in.gagan.base.framework.dto.user.UsernamePasswordAuthDTO;
 
@@ -51,7 +51,7 @@ import in.gagan.base.framework.dto.user.UsernamePasswordAuthDTO;
  *
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = SpringBootHibernateFrameworkApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = BareMetalApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class AdminControllerIntegrationTest {
 	
 	@Autowired

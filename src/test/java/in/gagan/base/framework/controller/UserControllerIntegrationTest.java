@@ -19,8 +19,7 @@
 
 package in.gagan.base.framework.controller;
 
-import in.gagan.base.framework.SpringBootHibernateFrameworkApplication;
-import in.gagan.base.framework.dto.user.UpdateUserDTO;
+import in.gagan.base.framework.BareMetalApplication;
 import in.gagan.base.framework.dto.user.UserDTO;
 import in.gagan.base.framework.dto.user.UserRoleDTO;
 import in.gagan.base.framework.dto.user.UsernamePasswordAuthDTO;
@@ -52,7 +51,7 @@ import static org.junit.Assert.assertEquals;
  *
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = SpringBootHibernateFrameworkApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = BareMetalApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class UserControllerIntegrationTest {
 	
 	@Autowired
