@@ -66,6 +66,8 @@
 <ol>
     <li>Open Terminal (in Linux/Mac) or cmd (in Windows)</li>
     <li>Navigate to project directory</li>
+    <li>Navigate to src/main/resources and unzip Data.csv.zip in same directory</li>
+    <li>Navigate back to project directory</li>
     <li>Run <pre><code>./mvnw install</code></pre></li>
     <li>Then, once done, run <pre><code>./mvnw spring-boot:run</code></pre></li>
 </ol>
