@@ -17,13 +17,11 @@
 
 package in.gagan.base.framework.component;
 
+import in.gagan.base.framework.service.admin.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import in.gagan.base.framework.service.admin.AdminService;
-import in.gagan.base.framework.service.location.CountryService;
-import in.gagan.base.framework.service.DummyDataService;
 
 /**
  * This class is the implementation of CommandLineRunner interface and provides a way to perform operations
@@ -33,27 +31,20 @@ import in.gagan.base.framework.service.DummyDataService;
  * @author gaganthind
  *
  */
+@Order(1)
 @Component
-public class CommandLineAppStartupRunner implements CommandLineRunner {
+public class AdminAccountRunner implements CommandLineRunner {
 	
 	private final AdminService adminSvc;
 	
-	private final DummyDataService dummyDataSvc;
-	
-	private final CountryService countryService;
-	
 	@Autowired
-	public CommandLineAppStartupRunner(AdminService adminSvc, DummyDataService dummyDataSvc, CountryService countryService) {
+	public AdminAccountRunner(AdminService adminSvc) {
 		this.adminSvc = adminSvc;
-		this.dummyDataSvc = dummyDataSvc;
-		this.countryService = countryService;
 	}
 	
 	@Override
 	public void run(String... args) throws Exception {
 		this.adminSvc.createAdminUser();
-		this.countryService.loadCountriesFromCSV();
-		this.dummyDataSvc.createDummyData();
 	}
 
 }
