@@ -100,6 +100,16 @@ public class UserDataServiceImpl implements UserDataService {
 	public void deleteUser(String email) {
 		this.userDAO.deleteUsers(List.of(email));
 	}
+
+	/**
+	 * This method is used to permanently delete the User record.
+	 *
+	 * @param email - email address of user
+	 */
+	@Override
+	public void hardDeleteUser(String email) {
+		this.userDAO.hardDeleteUsers(List.of(email));
+	}
 	
 	/**
 	 * This method is used to check if a User record exists with the provided email.

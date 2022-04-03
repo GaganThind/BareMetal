@@ -58,6 +58,13 @@ public interface UserDataService {
 	 * @param email - email address of user
 	 */
 	void deleteUser(String email);
+
+	/**
+	 * This method is used to permanently delete the User record.
+	 *
+	 * @param email - email address of user
+	 */
+	void hardDeleteUser(String email);
 	
 	/**
 	 * This method is used to check if a User record exists with the provided email.
