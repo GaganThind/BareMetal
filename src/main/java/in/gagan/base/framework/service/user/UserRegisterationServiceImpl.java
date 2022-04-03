@@ -67,7 +67,7 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 		if (this.userDataSvc.isUserPresent(user.getEmail())) {
 			throw new UsernameExistException(user.getEmail());
 		}
-
+		user.setEmail(user.getEmail().toLowerCase());
 		this.userDataSvc.saveUser(user);
 
 		// Generate random verification token
@@ -87,7 +87,8 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	 */
 	@Override
 	public UserDTO fetchUser(String email) {
-		User user = this.userDataSvc.fetchUserByEmail(email.toLowerCase());
+		String emailLowerCase = email.toLowerCase();
+		User user = this.userDataSvc.fetchUserByEmail(emailLowerCase);
 		return DTOMapper.convertUserToUserDTO(user);
 	}
 	
