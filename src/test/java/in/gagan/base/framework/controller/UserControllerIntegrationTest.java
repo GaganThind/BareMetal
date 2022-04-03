@@ -18,12 +18,14 @@
 package in.gagan.base.framework.controller;
 
 import in.gagan.base.framework.BareMetalApplication;
+import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dto.user.UserDTO;
-import in.gagan.base.framework.dto.user.UserRoleDTO;
 import in.gagan.base.framework.dto.user.UsernamePasswordAuthDTO;
-import in.gagan.base.framework.enums.Gender;
-import in.gagan.base.framework.enums.UserRoles;
-import org.apache.commons.lang3.StringUtils;
+import in.gagan.base.framework.entity.user.Role;
+import in.gagan.base.framework.entity.user.User;
+import in.gagan.base.framework.service.user.UserDataService;
+import in.gagan.base.framework.service.user.VerificationTokenService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +33,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.net.URI;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
+import static in.gagan.base.framework.TestHelperUtil.*;
+import static in.gagan.base.framework.enums.UserRoles.*;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -51,405 +53,291 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BareMetalApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class UserControllerIntegrationTest {
-	
+	private static final String USER_BASE_URL = "/v1/users";
+	private static final String REGISTER_USER = "/v1/users/register";
+	private static final String FETCH_USER_BASE_URL = "/v1/users/";
+	private static final String DELETE_USER_BASE_URL = "/v1/users/";
+	private static final String VERIFY_USER_BASE_URL = "/v1/users/register/verify/";
+	private static final String UPDATE_USER_BASE_URL = "/v1/users/";
+
+	private static final String INTEGRATION_TEST_USER = "integrationtesting@e.com";
+	private static final String DUMMY_TEST_USER = "dummytesting@e.com";
+
 	@Autowired
 	private TestRestTemplate restTemplate;
-	
-	private static final String USER_BASE_URL = "/v1/users";
-	
-	private static final String TEST_USER_EMAIL = "testRegisterUser@e.com";
-	
-	private static final String TEST_USER_PASSWORD = "TestUser@123";
-	
-	private static final String INTEGRATION_TEST_USER = "integrationtesting@e.com";
-	
-	private static final String INTEGRATION_USER_PASSWORD = "TestUser@123";
-	
-	private static final String SLASH = "/";
-	
-	/**
-	 * Method used to test if all mandatory data is passed to the controller class, the new user is registered successfully.
-	 * 
-	 * @throws Exception - Throw any unwanted exception
-	 */
-	@Test
-	public void testRegisterUser() throws Exception {
-		UserDTO userDTO = createUser();
-		String url = new StringBuilder(USER_BASE_URL).append("/register").toString();
-		ResponseEntity<String> responseEntity = postEntity(userDTO, url);
-		
-		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-	}
-	
-	/**
-	 * Method used to test if last name is not passed to the controller class, the user is not registered and exception is thrown.
-	 * 
-	 * @throws Exception - Throw any unwanted exception
-	 */
-	@Test
-	public void testRegisterUser_LastNameNull() throws Exception {
-		UserDTO userDTO = createUser();
-		// Failure point
-		userDTO.setLastName(null);
-		userDTO.setMatchingPassword(null);
-		
-		String url = new StringBuilder(USER_BASE_URL).append("/register").toString();
-		ResponseEntity<String> responseEntity = postEntity(userDTO, url);
-		
-		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-	}
-	
-	/**
-	 * Method used to test if a particular user exists in the application.
-	 * 
-	 * @throws Exception - Throw any unwanted exception
-	 */
-	@Test
-	public void testFetchUser() throws Exception {
-		String url = new StringBuilder(USER_BASE_URL).append(SLASH).append(INTEGRATION_TEST_USER).toString();
-		ResponseEntity<UserDTO> responseEntity = getEntity(url);
-		
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(INTEGRATION_TEST_USER, responseEntity.getBody().getEmail());
-		assertEquals("Integration Testing", responseEntity.getBody().getUsername());
-	}
-	
-	/**
-	 * Method used to test if a particular user exists in the application using someelse's credentials.
-	 * 
-	 * @throws Exception - Throw any unwanted exception
-	 */
-	@Test
-	public void testFetchUser_WithOtherCredentials() throws Exception {
-		String url = new StringBuilder(USER_BASE_URL).append(SLASH).append("dummytesting@e.com").toString();
-		ResponseEntity<UserDTO> responseEntity = getEntity(url);
-		
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals("dummytesting@e.com", responseEntity.getBody().getEmail());
-		assertEquals("Dummy Testing", responseEntity.getBody().getUsername());
-	}
-	
-	/**
-	 * Method used to test if a particular user doesn't exist in the application.
-	 * 
-	 * @throws Exception - Throw any unwanted exception
-	 */
-	@Test
-	public void testFetchUser_WithNonRegisteredEmail() throws Exception {
-		String url = new StringBuilder(USER_BASE_URL).append(SLASH).append("asd@e.com").toString();
-		ResponseEntity<UserDTO> responseEntity = getEntity(url);
-		
-		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-	}
-	
-	/**
-	 * Method used to test if an email with incorrect syntax throws Bad_Request.
-	 * 
-	 * @throws Exception - Throw any unwanted exception
-	 */
-	@Test
-	public void testFetchUser_WithIncorrectEmail() throws Exception {
-		String url = new StringBuilder(USER_BASE_URL).append(SLASH).append("asd@ecom").toString();
-		ResponseEntity<UserDTO> responseEntity = getEntity(url);
-		
-		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-	}
-	
-	/**
-	 * Method used to test if changes are getting persisted if email and changes are sent to server.
-	 * 
-	 * @throws Exception - Throw any unwanted exception
-	 */
-	@Test
-	public void testUpdateUser() throws Exception {
-		LocalDate dob = LocalDate.of(1984, Month.JUNE, 6);
-		
-		UserDTO inputUserDTO = createUser(INTEGRATION_TEST_USER, dob);
-		
-		ResponseEntity<UserDTO> responseEntity = patchEntity(inputUserDTO);
-		
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(INTEGRATION_TEST_USER, responseEntity.getBody().getEmail());
-		assertEquals(dob, responseEntity.getBody().getDob());
-	}
-	
-	/**
-	 * Method used to test if non-admin account tries to update another users account.
-	 * 
-	 * @throws Exception - Throw any unwanted exception
-	 */
-	@Test
-	public void testUpdateUser_WithOtherRegisteredEmail_NonAdmin() throws Exception {
-		UserDTO inputUserDTO = createUser("dummytesting@e.com", LocalDate.of(1984, Month.JUNE, 3));
-		
-		ResponseEntity<UserDTO> responseEntity = patchEntity(inputUserDTO);
-		
-		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
-	}
-	
-	/**
-	 * Method used to test if changes of another account are getting persisted if email and changes are sent to server and user is an admin.
-	 * 
-	 * @throws Exception - Throw any unwanted exception
-	 */
-	@Test
-	public void testUpdateUser_WithOtherRegisteredEmail_Admin() throws Exception {
-		LocalDate dob = LocalDate.of(1984, Month.AUGUST, 9);
-		
-		UserDTO inputUserDTO = createUser("dummytesting@e.com", dob);
-		
-		String bearerToken = getBearerToken("admintesting@e.com", "TestUser@123");
-		HttpHeaders headers = createHttpHeader(MediaType.APPLICATION_JSON, bearerToken);
-		HttpEntity<UserDTO> httpEntity = new HttpEntity<>(inputUserDTO, headers);
-		
-		ResponseEntity<UserDTO> responseEntity = this.restTemplate.exchange(USER_BASE_URL, HttpMethod.PATCH, httpEntity, UserDTO.class);
-		
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals("dummytesting@e.com", responseEntity.getBody().getEmail());
-		assertEquals(dob, responseEntity.getBody().getDob());
-	}
-	
-	/**
-	 * Method used to test if un-registered account tries to update its users account.
-	 * 
-	 * @throws Exception - Throw any unwanted exception
-	 */
-	@Test
-	public void testUpdateUser_WithOtherUnRegisteredEmail() throws Exception {
-		UserDTO inputUserDTO = createUser("unregisteres@e.com", LocalDate.of(1984, Month.AUGUST, 9));
-		
-		ResponseEntity<UserDTO> responseEntity = patchEntity(inputUserDTO);
-		
-		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
-	}
-	
-	/**
-	 * Method used to test if a user can be deleted by itself.
-	 * 
-	 * @throws Exception - Throw any unwanted exception
-	 */
-	@Test
-	public void testDeleteUser() throws Exception {
-		StringBuilder urlBuilder = new StringBuilder(USER_BASE_URL).append(SLASH).append("deletetesting@e.com");
-		URI url = new URI(urlBuilder.toString());
-		ResponseEntity<String> responseEntity = deleteEntity(url, "deletetesting@e.com", "TestUser@123");
-		
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-	}
-	
-	/**
-	 * Method used to test if a user CANNOT be deleted by other non-admin user.
-	 * 
-	 * @throws Exception - Throw any unwanted exception
-	 */
-	@Test
-	public void testDeleteUser_NonAdmin() throws Exception {
-		StringBuilder urlBuilder = new StringBuilder(USER_BASE_URL).append(SLASH).append("deletetesting1@e.com");
-		URI url = new URI(urlBuilder.toString());
-		ResponseEntity<String> responseEntity = deleteEntity(url, INTEGRATION_TEST_USER, INTEGRATION_USER_PASSWORD);
-		
-		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
-	}
-	
-	/**
-	 * Method used to test if a user CAN be deleted by other admin user.
-	 * 
-	 * @throws Exception - Throw any unwanted exception
-	 */
-	@Test
-	public void testDeleteUser_Admin() throws Exception {
-		StringBuilder urlBuilder = new StringBuilder(USER_BASE_URL).append(SLASH).append("deletetesting1@e.com");
-		URI url = new URI(urlBuilder.toString());
-		ResponseEntity<String> responseEntity = deleteEntity(url, "admintesting@e.com", "TestUser@123");
-		
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-	}
-	
-	/**
-	 * Method used to test if a user can be verified.
-	 * 
-	 * @throws Exception - Throw any unwanted exception
-	 */
-	//@Test
-	public void testVerifyUser() throws Exception {
-		//TODO Need a logic to add the verification token automatically
-		
-		String verifyUrl = new StringBuilder(USER_BASE_URL).append("/register/verify/").append("").toString();
-		HttpHeaders headers = createHttpHeader(MediaType.TEXT_PLAIN);
-		HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-		
-		ResponseEntity<String> responseEntity = this.restTemplate.exchange(verifyUrl, HttpMethod.PUT, httpEntity, String.class);
-		
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals("User Verified Successfully!!!", responseEntity.getBody());
-	}
-	
-	/**
-	 * Method used to test if an invalid token is provided, then an error is thrown.
-	 * 
-	 * @throws Exception - Throw any unwanted exception
-	 */
-	@Test
-	public void testVerifyUser_EmptyToken() throws Exception {
-		String verifyUrl = new StringBuilder(USER_BASE_URL).append("/register/verify/").toString();
-		HttpHeaders headers = createHttpHeader(MediaType.TEXT_PLAIN);
-		HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-		
-		ResponseEntity<String> responseEntity = this.restTemplate.exchange(verifyUrl, HttpMethod.PUT, httpEntity, String.class);
-		
-		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+
+	@Autowired
+	private UserDataService userDataSvc;
+
+	@Autowired
+	private VerificationTokenService verificationTokenSvc;
+
+	private static boolean initialized = false;
+
+	private String token;
+
+	@Before
+	public void setup() {
+		if (initialized) {
+			return;
+		}
+
+		// Added for PATCH http method to work
+		//restTemplate.getRestTemplate().setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
+		User testingUser = new User("Integration", "Testing", INTEGRATION_TEST_USER, USER_PASSWORD);
+		testingUser.addRole(new Role(USER));
+		testingUser.setActiveSw(ApplicationConstants.CHAR_Y);
+		this.userDataSvc.saveUser(testingUser);
+
+		User dummyFetchUser = new User("Dummy", "Testing", DUMMY_TEST_USER, USER_PASSWORD);
+		dummyFetchUser.addRole(new Role(USER_BASIC));
+		dummyFetchUser.setActiveSw(ApplicationConstants.CHAR_Y);
+		this.userDataSvc.saveUser(dummyFetchUser);
+
+		User adminUser = new User("Admin", "Testing", "admintesting@e.com", USER_PASSWORD);
+		adminUser.addRole(new Role(ADMIN));
+		adminUser.setActiveSw(ApplicationConstants.CHAR_Y);
+		this.userDataSvc.saveUser(adminUser);
+
+		User deleteUser = new User("Delete", "Testing", "deletetesting@e.com", USER_PASSWORD);
+		deleteUser.addRole(new Role(USER));
+		deleteUser.setActiveSw(ApplicationConstants.CHAR_Y);
+		this.userDataSvc.saveUser(deleteUser);
+
+		User deleteUser1 = new User("Delete", "Testing", "deletetesting1@e.com", USER_PASSWORD);
+		deleteUser1.addRole(new Role(USER_BASIC));
+		deleteUser1.setActiveSw(ApplicationConstants.CHAR_Y);
+		this.userDataSvc.saveUser(deleteUser1);
+
+		User deleteUser2 = new User("Delete", "Testing", "deletetesting2@e.com", USER_PASSWORD);
+		deleteUser2.addRole(new Role(USER_BASIC));
+		deleteUser2.setActiveSw(ApplicationConstants.CHAR_Y);
+		this.userDataSvc.saveUser(deleteUser2);
+
+		User updateUser = new User("Update", "Testing", "testupdateuser@e.com", USER_PASSWORD);
+		updateUser.addRole(new Role(USER));
+		updateUser.setActiveSw(ApplicationConstants.CHAR_Y);
+		this.userDataSvc.saveUser(updateUser);
+
+		User verifyUser = new User("Verify", "Testing", "verifyuser@e.com", USER_PASSWORD);
+		verifyUser.setActiveSw(ApplicationConstants.CHAR_Y);
+		this.userDataSvc.saveUser(verifyUser);
+		//this.token = this.verificationTokenSvc.generateTokenForUser(verifyUser);
+
+		initialized = true;
 	}
 
-	/**
-	 * Method used to post data to UserController
-	 * 
-	 * @param <T> - Input DTO class
-	 * @param inputDTO - User DTO object with user details
-	 * @return ResponseEntity<String> - Message from server
-	 */
-	private <T> ResponseEntity<String> postEntity(T inputDTO, String url) {
+	@Test
+	public void testRegisterUserWithMandatoryData() {
+		UserDTO userDTO = createDummyUserDTO("testRegisterUserWithMandatoryData@email.com");
+		ResponseEntity<String> responseEntity = registerUserPostRequest(userDTO, REGISTER_USER);
+
+		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void testRegisterUserWithAllData() {
+		UserDTO userDTO = createDummyUserDTOWithAllDetails("testRegisterUserWithAllData@email.com");
+		ResponseEntity<String> responseEntity = registerUserPostRequest(userDTO, REGISTER_USER);
+
+		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void testRegisterUser_LastNameNull() {
+		UserDTO userDTO = createDummyUserDTO("testRegisterUser_LastNameNull@email.com");
+		userDTO.setLastName(null);
+		userDTO.setMatchingPassword(null);
+		ResponseEntity<String> responseEntity = registerUserPostRequest(userDTO, REGISTER_USER);
+
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void testRegisterUserWithExistingUser() {
+		UserDTO userDTO = createDummyUserDTO(DUMMY_TEST_USER);
+		ResponseEntity<String> responseEntity = registerUserPostRequest(userDTO, REGISTER_USER);
+
+		assertEquals(HttpStatus.FOUND, responseEntity.getStatusCode());
+	}
+
+	private <T> ResponseEntity<String> registerUserPostRequest(T inputDTO, String url) {
 		HttpHeaders requestHeaders = createHttpHeader(MediaType.APPLICATION_JSON);
 		HttpEntity<T> httpEntity = new HttpEntity<>(inputDTO, requestHeaders);
 		return this.restTemplate.postForEntity(url, httpEntity, String.class);
 	}
-	
-	/**
-	 * Method used to send a get request for fetching user detaiils.
-	 * 
-	 * @param url - Url to hit
-	 * @return ResponseEntity<UserDTO> - User details DTO
-	 */
-	private ResponseEntity<UserDTO> getEntity(String url) {
-		String bearerToken = getBearerToken();
-		HttpHeaders headers = createHttpHeader(MediaType.TEXT_PLAIN, bearerToken);
-		HttpEntity<UserDTO> httpEntity = new HttpEntity<>(headers);
-		
-		return this.restTemplate.exchange(url, HttpMethod.GET, httpEntity, UserDTO.class);
+
+	@Test
+	public void testFetchUserWithLoggedInUserFetchingItself() {
+		String url = FETCH_USER_BASE_URL + INTEGRATION_TEST_USER;
+		ResponseEntity<UserDTO> responseEntity = getEntity(UserDTO.class, url);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals(INTEGRATION_TEST_USER, responseEntity.getBody().getEmail());
+		assertEquals("Integration Testing", responseEntity.getBody().getUsername());
 	}
-	
-	/**
-	 * Method used to send a get request for fetching user detaiils.
-	 * 
-	 * @param url - Url to hit
-	 * @return ResponseEntity<String> - Server message
-	 */
-	private ResponseEntity<String> deleteEntity(URI url, String username, String password) {
+
+	@Test
+	public void testFetchUserWithLoggedInUserFetchingDifferentRegisteredUser() {
+		String url = FETCH_USER_BASE_URL + DUMMY_TEST_USER;
+		ResponseEntity<UserDTO> responseEntity = getEntity(UserDTO.class, url);
+
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void testFetchUserWithLoggedInUserFetchingNonRegisteredEmail() {
+		String url = FETCH_USER_BASE_URL + "asd@e.com";
+		ResponseEntity<UserDTO> responseEntity = getEntity(UserDTO.class, url);
+
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void testFetchUserWithLoggedInUserFetchingIncorrectEmailFormat() {
+		String url = FETCH_USER_BASE_URL + "asd@ecom";
+		ResponseEntity<UserDTO> responseEntity = getEntity(UserDTO.class, url);
+
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+	}
+
+	private <T> ResponseEntity<T> getEntity(Class<T> output, String url) {
+		return getEntity(output,url, INTEGRATION_TEST_USER, USER_PASSWORD);
+	}
+
+	private <T> ResponseEntity<T> getEntity(Class<T> output, String url, String username, String password) {
+		String bearerToken = getBearerToken(username, password);
+		HttpHeaders headers = createHttpHeader(MediaType.TEXT_PLAIN, bearerToken);
+		HttpEntity<T> httpEntity = new HttpEntity<>(headers);
+		return this.restTemplate.exchange(url, HttpMethod.GET, httpEntity, output);
+	}
+
+	@Test
+	public void testDeleteUserWithItself() {
+		String url = DELETE_USER_BASE_URL + "deletetesting@e.com";
+		ResponseEntity<String> responseEntity = deleteEntity(url, "deletetesting@e.com", USER_PASSWORD);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void testDeleteUserWithUserRoleDeletingOtherUser() {
+		String url = DELETE_USER_BASE_URL + "deletetesting1@e.com";
+		ResponseEntity<String> responseEntity = deleteEntity(url, INTEGRATION_TEST_USER, USER_PASSWORD);
+
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void testDeleteUser_Admin() {
+		String url = DELETE_USER_BASE_URL + "deletetesting2@e.com";
+		ResponseEntity<String> responseEntity = deleteEntity(url, "admintesting@e.com", USER_PASSWORD);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	}
+
+	private ResponseEntity<String> deleteEntity(String url, String username, String password) {
 		String bearerToken = getBearerToken(username, password);
 		HttpHeaders headers = createHttpHeader(MediaType.TEXT_PLAIN, bearerToken);
 		HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-		
+
 		return this.restTemplate.exchange(url, HttpMethod.DELETE, httpEntity, String.class);
 	}
-	
-	/**
-	 * Method used to update already existing user details.
-	 * 
-	 * @param inputUserDTO - UserDTO object
-	 * @return ResponseEntity<UserDTO> - Updated User Details object
-	 */
-	private ResponseEntity<UserDTO> putEntity(UserDTO inputUserDTO) {
-		String bearerToken = getBearerToken();
-		HttpHeaders headers = createHttpHeader(MediaType.APPLICATION_JSON, bearerToken);
-		HttpEntity<UserDTO> httpEntity = new HttpEntity<>(inputUserDTO, headers);
-		
-		return this.restTemplate.exchange(USER_BASE_URL, HttpMethod.PUT, httpEntity, UserDTO.class);
+
+	//@Test
+	public void testVerifyUser() throws Exception {
+		String url = VERIFY_USER_BASE_URL + this.token;
+		ResponseEntity<String> responseEntity = verifyTokenUsingPatchMethod(url);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 	}
 
-	/**
-	 * Method used to update already existing user details.
-	 *
-	 * @param inputUserDTO - UserDTO object
-	 * @return ResponseEntity<UserDTO> - Updated User Details object
-	 */
-	private ResponseEntity<UserDTO> patchEntity(UserDTO inputUserDTO) {
-		String bearerToken = getBearerToken();
-		HttpHeaders headers = createHttpHeader(MediaType.APPLICATION_JSON, bearerToken);
-		HttpEntity<UserDTO> httpEntity = new HttpEntity<>(inputUserDTO, headers);
+	@Test
+	public void testVerifyUser_WithEmptyToken() {
+		String url = VERIFY_USER_BASE_URL + "";
+		ResponseEntity<String> responseEntity = verifyTokenUsingPatchMethod(url);
 
-		return this.restTemplate.exchange(USER_BASE_URL, HttpMethod.PATCH, httpEntity, UserDTO.class);
+		assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
 	}
-	
-	/**
-	 * Method used to create a new userDTO object to be sent to the controller class.
-	 * 
-	 * @return UserDTO - UserDTO object from method
-	 */
-	private UserDTO createUser() {
-		UserRoleDTO userRoleDTO = new UserRoleDTO(UserRoles.USER_BASIC);
-		Set<UserRoleDTO> userRoles = new HashSet<>();
-		userRoles.add(userRoleDTO);
-		
-		return new UserDTO("Test", "User", TEST_USER_EMAIL, TEST_USER_PASSWORD, LocalDate.of(1982, Month.APRIL, 1), 
-				Gender.M, userRoles, 0, "ABC", "DEF", "GHI", 456478, "123", "345");
+
+	private ResponseEntity<String> verifyTokenUsingPatchMethod(String url) {
+		HttpHeaders headers = createHttpHeader(MediaType.TEXT_PLAIN);
+		HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+
+		ResponseEntity<String> responseEntity = this.restTemplate.exchange(url, HttpMethod.PATCH, httpEntity, String.class);
+		return responseEntity;
 	}
-	
-	/**
-	 * Method used to create a new UserDTO object with email and dob.
-	 * 
-	 * @return UserDTO - User details object
-	 */
-	private UserDTO createUser(String email, LocalDate dob) {
-		UserDTO inputUserDTO = new UserDTO();
-		inputUserDTO.setEmail(email);
-		inputUserDTO.setDob(dob);
-		inputUserDTO.setFirstName("Test");
-		inputUserDTO.setLastName("Test");
-		inputUserDTO.setPassword("Qwerty@123");
-		inputUserDTO.setMatchingPassword("Qwerty@123");
-		return inputUserDTO;
+
+	private <T, R> ResponseEntity<R> patchEntity(T inputDTO, Class<R> output, String url) {
+		return patchEntity(inputDTO, output, url, INTEGRATION_TEST_USER, USER_PASSWORD);
 	}
-	
+
+	private <T, R> ResponseEntity<R> patchEntity(T inputDTO, Class<R> output, String url, String username, String password) {
+		String bearerToken = getBearerToken(username, password);
+		HttpHeaders headers = createHttpHeader(MediaType.APPLICATION_JSON, bearerToken);
+		HttpEntity<T> httpEntity = new HttpEntity<>(inputDTO, headers);
+		return this.restTemplate.exchange(url, HttpMethod.PATCH, httpEntity, output);
+	}
+
+	@Test
+	public void testUpdateUser() {
+		LocalDate dob = LocalDate.of(1976, Month.JUNE, 6);
+		final String email = "testupdateuser@e.com";
+		UserDTO inputUserDTO = createDummyUserDTO(email, dob);
+		String url = UPDATE_USER_BASE_URL + email;
+		ResponseEntity<UserDTO> responseEntity =
+				patchEntity(inputUserDTO, UserDTO.class, url, email, USER_PASSWORD);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals(email, responseEntity.getBody().getEmail());
+		assertEquals(dob, responseEntity.getBody().getDob());
+	}
+
+	@Test
+	public void testUpdateUser_WithOtherRegisteredEmail_NonAdmin() {
+		LocalDate dob = LocalDate.of(1976, Month.JUNE, 3);
+		UserDTO inputUserDTO = createDummyUserDTO("dummytesting@e.com", dob);
+		String url = UPDATE_USER_BASE_URL + "dummytesting@e.com";
+		ResponseEntity<UserDTO> responseEntity = patchEntity(inputUserDTO, UserDTO.class, url);
+
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void testUpdateUser_WithOtherRegisteredEmail_Admin() {
+		LocalDate dob = LocalDate.of(1976, Month.AUGUST, 9);
+		UserDTO inputUserDTO = createDummyUserDTO("dummytesting@e.com", dob);
+		String url = UPDATE_USER_BASE_URL + "dummytesting@e.com";
+		ResponseEntity<UserDTO> responseEntity =
+				patchEntity(inputUserDTO, UserDTO.class, url, "admintesting@e.com", "TestUser@123");
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		assertEquals("dummytesting@e.com", responseEntity.getBody().getEmail());
+		assertEquals(dob, responseEntity.getBody().getDob());
+	}
+
+	@Test
+	public void testUpdateUser_WithOtherUnRegisteredEmail() {
+		UserDTO inputUserDTO = createDummyUserDTO("unregisteres@e.com", LocalDate.of(1976, Month.AUGUST, 9));
+		String url = UPDATE_USER_BASE_URL + "unregisteres@e.com";
+		ResponseEntity<UserDTO> responseEntity = patchEntity(inputUserDTO, UserDTO.class, url);
+
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+	}
+
 	/**
 	 * Method to create a bearer token for user authentication with provided username and password.
-	 * 
+	 *
 	 * @param username - email id of user
 	 * @param password - password of user
 	 * @return String - Bearer token
 	 */
 	private String getBearerToken(String username, String password) {
 		UsernamePasswordAuthDTO usernamePasswordAuthDTO = new UsernamePasswordAuthDTO(username, password);
-		
-		ResponseEntity<String> responseEntity = postEntity(usernamePasswordAuthDTO, "/login");
-
-		HttpHeaders responseHeaders = responseEntity.getHeaders();
-
-		String authorizationHeader = responseHeaders.getFirst("Authorization");
+		ResponseEntity<String> responseEntity = registerUserPostRequest(usernamePasswordAuthDTO, "/login");
+		String authorizationHeader = responseEntity.getHeaders().getFirst("Authorization");
 		return Objects.requireNonNull(authorizationHeader).replace("Bearer ", "");
 	}
-	
-	/**
-	 * Method to create a bearer token for user authentication.
-	 * 
-	 * @return String - Bearer token
-	 */
-	private String getBearerToken() {
-		return getBearerToken(INTEGRATION_TEST_USER, INTEGRATION_USER_PASSWORD);
-	}
 
-	/**
-	 * Method to create a header with contentType as parameter type.
-	 * 
-	 * @param mediaType - Media type for header creation
-	 * @return HttpHeaders  -HttpHeaders object
-	 */
-	private HttpHeaders createHttpHeader(MediaType mediaType) {
-		return createHttpHeader(mediaType, null); 
-	}
-	
-	/**
-	 * Method to create a header with contentType as parameter type.
-	 * 
-	 * @param mediaType - Media type for header creation
-	 * @param bearerToken - bearer token
-	 * @return HttpHeaders  -HttpHeaders object
-	 */
-	private HttpHeaders createHttpHeader(MediaType mediaType, String bearerToken) {
-		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.setContentType(mediaType);
-		if (StringUtils.isNotBlank(bearerToken)) {
-			requestHeaders.setBearerAuth(bearerToken);
-		}
-		return requestHeaders;
-	}
-	
 }

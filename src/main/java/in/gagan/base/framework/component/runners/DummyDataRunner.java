@@ -49,29 +49,6 @@ public class DummyDataRunner implements CommandLineRunner {
     @Transactional
     @Override
     public void run(String... args) throws Exception {
-        User testingUser = new User("Integration", "Testing", "integrationtesting@e.com", "TestUser@123");
-        testingUser.addRole(new Role(USER));
-        testingUser.setActiveSw(ApplicationConstants.CHAR_Y);
-
-        User dummyFetchUser = new User("Dummy", "Testing", "dummytesting@e.com", "TestUser@123");
-        dummyFetchUser.addRole(new Role(USER_BASIC));
-        dummyFetchUser.setActiveSw(ApplicationConstants.CHAR_Y);
-
-        User adminUser = new User("Admin", "Testing", "admintesting@e.com", "TestUser@123");
-        adminUser.addRole(new Role(ADMIN));
-        adminUser.setActiveSw(ApplicationConstants.CHAR_Y);
-
-        User deleteUser = new User("Delete", "Testing", "deletetesting@e.com", "TestUser@123");
-        deleteUser.addRole(new Role(USER));
-        deleteUser.setActiveSw(ApplicationConstants.CHAR_Y);
-
-        User deleteUser1 = new User("Delete", "Testing", "deletetesting1@e.com", "TestUser@123");
-        deleteUser1.addRole(new Role(USER_BASIC));
-        deleteUser1.setActiveSw(ApplicationConstants.CHAR_Y);
-
-        User deleteUser2 = new User("Delete", "Testing", "deletetesting2@e.com", "TestUser@123");
-        deleteUser2.addRole(new Role(USER_BASIC));
-        deleteUser2.setActiveSw(ApplicationConstants.CHAR_Y);
 
         User user = new User("A", "B", "test1@e.com", "T");
         user.addRole(new Role(ADMIN));
@@ -88,18 +65,6 @@ public class DummyDataRunner implements CommandLineRunner {
         User user3 = new User("A3", "B3", "test4@e.com", "T");
         user3.addRole(new Role(USER_BASIC));
         user3.setActiveSw(ApplicationConstants.CHAR_Y);
-
-        this.userDataSvc.saveUser(testingUser);
-
-        this.userDataSvc.saveUser(dummyFetchUser);
-
-        this.userDataSvc.saveUser(adminUser);
-
-        this.userDataSvc.saveUser(deleteUser);
-
-        this.userDataSvc.saveUser(deleteUser1);
-
-        this.userDataSvc.saveUser(deleteUser2);
 
         this.userDataSvc.saveUser(user);
         this.verificationTokenSvc.generateTokenForUser(user);
