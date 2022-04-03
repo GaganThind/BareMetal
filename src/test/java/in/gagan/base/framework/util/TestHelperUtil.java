@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.gagan.base.framework;
+package in.gagan.base.framework.util;
 
 import in.gagan.base.framework.dto.user.UserDTO;
 import in.gagan.base.framework.dto.user.UserRoleDTO;

@@ -20,7 +20,6 @@ package in.gagan.base.framework.controller;
 import in.gagan.base.framework.BareMetalApplication;
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dto.user.UserDTO;
-import in.gagan.base.framework.dto.user.UsernamePasswordAuthDTO;
 import in.gagan.base.framework.entity.user.Role;
 import in.gagan.base.framework.entity.user.User;
 import in.gagan.base.framework.service.user.UserDataService;
@@ -31,16 +30,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Objects;
 
-import static in.gagan.base.framework.TestHelperUtil.*;
+import static in.gagan.base.framework.util.TestHelperUtil.*;
 import static in.gagan.base.framework.enums.UserRoles.*;
 import static org.junit.Assert.assertEquals;
 
@@ -52,7 +48,7 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BareMetalApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
-public class UserControllerIntegrationTest {
+public class UserControllerIntegrationTest extends AbstractBaseTester {
 	private static final String USER_BASE_URL = "/v1/users";
 	private static final String REGISTER_USER = "/v1/users/register";
 	private static final String FETCH_USER_BASE_URL = "/v1/users/";
@@ -62,9 +58,6 @@ public class UserControllerIntegrationTest {
 
 	private static final String INTEGRATION_TEST_USER = "integrationtesting@e.com";
 	private static final String DUMMY_TEST_USER = "dummytesting@e.com";
-
-	@Autowired
-	private TestRestTemplate restTemplate;
 
 	@Autowired
 	private UserDataService userDataSvc;
@@ -203,20 +196,13 @@ public class UserControllerIntegrationTest {
 	}
 
 	private <T> ResponseEntity<T> getEntity(Class<T> output, String url) {
-		return getEntity(output,url, INTEGRATION_TEST_USER, USER_PASSWORD);
-	}
-
-	private <T> ResponseEntity<T> getEntity(Class<T> output, String url, String username, String password) {
-		String bearerToken = getBearerToken(username, password);
-		HttpHeaders headers = createHttpHeader(MediaType.TEXT_PLAIN, bearerToken);
-		HttpEntity<T> httpEntity = new HttpEntity<>(headers);
-		return this.restTemplate.exchange(url, HttpMethod.GET, httpEntity, output);
+		return get(output,url, INTEGRATION_TEST_USER, USER_PASSWORD);
 	}
 
 	@Test
 	public void testDeleteUserWithItself() {
 		String url = DELETE_USER_BASE_URL + "deletetesting@e.com";
-		ResponseEntity<String> responseEntity = deleteEntity(url, "deletetesting@e.com", USER_PASSWORD);
+		ResponseEntity<String> responseEntity = delete(url, "deletetesting@e.com", USER_PASSWORD);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 	}
@@ -224,7 +210,7 @@ public class UserControllerIntegrationTest {
 	@Test
 	public void testDeleteUserWithUserRoleDeletingOtherUser() {
 		String url = DELETE_USER_BASE_URL + "deletetesting1@e.com";
-		ResponseEntity<String> responseEntity = deleteEntity(url, INTEGRATION_TEST_USER, USER_PASSWORD);
+		ResponseEntity<String> responseEntity = delete(url, INTEGRATION_TEST_USER, USER_PASSWORD);
 
 		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
 	}
@@ -232,17 +218,9 @@ public class UserControllerIntegrationTest {
 	@Test
 	public void testDeleteUser_Admin() {
 		String url = DELETE_USER_BASE_URL + "deletetesting2@e.com";
-		ResponseEntity<String> responseEntity = deleteEntity(url, "admintesting@e.com", USER_PASSWORD);
+		ResponseEntity<String> responseEntity = delete(url, "admintesting@e.com", USER_PASSWORD);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-	}
-
-	private ResponseEntity<String> deleteEntity(String url, String username, String password) {
-		String bearerToken = getBearerToken(username, password);
-		HttpHeaders headers = createHttpHeader(MediaType.TEXT_PLAIN, bearerToken);
-		HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-
-		return this.restTemplate.exchange(url, HttpMethod.DELETE, httpEntity, String.class);
 	}
 
 	//@Test
@@ -270,14 +248,7 @@ public class UserControllerIntegrationTest {
 	}
 
 	private <T, R> ResponseEntity<R> patchEntity(T inputDTO, Class<R> output, String url) {
-		return patchEntity(inputDTO, output, url, INTEGRATION_TEST_USER, USER_PASSWORD);
-	}
-
-	private <T, R> ResponseEntity<R> patchEntity(T inputDTO, Class<R> output, String url, String username, String password) {
-		String bearerToken = getBearerToken(username, password);
-		HttpHeaders headers = createHttpHeader(MediaType.APPLICATION_JSON, bearerToken);
-		HttpEntity<T> httpEntity = new HttpEntity<>(inputDTO, headers);
-		return this.restTemplate.exchange(url, HttpMethod.PATCH, httpEntity, output);
+		return patch(inputDTO, output, url, INTEGRATION_TEST_USER, USER_PASSWORD);
 	}
 
 	@Test
@@ -286,8 +257,7 @@ public class UserControllerIntegrationTest {
 		final String email = "testupdateuser@e.com";
 		UserDTO inputUserDTO = createDummyUserDTO(email, dob);
 		String url = UPDATE_USER_BASE_URL + email;
-		ResponseEntity<UserDTO> responseEntity =
-				patchEntity(inputUserDTO, UserDTO.class, url, email, USER_PASSWORD);
+		ResponseEntity<UserDTO> responseEntity = patch(inputUserDTO, UserDTO.class, url, email, USER_PASSWORD);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals(email, responseEntity.getBody().getEmail());
@@ -310,7 +280,7 @@ public class UserControllerIntegrationTest {
 		UserDTO inputUserDTO = createDummyUserDTO("dummytesting@e.com", dob);
 		String url = UPDATE_USER_BASE_URL + "dummytesting@e.com";
 		ResponseEntity<UserDTO> responseEntity =
-				patchEntity(inputUserDTO, UserDTO.class, url, "admintesting@e.com", "TestUser@123");
+				patch(inputUserDTO, UserDTO.class, url, "admintesting@e.com", "TestUser@123");
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals("dummytesting@e.com", responseEntity.getBody().getEmail());
@@ -324,20 +294,6 @@ public class UserControllerIntegrationTest {
 		ResponseEntity<UserDTO> responseEntity = patchEntity(inputUserDTO, UserDTO.class, url);
 
 		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
-	}
-
-	/**
-	 * Method to create a bearer token for user authentication with provided username and password.
-	 *
-	 * @param username - email id of user
-	 * @param password - password of user
-	 * @return String - Bearer token
-	 */
-	private String getBearerToken(String username, String password) {
-		UsernamePasswordAuthDTO usernamePasswordAuthDTO = new UsernamePasswordAuthDTO(username, password);
-		ResponseEntity<String> responseEntity = registerUserPostRequest(usernamePasswordAuthDTO, "/login");
-		String authorizationHeader = responseEntity.getHeaders().getFirst("Authorization");
-		return Objects.requireNonNull(authorizationHeader).replace("Bearer ", "");
 	}
 
 }
