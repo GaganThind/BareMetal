@@ -77,7 +77,8 @@ public class UserController extends AbstractController {
 	 * @return user details from database
 	 */
 	@GetMapping(value = "/{email}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserDTO> fetchUser(@EmailValidator @PathVariable String email) {
+	public ResponseEntity<UserDTO> fetchUser(@EmailValidator @PathVariable String email) throws IllegalAccessException {
+		UserHelperUtil.actionAllowed(email);
 		UserDTO userDTO = this.userRegistrationSvc.fetchUser(email);
 		return new ResponseEntity<>(userDTO, HttpStatus.OK);
 	}
