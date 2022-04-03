@@ -19,6 +19,7 @@ package in.gagan.base.framework.util;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dto.user.UpdateUserDTO;
+import in.gagan.base.framework.entity.user.Role;
 import in.gagan.base.framework.entity.user.User;
 import in.gagan.base.framework.enums.UserRoles;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Utility class for user entity. This class contains methods for user to DTO conversions.
@@ -78,7 +80,8 @@ public final class UserHelperUtil {
 		}
 		
 		if (null != updateUserDTO.getUserRole() && !updateUserDTO.getUserRole().isEmpty()) {
-			user.setUserRole(DTOMapper.convertDTOToRole(updateUserDTO.getUserRole()));
+			Set<Role> userRoles = DTOMapper.convertDTOToRole(updateUserDTO.getUserRole());
+			userRoles.forEach(user::addRole);
 		}
 		
 	}
@@ -129,7 +132,7 @@ public final class UserHelperUtil {
 		boolean isAdminAccount = isAdminAccount();
 		
 		if (!isAdminAccount && !StringUtils.equalsIgnoreCase(email, username)) {
-			throw new IllegalAccessException("User can only update own password.");
+			throw new IllegalAccessException();
 		}
 	}
 

@@ -18,10 +18,7 @@
 package in.gagan.base.framework.dto.user;
 
 import in.gagan.base.framework.enums.Gender;
-import in.gagan.base.framework.validator.EmailValidator;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,11 +34,6 @@ public class UpdateUserDTO {
 	private String firstName;
 
 	private String lastName;
-	
-	@NotNull(message = "{message.registration.email}")
-	@Size(min = 4, message = "{message.registration.email}")
-	@EmailValidator
-	private String email;
 	
 	private LocalDate dob;
 	
@@ -65,14 +57,6 @@ public class UpdateUserDTO {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public LocalDate getDob() {

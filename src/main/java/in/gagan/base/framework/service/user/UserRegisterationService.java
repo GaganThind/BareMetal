@@ -49,11 +49,12 @@ public interface UserRegisterationService {
 	
 	/**
 	 * This method is used to either update the record(if present) or insert the record.
-	 * 
+	 *
+	 * @param email - Email id of user for update operation
 	 * @param updateUserDTO - User DTO object with user details to update
 	 * @return UserDTO - User DTO object with user details
 	 */
-	UserDTO updateUser(UpdateUserDTO updateUserDTO);
+	UserDTO updateUser(String email, UpdateUserDTO updateUserDTO);
 
 	/**
 	 * This method is used to soft delete the user record using provided email.

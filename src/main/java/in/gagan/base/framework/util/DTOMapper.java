@@ -42,8 +42,8 @@ public final class DTOMapper {
     public static User convertUserDTOToUser(UserDTO userDTO) {
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
-        user.setUserRole(convertDTOToRole(userDTO.getUserRole()));
-
+        Set<Role> userRoles = DTOMapper.convertDTOToRole(userDTO.getUserRole());
+        userRoles.forEach(user::addRole);
         return user;
     }
 

@@ -90,10 +90,11 @@ public class UserController extends AbstractController {
 	 * @return user details from database
 	 * @throws IllegalAccessException - Logged-In User is different from updating user
 	 */
-	@PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UpdateUserDTO updateUserDTO) throws IllegalAccessException {
-		UserHelperUtil.actionAllowed(updateUserDTO.getEmail());
-		UserDTO updatedUserDTO = this.userRegistrationSvc.updateUser(updateUserDTO);
+	@PatchMapping(value = "/{email}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UserDTO> updateUser(@EmailValidator @PathVariable String email
+			, @Valid @RequestBody UpdateUserDTO updateUserDTO) throws IllegalAccessException {
+		UserHelperUtil.actionAllowed(email);
+		UserDTO updatedUserDTO = this.userRegistrationSvc.updateUser(email, updateUserDTO);
 		return new ResponseEntity<>(updatedUserDTO, HttpStatus.OK);
 	}
 	

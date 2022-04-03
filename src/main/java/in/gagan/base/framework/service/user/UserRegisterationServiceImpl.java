@@ -94,15 +94,15 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	
 	/**
 	 * This method is used to either update the record(if present) or insert the record.
-	 * 
+	 *
+	 * @param email - Email id of user for update operation
 	 * @param updateUserDTO - User DTO object with user details to update
 	 * @return UserDTO - User DTO object with user details
 	 */
 	@Override
-	public UserDTO updateUser(UpdateUserDTO updateUserDTO) {
-		String email = updateUserDTO.getEmail().toLowerCase();
-		
-		User user = this.userDataSvc.fetchUserByEmail(email);
+	public UserDTO updateUser(String email, UpdateUserDTO updateUserDTO) {
+		String emailLowerCase = email.toLowerCase();
+		User user = this.userDataSvc.fetchUserByEmail(emailLowerCase);
 		UserHelperUtil.updateUserWithUpdateUserDTO(updateUserDTO, user);
 		this.userDataSvc.updateUser(user);
 		
