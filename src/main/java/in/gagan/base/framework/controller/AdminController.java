@@ -26,8 +26,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,6 +44,7 @@ import java.util.stream.StreamSupport;
  *
  */
 @RestController
+@Validated
 @RequestMapping(path = "/v1/admin")
 public class AdminController extends AbstractController {
 	
@@ -73,7 +78,7 @@ public class AdminController extends AbstractController {
 	 * @return success message
 	 */
 	@PatchMapping(value = "/account/unlock", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> unlockUserAccounts(@RequestBody List<String> emails) {
+	public ResponseEntity<String> unlockUserAccounts(@Valid @NotNull @NotEmpty @RequestBody List<String> emails) {
 		this.adminSvc.unlockUserAccounts(emails);
 		final String message = getMessage("message.admin.users.unlock");
 		return new ResponseEntity<>(message, HttpStatus.OK);
@@ -86,7 +91,7 @@ public class AdminController extends AbstractController {
 	 * @return success message
 	 */
 	@DeleteMapping(value = "/account/delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> deleteUserAccounts(@RequestBody List<String> emails) {
+	public ResponseEntity<String> deleteUserAccounts(@Valid @NotNull @NotEmpty @RequestBody List<String> emails) {
 		this.adminSvc.deleteUsers(emails);
 		final String message = getMessage("message.admin.users.delete");
 		return new ResponseEntity<>(message, HttpStatus.OK);
@@ -99,7 +104,7 @@ public class AdminController extends AbstractController {
 	 * @return success message
 	 */
 	@DeleteMapping(value = "/account/hardDelete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> hardDeleteUserAccounts(@RequestBody List<String> emails) {
+	public ResponseEntity<String> hardDeleteUserAccounts(@Valid @NotNull @NotEmpty @RequestBody List<String> emails) {
 		this.adminSvc.hardDeleteUsers(emails);
 		final String message = getMessage("message.admin.users.perm.delete");
 		return new ResponseEntity<>(message, HttpStatus.OK);
