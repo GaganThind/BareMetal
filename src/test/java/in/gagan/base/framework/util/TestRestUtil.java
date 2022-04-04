@@ -83,6 +83,21 @@ public class TestRestUtil {
     }
 
     /**
+     * Method used to perform delete operation.
+     *
+     * @param url API endpoint url
+     * @param username Authentication user
+     * @param password Authentication user's password
+     * @return Returning string message
+     */
+    public <T> ResponseEntity<String> delete(T input, String url, String username, String password) {
+        String bearerToken = getBearerToken(username, password);
+        HttpHeaders headers = createHttpHeader(MediaType.APPLICATION_JSON, bearerToken);
+        HttpEntity<T> httpEntity = new HttpEntity<>(input, headers);
+        return this.restTemplate.exchange(url, HttpMethod.DELETE, httpEntity, String.class);
+    }
+
+    /**
      * Method used to perform patch operation.
      *
      * @param input Input object to send to server
