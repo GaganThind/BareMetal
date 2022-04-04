@@ -108,7 +108,7 @@ public class GlobalExceptionHandler {
 	 * @return ResponseEntity<?> - Response Entity object
 	 */
 	@ExceptionHandler(UsernameNotFoundException.class)
-	public final ResponseEntity<?> usernameNotFoundException(final UsernameNotFoundException ex, WebRequest request) {
+	public final ResponseEntity<?> usernameNotFoundExceptionHandler(final UsernameNotFoundException ex, WebRequest request) {
 		return new ResponseEntity<>(handleExceptionWithoutLogging(ex), HttpStatus.NOT_FOUND);
 	}
 	
@@ -120,7 +120,7 @@ public class GlobalExceptionHandler {
 	 * @return ResponseEntity<?> - Response Entity object
 	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public final ResponseEntity<?> methodArgumentNotValidException(final MethodArgumentNotValidException ex, WebRequest request) {
+	public final ResponseEntity<?> methodArgumentNotValidExceptionHandler(final MethodArgumentNotValidException ex, WebRequest request) {
 		BindingResult result = ex.getBindingResult();
 		List<ObjectError> objectErrors = result.getAllErrors();
 		List<String> errorMessages = objectErrors.stream()
@@ -140,7 +140,7 @@ public class GlobalExceptionHandler {
 	 * @return ResponseEntity<?> - Response Entity object
 	 */
 	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public final ResponseEntity<?> httpMessageNotReadableException(final HttpMessageNotReadableException ex, WebRequest request) {
+	public final ResponseEntity<?> httpMessageNotReadableExceptionHandler(final HttpMessageNotReadableException ex, WebRequest request) {
 		
 		final String INVALID_JSON = "Invalid JSON";
 		Throwable throwable = ex.getCause();
@@ -168,7 +168,7 @@ public class GlobalExceptionHandler {
 	 * @return ResponseEntity<?> - Response Entity object
 	 */
 	@ExceptionHandler(ConstraintViolationException.class)
-	public final ResponseEntity<?> ConstraintViolationException(final ConstraintViolationException ex, WebRequest request) {
+	public final ResponseEntity<?> constraintViolationExceptionHandler(final ConstraintViolationException ex, WebRequest request) {
 		return new ResponseEntity<>(handleException(ex), HttpStatus.BAD_REQUEST);
 	}
 	
@@ -180,7 +180,7 @@ public class GlobalExceptionHandler {
 	 * @return ResponseEntity<?> - Response Entity object
 	 */
 	@ExceptionHandler(IllegalAccessException.class)
-	public final ResponseEntity<?> IllegalAccessException(final IllegalAccessException ex, WebRequest request) {
+	public final ResponseEntity<?> illegalAccessExceptionHandler(final IllegalAccessException ex, WebRequest request) {
 		return new ResponseEntity<>(handleException(ex), HttpStatus.FORBIDDEN);
 	}
 	
