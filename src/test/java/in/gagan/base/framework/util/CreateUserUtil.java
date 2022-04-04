@@ -21,9 +21,6 @@ import in.gagan.base.framework.dto.user.UserDTO;
 import in.gagan.base.framework.dto.user.UserRoleDTO;
 import in.gagan.base.framework.enums.Gender;
 import in.gagan.base.framework.enums.UserRoles;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -31,11 +28,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public final class TestHelperUtil {
+public final class CreateUserUtil {
 
     public static final String USER_PASSWORD = "TestUser@123";
 
-    private TestHelperUtil() { }
+    private CreateUserUtil() { }
 
     /**
      * Method used to create a new userDTO object to be sent to the controller class.
@@ -69,32 +66,6 @@ public final class TestHelperUtil {
         UserDTO inputUserDTO = createDummyUserDTO(email);
         inputUserDTO.setDob(dob);
         return inputUserDTO;
-    }
-
-    /**
-     * Method to create a header with contentType as parameter type.
-     *
-     * @param mediaType - Media type for header creation
-     * @return HttpHeaders  -HttpHeaders object
-     */
-    public static HttpHeaders createHttpHeader(MediaType mediaType) {
-        return createHttpHeader(mediaType, null);
-    }
-
-    /**
-     * Method to create a header with contentType as parameter type.
-     *
-     * @param mediaType - Media type for header creation
-     * @param bearerToken - bearer token
-     * @return HttpHeaders  -HttpHeaders object
-     */
-    public static HttpHeaders createHttpHeader(MediaType mediaType, String bearerToken) {
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.setContentType(mediaType);
-        if (StringUtils.isNotBlank(bearerToken)) {
-            requestHeaders.setBearerAuth(bearerToken);
-        }
-        return requestHeaders;
     }
 
 }

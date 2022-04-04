@@ -27,12 +27,14 @@ import in.gagan.base.framework.exception.UsernameExistException;
 import in.gagan.base.framework.service.user.UserDataService;
 import in.gagan.base.framework.service.user.UserRegisterationService;
 import in.gagan.base.framework.service.user.VerificationTokenService;
+import in.gagan.base.framework.util.TestRestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -41,8 +43,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 
-import static in.gagan.base.framework.util.TestHelperUtil.*;
+import static in.gagan.base.framework.util.CreateUserUtil.*;
 import static in.gagan.base.framework.enums.UserRoles.*;
+import static in.gagan.base.framework.util.TestRestUtil.*;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -53,7 +56,7 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BareMetalApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
-public class UserControllerIntegrationTest extends AbstractBaseTester {
+public class UserControllerIntegrationTest {
 	private static final String USER_BASE_URL = "/v1/users";
 	private static final String REGISTER_USER = "/v1/users/register";
 	private static final String FETCH_USER_BASE_URL = "/v1/users/";
@@ -65,6 +68,9 @@ public class UserControllerIntegrationTest extends AbstractBaseTester {
 	private static final String DUMMY_TEST_USER = "dummytesting@e.com";
 
 	@Autowired
+	private TestRestTemplate restTemplate;
+
+	@Autowired
 	private UserDataService userDataSvc;
 
 	@Autowired
@@ -72,6 +78,9 @@ public class UserControllerIntegrationTest extends AbstractBaseTester {
 
 	@Autowired
 	private UserRegisterationService userRegisterationSvc;
+
+	@Autowired
+	private TestRestUtil testRestUtil;
 
 	private static boolean initialized = false;
 
@@ -204,13 +213,14 @@ public class UserControllerIntegrationTest extends AbstractBaseTester {
 	}
 
 	private <T> ResponseEntity<T> getEntity(Class<T> output, String url) {
-		return get(output,url, INTEGRATION_TEST_USER, USER_PASSWORD);
+		return this.testRestUtil.get(output,url, INTEGRATION_TEST_USER, USER_PASSWORD);
 	}
 
 	@Test
 	public void testDeleteUserWithItself() {
 		String url = DELETE_USER_BASE_URL + "deletetesting@e.com";
-		ResponseEntity<String> responseEntity = delete(url, "deletetesting@e.com", USER_PASSWORD);
+		ResponseEntity<String> responseEntity =
+				this.testRestUtil.delete(url, "deletetesting@e.com", USER_PASSWORD);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 	}
@@ -218,7 +228,8 @@ public class UserControllerIntegrationTest extends AbstractBaseTester {
 	@Test
 	public void testDeleteUserWithUserRoleDeletingOtherUser() {
 		String url = DELETE_USER_BASE_URL + "deletetesting1@e.com";
-		ResponseEntity<String> responseEntity = delete(url, INTEGRATION_TEST_USER, USER_PASSWORD);
+		ResponseEntity<String> responseEntity =
+				this.testRestUtil.delete(url, INTEGRATION_TEST_USER, USER_PASSWORD);
 
 		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
 	}
@@ -226,7 +237,8 @@ public class UserControllerIntegrationTest extends AbstractBaseTester {
 	@Test
 	public void testDeleteUser_Admin() {
 		String url = DELETE_USER_BASE_URL + "deletetesting2@e.com";
-		ResponseEntity<String> responseEntity = delete(url, "admintesting@e.com", USER_PASSWORD);
+		ResponseEntity<String> responseEntity =
+				this.testRestUtil.delete(url, "admintesting@e.com", USER_PASSWORD);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 	}
@@ -260,12 +272,13 @@ public class UserControllerIntegrationTest extends AbstractBaseTester {
 		HttpHeaders headers = createHttpHeader(MediaType.TEXT_PLAIN);
 		HttpEntity<String> httpEntity = new HttpEntity<>(headers);
 
-		ResponseEntity<String> responseEntity = this.restTemplate.exchange(url, HttpMethod.PATCH, httpEntity, String.class);
+		ResponseEntity<String> responseEntity =
+				this.restTemplate.exchange(url, HttpMethod.PATCH, httpEntity, String.class);
 		return responseEntity;
 	}
 
 	private <T, R> ResponseEntity<R> patchEntity(T inputDTO, Class<R> output, String url) {
-		return patch(inputDTO, output, url, INTEGRATION_TEST_USER, USER_PASSWORD);
+		return this.testRestUtil.patch(inputDTO, output, url, INTEGRATION_TEST_USER, USER_PASSWORD);
 	}
 
 	@Test
@@ -274,7 +287,8 @@ public class UserControllerIntegrationTest extends AbstractBaseTester {
 		final String email = "testupdateuser@e.com";
 		UserDTO inputUserDTO = createDummyUserDTO(email, dob);
 		String url = UPDATE_USER_BASE_URL + email;
-		ResponseEntity<UserDTO> responseEntity = patch(inputUserDTO, UserDTO.class, url, email, USER_PASSWORD);
+		ResponseEntity<UserDTO> responseEntity =
+				this.testRestUtil.patch(inputUserDTO, UserDTO.class, url, email, USER_PASSWORD);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals(email, responseEntity.getBody().getEmail());
@@ -297,7 +311,7 @@ public class UserControllerIntegrationTest extends AbstractBaseTester {
 		UserDTO inputUserDTO = createDummyUserDTO("dummytesting@e.com", dob);
 		String url = UPDATE_USER_BASE_URL + "dummytesting@e.com";
 		ResponseEntity<UserDTO> responseEntity =
-				patch(inputUserDTO, UserDTO.class, url, "admintesting@e.com", "TestUser@123");
+				this.testRestUtil.patch(inputUserDTO, UserDTO.class, url, "admintesting@e.com", "TestUser@123");
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertEquals("dummytesting@e.com", responseEntity.getBody().getEmail());
