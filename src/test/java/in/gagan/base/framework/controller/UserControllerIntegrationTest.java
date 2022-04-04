@@ -82,9 +82,6 @@ public class UserControllerIntegrationTest extends AbstractBaseTester {
 			return;
 		}
 
-		// Added for PATCH http method to work
-		//restTemplate.getRestTemplate().setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-
 		User testingUser = new User("Integration", "Testing", INTEGRATION_TEST_USER, USER_PASSWORD);
 		testingUser.addRole(new Role(USER));
 		testingUser.setActiveSw(ApplicationConstants.CHAR_Y);
