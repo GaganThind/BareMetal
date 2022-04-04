@@ -17,16 +17,14 @@
 
 package in.gagan.base.framework.dao.user;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.Query;
-
 import in.gagan.base.framework.dao.base.AbstractBaseDAO;
+import in.gagan.base.framework.entity.user.VerificationToken;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
-import in.gagan.base.framework.entity.user.VerificationToken;
+import javax.persistence.Query;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * This class provides CRUD operations on the VERIFICATION_TOKEN table using DAO pattern.
@@ -54,6 +52,25 @@ public class VerificationTokenDAOImpl extends AbstractBaseDAO<VerificationToken,
 		query.setParameter(TOKEN, token);
 		List<VerificationToken> verificationTokens = (List<VerificationToken>) query.getResultList();
 		
+		return !CollectionUtils.isEmpty(verificationTokens) ? Optional.of(verificationTokens.get(0)) : Optional.empty();
+	}
+
+	/**
+	 * Method used to fetch a token record based on email.
+	 *
+	 * @param email - email to fetch record
+	 * @return Optional<VerificationToken> - VerificationToken record
+	 */
+	@Override
+	public Optional<VerificationToken> fetchByEmail(String email) {
+		String selectQuery = LITERAL_SELECT + "tokens.* " + LITERAL_FROM + "VERIFICATION_TOKEN" + " tokens " + "INNER JOIN "
+							+ "USERS users " + LITERAL_WHERE + "tokens.user_id = users.user_id" + LITERAL_AND
+							+ "users.email = :email";
+
+		Query query = entityManager.createNativeQuery(selectQuery.toString(), VerificationToken.class);
+		query.setParameter("email", email);
+		List<VerificationToken> verificationTokens = (List<VerificationToken>) query.getResultList();
+
 		return !CollectionUtils.isEmpty(verificationTokens) ? Optional.of(verificationTokens.get(0)) : Optional.empty();
 	}
 	

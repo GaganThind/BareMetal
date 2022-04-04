@@ -37,5 +37,13 @@ public interface VerificationTokenDAO extends BaseDAO<VerificationToken, Long> {
 	 * @return Optional<VerificationToken> - VerificationToken record
 	 */
 	Optional<VerificationToken> fetchByToken(String token);
+
+	/**
+	 * Method used to fetch a token record based on email.
+	 *
+	 * @param email - email to fetch record
+	 * @return Optional<VerificationToken> - VerificationToken record
+	 */
+	Optional<VerificationToken> fetchByEmail(String email);
 	
 }

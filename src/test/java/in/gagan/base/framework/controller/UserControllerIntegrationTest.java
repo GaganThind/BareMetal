@@ -22,7 +22,10 @@ import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dto.user.UserDTO;
 import in.gagan.base.framework.entity.user.Role;
 import in.gagan.base.framework.entity.user.User;
+import in.gagan.base.framework.exception.InvalidTokenException;
+import in.gagan.base.framework.exception.UsernameExistException;
 import in.gagan.base.framework.service.user.UserDataService;
+import in.gagan.base.framework.service.user.UserRegisterationService;
 import in.gagan.base.framework.service.user.VerificationTokenService;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +36,9 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 
 import static in.gagan.base.framework.util.TestHelperUtil.*;
@@ -65,10 +70,12 @@ public class UserControllerIntegrationTest extends AbstractBaseTester {
 	@Autowired
 	private VerificationTokenService verificationTokenSvc;
 
+	@Autowired
+	private UserRegisterationService userRegisterationSvc;
+
 	private static boolean initialized = false;
 
-	private String token;
-
+	@Transactional
 	@Before
 	public void setup() {
 		if (initialized) {
@@ -115,8 +122,12 @@ public class UserControllerIntegrationTest extends AbstractBaseTester {
 
 		User verifyUser = new User("Verify", "Testing", "verifyuser@e.com", USER_PASSWORD);
 		verifyUser.setActiveSw(ApplicationConstants.CHAR_Y);
-		this.userDataSvc.saveUser(verifyUser);
-		//this.token = this.verificationTokenSvc.generateTokenForUser(verifyUser);
+		verifyUser.setPasswordExpireDate(LocalDateTime.now().plusDays(2));
+		try {
+			this.userRegisterationSvc.registerNewUser(verifyUser);
+		} catch (UsernameExistException e) {
+			// Nothing should happen
+		}
 
 		initialized = true;
 	}
@@ -223,12 +234,21 @@ public class UserControllerIntegrationTest extends AbstractBaseTester {
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 	}
 
-	//@Test
-	public void testVerifyUser() throws Exception {
-		String url = VERIFY_USER_BASE_URL + this.token;
+	@Test
+	public void testVerifyUser() throws InvalidTokenException {
+		String token = this.verificationTokenSvc.fetchByEmail("verifyuser@e.com").getToken();
+		String url = VERIFY_USER_BASE_URL + token;
 		ResponseEntity<String> responseEntity = verifyTokenUsingPatchMethod(url);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void testVerifyUserWithExpiredToken() {
+		String url = VERIFY_USER_BASE_URL + "skjdjgaksd";
+		ResponseEntity<String> responseEntity = verifyTokenUsingPatchMethod(url);
+
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
 
 	@Test

@@ -88,6 +88,21 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 		
 		return verificationToken;
 	}
+
+	/**
+	 * This method is used to fetch the token in the system based on user's email.
+	 *
+	 * @param email - email id of user to search in database
+	 * @throws InvalidTokenException
+	 * @return VerificationToken - Verification_Token record from database
+	 */
+	@Override
+	public VerificationToken fetchByEmail(String email) throws InvalidTokenException {
+		VerificationToken verificationToken =
+				this.verificationTokenDAO.fetchByEmail(email)
+											.orElseThrow(InvalidTokenException::new);
+		return verificationToken;
+	}
 	
 	/**
 	 * This method is used to delete the token once successfully verified.

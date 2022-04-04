@@ -45,6 +45,15 @@ public interface VerificationTokenService {
 	 * @return VerificationToken - Verification_Token record from database
 	 */
 	VerificationToken fetchByToken(String token) throws InvalidTokenException;
+
+	/**
+	 * This method is used to fetch the token in the system based on user's email.
+	 *
+	 * @param email - email id of user to search in database
+	 * @throws InvalidTokenException
+	 * @return VerificationToken - Verification_Token record from database
+	 */
+	VerificationToken fetchByEmail(String email) throws InvalidTokenException;
 	
 	/**
 	 * This method is used to delete the token once successfully verified.
