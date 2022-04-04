@@ -19,6 +19,7 @@ package in.gagan.base.framework.service.user;
 
 import javax.transaction.Transactional;
 
+import in.gagan.base.framework.exception.InvalidTokenException;
 import in.gagan.base.framework.service.EmailService;
 import in.gagan.base.framework.util.DTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,9 +124,10 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	 * This method is used to confirm the user registration by accepting a token.
 	 * 
 	 * @param token - Random token generated for activating user
+	 * @throws InvalidTokenException
 	 */
 	@Override
-	public void confirmUserRegisteration(String token) {
+	public void confirmUserRegisteration(String token) throws InvalidTokenException {
 		VerificationToken verificationToken = this.verificationTokenSvc.fetchByToken(token);
 		User user = verificationToken.getUser();
 		user.setActiveSw(ApplicationConstants.CHAR_Y);

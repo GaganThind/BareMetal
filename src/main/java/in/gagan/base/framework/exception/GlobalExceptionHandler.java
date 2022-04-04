@@ -183,6 +183,18 @@ public class GlobalExceptionHandler {
 	public final ResponseEntity<?> illegalAccessExceptionHandler(final IllegalAccessException ex, WebRequest request) {
 		return new ResponseEntity<>(handleException(ex), HttpStatus.FORBIDDEN);
 	}
+
+	/**
+	 * Global exception handler for InvalidTokenException
+	 *
+	 * @param ex - Exception thrown in application
+	 * @param request - Request Parameter to get details
+	 * @return ResponseEntity<?> - Response Entity object
+	 */
+	@ExceptionHandler(InvalidTokenException.class)
+	public final ResponseEntity<?> invalidTokenExceptionHandler(final InvalidTokenException ex, WebRequest request) {
+		return new ResponseEntity<>(handleException(ex), HttpStatus.BAD_REQUEST);
+	}
 	
 	/**
 	 * Global exception handler for Exception

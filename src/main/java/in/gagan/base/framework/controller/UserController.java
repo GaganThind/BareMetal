@@ -21,6 +21,7 @@ import in.gagan.base.framework.controller.base.AbstractController;
 import in.gagan.base.framework.dto.user.UpdateUserDTO;
 import in.gagan.base.framework.dto.user.UserDTO;
 import in.gagan.base.framework.entity.user.User;
+import in.gagan.base.framework.exception.InvalidTokenException;
 import in.gagan.base.framework.exception.UsernameExistException;
 import in.gagan.base.framework.service.user.UserRegisterationService;
 import in.gagan.base.framework.util.DTOMapper;
@@ -116,11 +117,12 @@ public class UserController extends AbstractController {
 	/**
 	 * This method is used to activate a newly added user.
 	 * 
-	 * @param token - Unique token string 
+	 * @param token - Unique token string
+	 * @throws InvalidTokenException
 	 * @return success message
 	 */
 	@PatchMapping(value = "/register/verify/{token}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> verifyUser(@NotNull @NotEmpty @PathVariable String token) {
+	public ResponseEntity<String> verifyUser(@NotNull @NotEmpty @PathVariable String token) throws InvalidTokenException {
 		this.userRegistrationSvc.confirmUserRegisteration(token);
 		final String message = getMessage("message.registration.user.verified");
 		return new ResponseEntity<>(message, HttpStatus.OK);

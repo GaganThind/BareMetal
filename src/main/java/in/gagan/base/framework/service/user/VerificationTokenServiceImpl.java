@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
+import in.gagan.base.framework.exception.InvalidTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,12 +71,14 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 	 * This method is used to fetch the provided token in the system.
 	 * 
 	 * @param token - Random verification token already sent in email
+	 * @throws InvalidTokenException
 	 * @return VerificationToken - Verification_Token record from database
 	 */
 	@Override
-	public VerificationToken fetchByToken(String token) {
+	public VerificationToken fetchByToken(String token) throws InvalidTokenException {
 		VerificationToken verificationToken = 
-				this.verificationTokenDAO.fetchByToken(token).orElseThrow(() -> new IllegalArgumentException("Invalid token!!!"));
+				this.verificationTokenDAO.fetchByToken(token)
+						.orElseThrow(InvalidTokenException::new);
 		
 		if(verificationToken.isExpiredToken()) {
 			String newToken = UUID.randomUUID().toString();
