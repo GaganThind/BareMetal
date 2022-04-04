@@ -87,7 +87,8 @@ public class PasswordManagerController extends AbstractController {
 	 * @return success message
 	 */
 	@PatchMapping(value = "/forgot/{token}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> forgotPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO,@NotNull @NotEmpty @PathVariable String token) {
+	public ResponseEntity<String> forgotPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO,
+												 @NotNull @NotEmpty @PathVariable String token) {
 		this.passwordManagerService.forgotPassword(passwordResetDTO.getPassword(), token);
 		final String message = getMessage("message.password.updated");
 		return new ResponseEntity<>(message, HttpStatus.OK);
