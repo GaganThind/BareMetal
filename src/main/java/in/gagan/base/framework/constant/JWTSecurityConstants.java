@@ -25,7 +25,7 @@ package in.gagan.base.framework.constant;
  */
 public final class JWTSecurityConstants {
 
-	public JWTSecurityConstants() { }
+	private JWTSecurityConstants() { }
 
 	public static final String HEADER_STRING = "Authorization";
 	public static final String BLANK = "";
