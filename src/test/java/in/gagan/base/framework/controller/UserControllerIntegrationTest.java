@@ -42,6 +42,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Objects;
 
 import static in.gagan.base.framework.util.CreateUserUtil.*;
 import static in.gagan.base.framework.enums.UserRoles.*;
@@ -184,7 +185,7 @@ public class UserControllerIntegrationTest {
 		ResponseEntity<UserDTO> responseEntity = getEntity(UserDTO.class, url);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(INTEGRATION_TEST_USER, responseEntity.getBody().getEmail());
+		assertEquals(INTEGRATION_TEST_USER, Objects.requireNonNull(responseEntity.getBody()).getEmail());
 		assertEquals("Integration Testing", responseEntity.getBody().getUsername());
 	}
 
@@ -289,7 +290,7 @@ public class UserControllerIntegrationTest {
 				this.testRestUtil.patch(inputUserDTO, UserDTO.class, url, email, USER_PASSWORD);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals(email, responseEntity.getBody().getEmail());
+		assertEquals(email, Objects.requireNonNull(responseEntity.getBody()).getEmail());
 		assertEquals(dob, responseEntity.getBody().getDob());
 	}
 
@@ -312,7 +313,7 @@ public class UserControllerIntegrationTest {
 				this.testRestUtil.patch(inputUserDTO, UserDTO.class, url, "admintesting@e.com", "TestUser@123");
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals("dummytesting@e.com", responseEntity.getBody().getEmail());
+		assertEquals("dummytesting@e.com", Objects.requireNonNull(responseEntity.getBody()).getEmail());
 		assertEquals(dob, responseEntity.getBody().getDob());
 	}
 
