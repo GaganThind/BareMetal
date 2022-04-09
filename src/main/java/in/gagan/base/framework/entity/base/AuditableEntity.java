@@ -39,8 +39,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(value = AuditingEntityListener.class)
 public abstract class AuditableEntity implements BaseEntity {
 	
-	public AuditableEntity() { }
-	
 	public AuditableEntity(char activeSw) {
 		super();
 		this.activeSw = activeSw;
@@ -91,32 +89,16 @@ public abstract class AuditableEntity implements BaseEntity {
 		return createDt;
 	}
 
-	public void setCreateDt(LocalDateTime createDt) {
-		this.createDt = createDt;
-	}
-
 	public LocalDateTime getUpdateDt() {
 		return updateDt;
-	}
-
-	public void setUpdateDt(LocalDateTime updateDt) {
-		this.updateDt = updateDt;
 	}
 
 	public String getCreateUserId() {
 		return createUserId;
 	}
 
-	public void setCreateUserId(String createUserId) {
-		this.createUserId = createUserId;
-	}
-
 	public String getUpdateUserId() {
 		return updateUserId;
 	}
 
-	public void setUpdateUserId(String updateUserId) {
-		this.updateUserId = updateUserId;
-	}
-	
 }

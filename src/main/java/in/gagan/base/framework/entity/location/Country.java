@@ -70,10 +70,6 @@ public class Country extends NonAuditableEntity implements BaseEntity {
 		this.countryName = countryName;
 	}
 	
-	public void setCountryId(long countryId) {
-		this.countryId = countryId;
-	}
-
 	public long getCountryId() {
 		return countryId;
 	}

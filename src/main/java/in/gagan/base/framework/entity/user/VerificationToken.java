@@ -72,10 +72,6 @@ public class VerificationToken extends AuditableEntity implements BaseEntity {
 		return tokenId;
 	}
 
-	public void setTokenId(long tokenId) {
-		this.tokenId = tokenId;
-	}
-
 	public String getToken() {
 		return token;
 	}

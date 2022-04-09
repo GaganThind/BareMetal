@@ -74,10 +74,6 @@ public class Region extends NonAuditableEntity implements BaseEntity {
 		return regionId;
 	}
 
-	public void setRegionId(long regionId) {
-		this.regionId = regionId;
-	}
-
 	public String getRegionName() {
 		return regionName;
 	}

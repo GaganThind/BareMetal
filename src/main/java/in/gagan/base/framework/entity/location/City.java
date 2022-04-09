@@ -63,10 +63,6 @@ public class City extends NonAuditableEntity implements BaseEntity {
 		return cityId;
 	}
 
-	public void setCityId(long cityId) {
-		this.cityId = cityId;
-	}
-
 	public String getCityName() {
 		return cityName;
 	}

@@ -63,10 +63,6 @@ public class Role extends AuditableEntity implements BaseEntity {
 		return roleId;
 	}
 
-	public void setRoleId(long roleId) {
-		this.roleId = roleId;
-	}
-
 	public UserRoles getRoleName() {
 		return roleName;
 	}

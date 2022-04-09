@@ -195,10 +195,6 @@ public class User extends AuditableEntity implements BaseEntity {
 		return userId;
 	}
 
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-
 	public String getFirstName() {
 		return firstName;
 	}

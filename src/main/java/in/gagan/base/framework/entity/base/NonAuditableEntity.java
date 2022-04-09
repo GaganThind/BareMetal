@@ -29,8 +29,6 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class NonAuditableEntity implements BaseEntity {
 	
-	public NonAuditableEntity() {  }
-	
 	public NonAuditableEntity(char activeSw) {
 		super();
 		this.activeSw = activeSw;
