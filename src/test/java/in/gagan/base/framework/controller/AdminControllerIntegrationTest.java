@@ -171,7 +171,7 @@ public class AdminControllerIntegrationTest {
 	@Test
 	public void testUnlockUserAccountsWithNonAdminAccount() {
 		String url = "/v1/admin/account/unlock";
-		List<String> emails = Arrays.asList("updateadmintesting2@e.com");
+		List<String> emails = List.of("updateadmintesting2@e.com");
 		ResponseEntity<String> responseEntity =
 				this.testRestUtil.patch(emails, String.class, url, "nonadminusertesting@e.com", USER_PASSWORD);
 
