@@ -136,6 +136,24 @@ public class TestRestUtil {
     }
 
     /**
+     * Method used to perform post operation.
+     *
+     * @param output Expected class type from the output object
+     * @param url API endpoint url
+     * @param username Authentication user
+     * @param password Authentication user's password
+     * @param <T> Input object type
+     * @param <R> Result object type
+     * @return result object
+     */
+    public <T, R> ResponseEntity<R> post(Class<R> output, String url, String username, String password) {
+        String bearerToken = getBearerToken(username, password);
+        HttpHeaders requestHeaders = createHttpHeader(MediaType.TEXT_PLAIN, bearerToken);
+        HttpEntity<T> httpEntity = new HttpEntity<>(requestHeaders);
+        return this.restTemplate.postForEntity(url, httpEntity, output);
+    }
+
+    /**
      * Method used to perform put operation.
      *
      * @param input Input object to send to server
