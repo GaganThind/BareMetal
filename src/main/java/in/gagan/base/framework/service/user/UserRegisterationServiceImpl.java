@@ -119,6 +119,16 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	public void deleteUser(String email) {
 		this.userDataSvc.deleteUser(email.toLowerCase());
 	}
+
+	/**
+	 * This method is used to permanently delete the user record using provided email.
+	 *
+	 * @param email - Email address of user
+	 */
+	@Override
+	public void hardDeleteUser(String email) {
+		this.userDataSvc.hardDeleteUser(email);
+	}
 	
 	/**
 	 * This method is used to confirm the user registration by accepting a token.

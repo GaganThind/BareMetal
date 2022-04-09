@@ -122,6 +122,21 @@ public class UserControllerIntegrationTest {
 		deleteUser2.setActiveSw(ApplicationConstants.CHAR_Y);
 		this.userDataSvc.saveUser(deleteUser2);
 
+		User deleteUser3 = new User("Delete", "Testing", "deletetesting3@e.com", USER_PASSWORD);
+		deleteUser3.addRole(new Role(USER));
+		deleteUser3.setActiveSw(ApplicationConstants.CHAR_Y);
+		this.userDataSvc.saveUser(deleteUser3);
+
+		User deleteUser4 = new User("Delete", "Testing", "deletetesting4@e.com", USER_PASSWORD);
+		deleteUser4.addRole(new Role(USER));
+		deleteUser4.setActiveSw(ApplicationConstants.CHAR_Y);
+		this.userDataSvc.saveUser(deleteUser4);
+
+		User deleteUser5 = new User("Delete", "Testing", "deletetesting5@e.com", USER_PASSWORD);
+		deleteUser5.addRole(new Role(USER));
+		deleteUser5.setActiveSw(ApplicationConstants.CHAR_Y);
+		this.userDataSvc.saveUser(deleteUser5);
+
 		User updateUser = new User("Update", "Testing", "testupdateuser@e.com", USER_PASSWORD);
 		updateUser.addRole(new Role(USER));
 		updateUser.setActiveSw(ApplicationConstants.CHAR_Y);
@@ -224,6 +239,33 @@ public class UserControllerIntegrationTest {
 				this.testRestUtil.delete(url, "deletetesting@e.com", USER_PASSWORD);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void testHardDeleteUser() {
+		String url = DELETE_USER_BASE_URL + "deletetesting3@e.com" + "/hard";
+		ResponseEntity<String> responseEntity =
+				this.testRestUtil.delete(url, "deletetesting3@e.com", USER_PASSWORD);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void testHardDeleteUserWithAdminUser() {
+		String url = DELETE_USER_BASE_URL + "deletetesting4@e.com" + "/hard";
+		ResponseEntity<String> responseEntity =
+				this.testRestUtil.delete(url, "admintesting@e.com", USER_PASSWORD);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void testHardDeleteUserWithNonAdminUser() {
+		String url = DELETE_USER_BASE_URL + "deletetesting5@e.com" + "/hard";
+		ResponseEntity<String> responseEntity =
+				this.testRestUtil.delete(url, INTEGRATION_TEST_USER, USER_PASSWORD);
+
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
 	}
 
 	@Test

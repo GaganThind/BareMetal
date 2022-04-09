@@ -65,6 +65,13 @@ public interface UserRegisterationService {
 	void deleteUser(String email);
 
 	/**
+	 * This method is used to permanently delete the user record using provided email.
+	 *
+	 * @param email - Email address of user
+	 */
+	void hardDeleteUser(String email);
+
+	/**
 	 * This method is used to confirm the user registration by accepting a token.
 	 * 
 	 * @param token - Random token generated for activating user

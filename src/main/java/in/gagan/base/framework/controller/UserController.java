@@ -113,6 +113,21 @@ public class UserController extends AbstractController {
 		final String message = getMessage("message.registration.user.deleted", email);
 		return new ResponseEntity<>(message, HttpStatus.OK);
 	}
+
+	/**
+	 * This method is used to delete the user using the email.
+	 *
+	 * @param email - Input email to delete the user
+	 * @return success message
+	 * @throws IllegalAccessException - Logged-In User is different from updating user
+	 */
+	@DeleteMapping(value = "/{email}/hard", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> hardDeleteUser(@EmailValidator @PathVariable String email) throws IllegalAccessException {
+		UserHelperUtil.actionAllowed(email);
+		this.userRegistrationSvc.hardDeleteUser(email);
+		final String message = getMessage("message.registration.user.hard.deleted", email);
+		return new ResponseEntity<>(message, HttpStatus.OK);
+	}
 	
 	/**
 	 * This method is used to activate a newly added user.
