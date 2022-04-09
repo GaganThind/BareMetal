@@ -56,39 +56,12 @@ public class ExceptionMonitor extends AuditableEntity implements BaseEntity {
 		super(ApplicationConstants.CHAR_Y);
 	}
 
-	public ExceptionMonitor(String exceptionDetails, String exceptionMessage, String stackTrace) {
-		super(ApplicationConstants.CHAR_Y);
-		this.exceptionDetails = exceptionDetails;
-		this.exceptionMessage = exceptionMessage;
-		this.stackTrace = stackTrace;
-	}
-
-	public long getExceptionId() {
-		return exceptionId;
-	}
-
-	public void setExceptionId(long exceptionId) {
-		this.exceptionId = exceptionId;
-	}
-
-	public String getExceptionDetails() {
-		return exceptionDetails;
-	}
-
 	public void setExceptionDetails(String exceptionDetails) {
 		this.exceptionDetails = exceptionDetails;
 	}
 
-	public String getExceptionMessage() {
-		return exceptionMessage;
-	}
-
 	public void setExceptionMessage(String exceptionMessage) {
 		this.exceptionMessage = exceptionMessage;
-	}
-
-	public String getStackTrace() {
-		return stackTrace;
 	}
 
 	public void setStackTrace(String stackTrace) {
