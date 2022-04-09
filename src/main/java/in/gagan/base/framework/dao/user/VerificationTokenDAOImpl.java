@@ -61,6 +61,7 @@ public class VerificationTokenDAOImpl extends AbstractBaseDAO<VerificationToken,
 	 * @param email - email to fetch record
 	 * @return Optional<VerificationToken> - VerificationToken record
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<VerificationToken> fetchByEmail(String email) {
 		String selectQuery = LITERAL_SELECT + "tokens.* " + LITERAL_FROM + "VERIFICATION_TOKEN" + " tokens " + "INNER JOIN "

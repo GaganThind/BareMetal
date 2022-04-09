@@ -61,6 +61,8 @@ public class ForgotPasswordTokenDAOImpl extends AbstractBaseDAO<ForgotPasswordTo
 	 * @param email - email address for searching the token
 	 * @return Optional<ForgotPasswordToken> - ForgotPasswordToken record
 	 */
+	@SuppressWarnings("unchecked")
+	@Override
 	public Optional<ForgotPasswordToken> fetchByEmail(String email) {
 		String selectQuery = LITERAL_SELECT + "tokens.* " + LITERAL_FROM + "FORGOT_PASSWORD_TOKEN" + " tokens "
 				+ "INNER JOIN " + "USERS users " + LITERAL_WHERE + "tokens.user_id = users.user_id" + LITERAL_AND
