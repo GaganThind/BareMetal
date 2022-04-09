@@ -38,6 +38,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
@@ -202,6 +203,18 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(IllegalArgumentException.class)
 	public final ResponseEntity<?> illegalArgumentExceptionHandler(final IllegalArgumentException ex, WebRequest request) {
+		return new ResponseEntity<>(handleException(ex), HttpStatus.BAD_REQUEST);
+	}
+
+	/**
+	 * Global exception handler for NoSuchElementException
+	 *
+	 * @param ex - Exception thrown in application
+	 * @param request - Request Parameter to get details
+	 * @return ResponseEntity<?> - Response Entity object
+	 */
+	@ExceptionHandler(NoSuchElementException.class)
+	public final ResponseEntity<?> noSuchElementExceptionHandler(final NoSuchElementException ex, WebRequest request) {
 		return new ResponseEntity<>(handleException(ex), HttpStatus.BAD_REQUEST);
 	}
 	
