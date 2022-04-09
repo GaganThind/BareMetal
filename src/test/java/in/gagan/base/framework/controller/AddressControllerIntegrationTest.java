@@ -39,6 +39,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 import java.util.Set;
 
 import static in.gagan.base.framework.enums.UserRoles.ADMIN;
@@ -101,7 +102,7 @@ public class AddressControllerIntegrationTest {
                         INTEGRATION_TEST_USER, USER_PASSWORD);
 
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertTrue(!responseEntity.getBody().isEmpty());
+        Assert.assertFalse(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
     }
 
     @Test
@@ -120,7 +121,7 @@ public class AddressControllerIntegrationTest {
                         "nonadminaddress@e.com", USER_PASSWORD);
 
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertTrue(!responseEntity.getBody().isEmpty());
+        Assert.assertFalse(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
     }
 
     @Test
@@ -148,7 +149,7 @@ public class AddressControllerIntegrationTest {
                         "nonadminaddress@e.com", USER_PASSWORD);
 
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertTrue(!responseEntity.getBody().isEmpty());
+        Assert.assertFalse(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
     }
 
     @Test
@@ -177,7 +178,7 @@ public class AddressControllerIntegrationTest {
                         "nonadminaddress@e.com", USER_PASSWORD);
 
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertTrue(!responseEntity.getBody().isEmpty());
+        Assert.assertFalse(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
     }
 
     @Test
