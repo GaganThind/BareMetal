@@ -23,6 +23,7 @@ import in.gagan.base.framework.validator.PasswordMatches;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 /**
  * This DTO captures the password reset details.
@@ -37,11 +38,11 @@ public class PasswordResetDTO {
 	@NotNull(message = "{message.registration.password}")
 	@Size(min = 8, message = "{message.registration.password}")
 	private String password;
-	
+
 	@NotNull(message = "{message.registration.password}")
 	@Size(min = 1, message = "{message.registration.password}")
 	private String matchingPassword;
-	
+
 	@NotNull(message = "{message.registration.email}")
 	@Size(min = 4, message = "{message.registration.email}")
 	@EmailValidator
@@ -61,8 +62,8 @@ public class PasswordResetDTO {
 
 	public void setMatchingPassword(String matchingPassword) {
 		this.matchingPassword = matchingPassword;
-	} 
-	
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -70,5 +71,18 @@ public class PasswordResetDTO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		PasswordResetDTO that = (PasswordResetDTO) o;
+		return password.equals(that.password) && email.equals(that.email);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(password, email);
+	}
+
 }
