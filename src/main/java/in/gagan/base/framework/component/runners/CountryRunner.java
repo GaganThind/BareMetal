@@ -155,13 +155,6 @@ public class CountryRunner implements CommandLineRunner {
 
         public CountryInputDTO() { }
 
-        public CountryInputDTO(String city, String state, String country, long zipcode) {
-            this.city = city;
-            this.state = state;
-            this.country = country;
-            this.zipcode = zipcode;
-        }
-
         public long getZipcode() {
             return zipcode;
         }
