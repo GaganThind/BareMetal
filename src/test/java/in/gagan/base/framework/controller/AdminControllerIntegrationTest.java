@@ -116,7 +116,7 @@ public class AdminControllerIntegrationTest {
 		User hardDeleteUser2 = new User("Update", "Testing", "harddeleteuserbyadmin2@e.com", USER_PASSWORD);
 		this.userDataSvc.saveUser(hardDeleteUser2);
 
-		this.initialized = true;
+		initialized = true;
 	}
 	
 	@Test

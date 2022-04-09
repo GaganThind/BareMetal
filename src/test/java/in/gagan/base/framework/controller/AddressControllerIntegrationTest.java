@@ -86,7 +86,7 @@ public class AddressControllerIntegrationTest {
         nonAdminUser.setActiveSw(ApplicationConstants.CHAR_Y);
         this.userDataSvc.saveUser(nonAdminUser);
 
-        this.initialized = true;
+        initialized = true;
     }
 
     @Test

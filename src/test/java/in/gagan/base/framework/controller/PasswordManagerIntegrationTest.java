@@ -127,7 +127,7 @@ public class PasswordManagerIntegrationTest {
         }
         this.passwordManagerSvc.generateForgotPasswordToken(changePassword.getEmail());
 
-        this.initialized = true;
+        initialized = true;
     }
 
     @Test
