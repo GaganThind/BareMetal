@@ -71,7 +71,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 	 * This method is used to fetch the provided token in the system.
 	 * 
 	 * @param token - Random verification token already sent in email
-	 * @throws InvalidTokenException
+	 * @throws InvalidTokenException - Token is not a valid one
 	 * @return VerificationToken - Verification_Token record from database
 	 */
 	@Override
@@ -93,7 +93,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 	 * This method is used to fetch the token in the system based on user's email.
 	 *
 	 * @param email - email id of user to search in database
-	 * @throws InvalidTokenException
+	 * @throws InvalidTokenException - Token is not a valid one
 	 * @return VerificationToken - Verification_Token record from database
 	 */
 	@Override

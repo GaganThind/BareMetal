@@ -118,7 +118,7 @@ public class UserController extends AbstractController {
 	 * This method is used to activate a newly added user.
 	 * 
 	 * @param token - Unique token string
-	 * @throws InvalidTokenException
+	 * @throws InvalidTokenException - Token is not a valid one
 	 * @return success message
 	 */
 	@PatchMapping(value = "/register/verify/{token}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)

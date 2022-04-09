@@ -124,7 +124,7 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	 * This method is used to confirm the user registration by accepting a token.
 	 * 
 	 * @param token - Random token generated for activating user
-	 * @throws InvalidTokenException
+	 * @throws InvalidTokenException - Token is not a valid one
 	 */
 	@Override
 	public void confirmUserRegisteration(String token) throws InvalidTokenException {
