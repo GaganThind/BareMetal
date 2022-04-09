@@ -98,10 +98,8 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 	 */
 	@Override
 	public VerificationToken fetchByEmail(String email) throws InvalidTokenException {
-		VerificationToken verificationToken =
-				this.verificationTokenDAO.fetchByEmail(email)
-											.orElseThrow(InvalidTokenException::new);
-		return verificationToken;
+		return this.verificationTokenDAO.fetchByEmail(email)
+									.orElseThrow(InvalidTokenException::new);
 	}
 	
 	/**

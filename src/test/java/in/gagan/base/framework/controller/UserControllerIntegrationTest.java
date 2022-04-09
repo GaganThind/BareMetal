@@ -272,9 +272,7 @@ public class UserControllerIntegrationTest {
 		HttpHeaders headers = createHttpHeader(MediaType.TEXT_PLAIN);
 		HttpEntity<String> httpEntity = new HttpEntity<>(headers);
 
-		ResponseEntity<String> responseEntity =
-				this.restTemplate.exchange(url, HttpMethod.PATCH, httpEntity, String.class);
-		return responseEntity;
+		return this.restTemplate.exchange(url, HttpMethod.PATCH, httpEntity, String.class);
 	}
 
 	private <T, R> ResponseEntity<R> patchEntity(T inputDTO, Class<R> output, String url) {

@@ -93,8 +93,7 @@ public class CountryRunner implements CommandLineRunner {
 
     private List<CountryInputDTO> readCountryFromCSVIntoList() throws RuntimeException {
         try (InputStream targetStream = new FileInputStream(fileLocation)) {
-            List<CountryInputDTO> countryList = CsvUtils.read(CountryInputDTO.class, targetStream);
-            return countryList;
+            return CsvUtils.read(CountryInputDTO.class, targetStream);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
