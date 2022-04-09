@@ -68,7 +68,7 @@ public class VerificationTokenDAOImpl extends AbstractBaseDAO<VerificationToken,
 							+ "USERS users " + LITERAL_WHERE + "tokens.user_id = users.user_id" + LITERAL_AND
 							+ "users.email = :email";
 
-		Query query = entityManager.createNativeQuery(selectQuery.toString(), VerificationToken.class);
+		Query query = entityManager.createNativeQuery(selectQuery, VerificationToken.class);
 		query.setParameter("email", email);
 		List<VerificationToken> verificationTokens = (List<VerificationToken>) query.getResultList();
 

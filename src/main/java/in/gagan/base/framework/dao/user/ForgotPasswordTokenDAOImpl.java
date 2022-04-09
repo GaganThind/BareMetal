@@ -68,7 +68,7 @@ public class ForgotPasswordTokenDAOImpl extends AbstractBaseDAO<ForgotPasswordTo
 				+ "INNER JOIN " + "USERS users " + LITERAL_WHERE + "tokens.user_id = users.user_id" + LITERAL_AND
 				+ "users.email = :email";
 
-		Query query = entityManager.createNativeQuery(selectQuery.toString(), ForgotPasswordToken.class);
+		Query query = entityManager.createNativeQuery(selectQuery, ForgotPasswordToken.class);
 		query.setParameter("email", email);
 		List<ForgotPasswordToken> forgotPasswordTokens = (List<ForgotPasswordToken>) query.getResultList();
 
