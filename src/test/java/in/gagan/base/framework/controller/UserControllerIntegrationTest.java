@@ -44,9 +44,9 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Objects;
 
-import static in.gagan.base.framework.util.CreateUserUtil.*;
 import static in.gagan.base.framework.enums.UserRoles.*;
-import static in.gagan.base.framework.util.TestRestUtil.*;
+import static in.gagan.base.framework.util.CreateUserUtil.*;
+import static in.gagan.base.framework.util.TestRestUtil.createHttpHeader;
 import static org.junit.Assert.assertEquals;
 
 /**
