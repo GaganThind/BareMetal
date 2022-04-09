@@ -151,9 +151,8 @@ public class AdminControllerIntegrationTest {
 	@Test
 	public void testUnlockUserAccountsWithNullPassed() {
 		String url = "/v1/admin/account/unlock";
-		List<String> emails = null;
 		ResponseEntity<String> responseEntity =
-				this.testRestUtil.patch(emails, String.class, url, INTEGRATION_TEST_USER, INTEGRATION_USER_PASSWORD);
+				this.testRestUtil.patch(null, String.class, url, INTEGRATION_TEST_USER, INTEGRATION_USER_PASSWORD);
 
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
