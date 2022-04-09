@@ -85,7 +85,7 @@ public class AddressController extends AbstractController {
 	 * @return countries - data consisting of all the countries
 	 */
 	@GetMapping(value = "/country", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Set<CountryDTO>> getCountries() {
+	public ResponseEntity<Set<CountryDTO>> getCountryNames() {
 		final String message = getMessage("message.address.countries.list.empty");
 		Iterable<Country> countries =
 				this.addressSvc.getCountries()
