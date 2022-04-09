@@ -30,7 +30,6 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 
 import static in.gagan.base.framework.enums.UserRoles.*;
-import static in.gagan.base.framework.enums.UserRoles.USER_BASIC;
 
 @Order(3)
 @Component
