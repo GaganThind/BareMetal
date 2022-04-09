@@ -53,4 +53,12 @@ public interface ForgotPasswordTokenService {
 	 */
 	void deleteToken(ForgotPasswordToken forgotPasswordToken);
 
+	/**
+	 * This method is used to fetch the token details based on provided email.
+	 *
+	 * @param email - email address for searching the token
+	 * @return ForgotPasswordToken - ForgotPasswordToken record from database
+	 */
+	Optional<ForgotPasswordToken> fetchByEmail(String email);
+
 }

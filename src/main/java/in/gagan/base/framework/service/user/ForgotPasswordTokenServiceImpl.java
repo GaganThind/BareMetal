@@ -95,4 +95,15 @@ public class ForgotPasswordTokenServiceImpl implements ForgotPasswordTokenServic
 		this.forgotPasswordTokenDAO.hardDelete(forgotPasswordToken);
 	}
 
+	/**
+	 * This method is used to fetch the token details based on provided email.
+	 *
+	 * @param email - email address for searching the token
+	 * @return ForgotPasswordToken - ForgotPasswordToken record from database
+	 */
+	@Override
+	public Optional<ForgotPasswordToken> fetchByEmail(String email) {
+		return this.forgotPasswordTokenDAO.fetchByEmail(email);
+	}
+
 }

@@ -38,4 +38,12 @@ public interface ForgotPasswordTokenDAO extends BaseDAO<ForgotPasswordToken, Lon
 	 */
 	Optional<ForgotPasswordToken> fetchByToken(String token);
 
+	/**
+	 * Method used to fetch a token record based on email.
+	 *
+	 * @param email - email address for searching the token
+	 * @return Optional<ForgotPasswordToken> - ForgotPasswordToken record
+	 */
+	Optional<ForgotPasswordToken> fetchByEmail(String email);
+
 }

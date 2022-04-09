@@ -17,16 +17,14 @@
 
 package in.gagan.base.framework.dao.user;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.Query;
-
 import in.gagan.base.framework.dao.base.AbstractBaseDAO;
+import in.gagan.base.framework.entity.user.ForgotPasswordToken;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
-import in.gagan.base.framework.entity.user.ForgotPasswordToken;
+import javax.persistence.Query;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * This class provides CRUD operations on the FORGOT_PASSWORD_TOKEN table using DAO pattern.
@@ -54,6 +52,24 @@ public class ForgotPasswordTokenDAOImpl extends AbstractBaseDAO<ForgotPasswordTo
 		query.setParameter(TOKEN, token);
 		List<ForgotPasswordToken> forgotPasswordTokens = (List<ForgotPasswordToken>) query.getResultList();
 		
+		return !CollectionUtils.isEmpty(forgotPasswordTokens) ? Optional.of(forgotPasswordTokens.get(0)) : Optional.empty();
+	}
+
+	/**
+	 * Method used to fetch a token record based on email.
+	 *
+	 * @param email - email address for searching the token
+	 * @return Optional<ForgotPasswordToken> - ForgotPasswordToken record
+	 */
+	public Optional<ForgotPasswordToken> fetchByEmail(String email) {
+		String selectQuery = LITERAL_SELECT + "tokens.* " + LITERAL_FROM + "FORGOT_PASSWORD_TOKEN" + " tokens "
+				+ "INNER JOIN " + "USERS users " + LITERAL_WHERE + "tokens.user_id = users.user_id" + LITERAL_AND
+				+ "users.email = :email";
+
+		Query query = entityManager.createNativeQuery(selectQuery.toString(), ForgotPasswordToken.class);
+		query.setParameter("email", email);
+		List<ForgotPasswordToken> forgotPasswordTokens = (List<ForgotPasswordToken>) query.getResultList();
+
 		return !CollectionUtils.isEmpty(forgotPasswordTokens) ? Optional.of(forgotPasswordTokens.get(0)) : Optional.empty();
 	}
 
