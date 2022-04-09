@@ -95,7 +95,8 @@ public class UserDAOImpl extends AbstractBaseDAO<User, Long> implements UserDAO 
 	 */
 	@Override
 	public void hardDeleteUsers(List<String> emails) {
-		String deleteRolesQuery = LITERAL_DELETE + "from ROLES where user_id in ( select user_id from USERS where email in :emails) ";
+		String deleteRolesQuery = LITERAL_DELETE +
+				"from ROLES where user_id in ( select user_id from USERS where email in :emails) ";
 		Query deleteRoles = entityManager.createNativeQuery(deleteRolesQuery);
 		deleteRoles.setParameter(EMAILS, emails);
 		deleteRoles.executeUpdate();
