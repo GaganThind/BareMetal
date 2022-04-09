@@ -31,22 +31,6 @@ import in.gagan.base.framework.entity.base.BaseEntity;
  * @param <K> - Key
  */
 public interface BaseDAO<E extends BaseEntity, K extends Serializable> {
-	
-	/**
-	 * Retrieves an entity by its id.
-	 *
-	 * @param id must not be {@literal null}.
-	 * @return the entity with the given id or {@literal Optional#empty()} if none found
-	 */
-	Optional<E> findById(K id);
-
-	/**
-	 * Returns whether an entity with the given id exists.
-	 *
-	 * @param id must not be {@literal null}.
-	 * @return {@literal true} if an entity with the given id exists, {@literal false} otherwise.
-	 */
-	boolean existsById(K id);
 
 	/**
 	 * Returns all instances of the type.
@@ -56,19 +40,13 @@ public interface BaseDAO<E extends BaseEntity, K extends Serializable> {
 	Optional<Iterable<E>> findAll();
 
 	/**
-	 * Returns all instances of the type with the given IDs.
+	 * Refresh the instance
 	 *
-	 * @param ids iterable of ids to be searched
-	 * @return All entities with passed ids
-	 */
-	Optional<Iterable<E>> findAllById(Iterable<K> ids);
-
-	/**
-	 * Returns the number of entities available.
+	 * @param <S> Entity object to be refreshed from database
 	 *
-	 * @return the number of entities
+	 * @param entity must not be {@literal null}.
 	 */
-	long count();
+	<S extends E> void refresh(S entity);
 	
 	/**
 	 * Saves a given entity.
@@ -83,13 +61,6 @@ public interface BaseDAO<E extends BaseEntity, K extends Serializable> {
 	 * @param entities must not be {@literal null}.
 	 */
 	<S extends E> void saveAll(Iterable<S> entities);
-	
-	/**
-	 * Mark the active SW as N for this id.
-	 *
-	 * @param id must not be {@literal null}.
-	 */
-	void deleteById(K id);
 
 	/**
 	 * Mark the active SW as N for this given entity.
@@ -106,18 +77,6 @@ public interface BaseDAO<E extends BaseEntity, K extends Serializable> {
 	void deleteAll(Iterable<E> entities);
 
 	/**
-	 * Mark the active SW as N for entities managed by the repository.
-	 */
-	void deleteAll();
-	
-	/**
-	 * Deletes the entity with the given id.
-	 *
-	 * @param id must not be {@literal null}.
-	 */
-	void hardDeleteById(K id);
-
-	/**
 	 * Deletes a given entity.
 	 *
 	 * @param entity Entity object for permanent deletion from database
@@ -130,10 +89,5 @@ public interface BaseDAO<E extends BaseEntity, K extends Serializable> {
 	 * @param entities Entity objects for permanent deletion from database
 	 */
 	void hardDeleteAll(Iterable<E> entities);
-
-	/**
-	 * Deletes all entities managed by the repository.
-	 */
-	void hardDeleteAll();
 
 }

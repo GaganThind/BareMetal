@@ -97,56 +97,13 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	}
 	
 	/**
-	 * Retrieves an entity by its id.
-	 *
-	 * @param id must not be {@literal null}.
-	 * @return the entity with the given id or {@literal Optional#empty()} if none
-	 *         found
-	 */
-	@Override
-	public Optional<E> findById(K id) {
-		return Optional.ofNullable(entityManager.find(getPersistentClass(), id));
-	}
-	
-	/**
-	 * Returns whether an entity with the given id exists.
-	 *
-	 * @param id must not be {@literal null}.
-	 * @return {@literal true} if an entity with the given id exists,
-	 *         {@literal false} otherwise.
-	 */
-	@Override
-	public boolean existsById(K id) {
-		return findById(id).isPresent();
-	}
-
-	/**
-	 * Returns all instances of the type with the given IDs.
-	 *
-	 * @param ids iterable of ids to be searched
-	 * @return All entities with passed ids
-	 */
-	@Override
-	public Optional<Iterable<E>> findAllById(Iterable<K> ids) {
-		return Optional.ofNullable(entityManager.unwrap(Session.class).byMultipleIds(getPersistentClass()).multiLoad((List<K>) ids));
-	}
-
-	/**
-	 * @return the number of entities
-	 */
-	@Override
-	public long count() {
-		Iterable<E> entities = findAll().orElse(Collections.emptyList());
-		return ((Collection<E>) entities).size();
-	}
-	
-	/**
 	 * Refresh the instance
 	 * 
 	 * @param <S> Entity object to be refreshed from database
 	 *
 	 * @param entity must not be {@literal null}.
 	 */
+	@Override
 	public <S extends E> void refresh(S entity) {
 		entityManager.refresh(entity);
 	}
@@ -176,16 +133,6 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	}
 
 	/**
-	 * Deletes the entity with the given id.
-	 *
-	 * @param id must not be {@literal null}.
-	 */
-	@Override
-	public void hardDeleteById(K id) {
-		findById(id).ifPresent(this::hardDelete);
-	}
-
-	/**
 	 * Deletes a given entity.
 	 *
 	 * @param entity Entity object for permanent deletion from database
@@ -209,24 +156,6 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	}
 
 	/**
-	 * Deletes all entities managed by the repository.
-	 */
-	@Override
-	public void hardDeleteAll() {
-		findAll().ifPresent(this::hardDeleteAll);
-	}
-	
-	/**
-	 * Mark the active SW as N for this id.
-	 *
-	 * @param id must not be {@literal null}.
-	 */
-	@Override
-	public void deleteById(K id) {
-		findById(id).ifPresent(this::delete);
-	}
-
-	/**
 	 * Mark the active SW as N for this given entity.
 	 *
 	 * @param entity Entity object for deletion from database
@@ -247,14 +176,6 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 		for (E entity : entities) {
 			delete(entity);
 		}
-	}
-
-	/**
-	 * Mark the active SW as N for entities managed by the repository.
-	 */
-	@Override
-	public void deleteAll() {
-		findAll().ifPresent(this::deleteAll);
 	}
 	
 }
