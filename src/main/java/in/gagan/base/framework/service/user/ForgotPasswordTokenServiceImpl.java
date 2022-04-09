@@ -17,17 +17,16 @@
 
 package in.gagan.base.framework.service.user;
 
-import java.util.UUID;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import in.gagan.base.framework.component.VerificationTokenProps;
 import in.gagan.base.framework.dao.user.ForgotPasswordTokenDAO;
 import in.gagan.base.framework.entity.user.ForgotPasswordToken;
 import in.gagan.base.framework.entity.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * This class provides the implementation of ForgotPasswordTokenService interface and provides operations for forgot password functionality.
@@ -55,14 +54,14 @@ public class ForgotPasswordTokenServiceImpl implements ForgotPasswordTokenServic
 	 * @return String - Random Password token
 	 */
 	@Override
-	public String generateForgotPasswordToken(User user) {
+	public Optional<String> generateForgotPasswordToken(User user) {
 		String token = UUID.randomUUID().toString();
 		ForgotPasswordToken forgotPasswordToken = new ForgotPasswordToken(token);
 		forgotPasswordToken.setUser(user);
 		forgotPasswordToken.setExpiryDate(this.verificationTokenProps.getExpiryTimeFromNow());
 		this.forgotPasswordTokenDAO.save(forgotPasswordToken);
 		
-		return forgotPasswordToken.getToken();
+		return Optional.ofNullable(forgotPasswordToken.getToken());
 	}
 
 	/**
@@ -72,7 +71,7 @@ public class ForgotPasswordTokenServiceImpl implements ForgotPasswordTokenServic
 	 * @return ForgotPasswordToken - ForgotPasswordToken record from database
 	 */
 	@Override
-	public ForgotPasswordToken fetchByToken(String token) {
+	public Optional<ForgotPasswordToken> fetchByToken(String token) {
 		ForgotPasswordToken forgotPasswordToken =
 				this.forgotPasswordTokenDAO.fetchByToken(token)
 						.orElseThrow(() -> new IllegalArgumentException("Invalid token!!!"));
@@ -83,7 +82,7 @@ public class ForgotPasswordTokenServiceImpl implements ForgotPasswordTokenServic
 			this.forgotPasswordTokenDAO.save(forgotPasswordToken);
 		}
 		
-		return forgotPasswordToken;
+		return Optional.of(forgotPasswordToken);
 	}
 
 	/**

@@ -76,7 +76,8 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 	@Override
 	public void generateForgotPasswordToken(String email) {
 		User user = this.userDataSvc.fetchUserByEmail(email);
-		String token = this.forgotPasswordTokenService.generateForgotPasswordToken(user);
+		String token = this.forgotPasswordTokenService.generateForgotPasswordToken(user)
+				.orElseThrow(IllegalStateException::new);
 		
 		sendPasswordResetEmail(email, token);
 	}
@@ -89,7 +90,8 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 	 */
 	@Override
 	public void forgotPassword(String password, String token) {
-		ForgotPasswordToken forgotPasswordToken = this.forgotPasswordTokenService.fetchByToken(token);
+		ForgotPasswordToken forgotPasswordToken = this.forgotPasswordTokenService.fetchByToken(token)
+				.orElseThrow(() -> new IllegalArgumentException("Illegal Token"));
 		User user = forgotPasswordToken.getUser();
 		
 		user.setPassword(password);

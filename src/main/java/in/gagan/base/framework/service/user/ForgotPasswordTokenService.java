@@ -20,6 +20,8 @@ package in.gagan.base.framework.service.user;
 import in.gagan.base.framework.entity.user.ForgotPasswordToken;
 import in.gagan.base.framework.entity.user.User;
 
+import java.util.Optional;
+
 /**
  * This Service interface defines the basic CRUD operations on a FORGOT_PASSWORD_TOKEN table.
  * 
@@ -34,7 +36,7 @@ public interface ForgotPasswordTokenService {
 	 * @param user - User entity object
 	 * @return String - Random password token
 	 */
-	String generateForgotPasswordToken(User user);
+	Optional<String> generateForgotPasswordToken(User user);
 	
 	/**
 	 * This method is used to fetch the provided token in the system.
@@ -42,7 +44,7 @@ public interface ForgotPasswordTokenService {
 	 * @param token - Random verification token already sent in email
 	 * @return ForgotPasswordToken - ForgotPasswordToken record from database
 	 */
-	ForgotPasswordToken fetchByToken(String token);
+	Optional<ForgotPasswordToken> fetchByToken(String token);
 	
 	/**
 	 * This method is used to delete the token once successfully verified.

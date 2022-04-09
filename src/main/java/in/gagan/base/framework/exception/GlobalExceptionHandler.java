@@ -17,11 +17,11 @@
 
 package in.gagan.base.framework.exception;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.ConstraintViolationException;
-
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import in.gagan.base.framework.dto.ExceptionDetailDTO;
+import in.gagan.base.framework.dto.ExceptionMonitorDTO;
+import in.gagan.base.framework.service.ExceptionMonitoringService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +36,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-
-import in.gagan.base.framework.dto.ExceptionDetailDTO;
-import in.gagan.base.framework.dto.ExceptionMonitorDTO;
-import in.gagan.base.framework.service.ExceptionMonitoringService;
+import javax.validation.ConstraintViolationException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class is a used to provide support for global exception handling.
@@ -193,6 +190,18 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(InvalidTokenException.class)
 	public final ResponseEntity<?> invalidTokenExceptionHandler(final InvalidTokenException ex, WebRequest request) {
+		return new ResponseEntity<>(handleException(ex), HttpStatus.BAD_REQUEST);
+	}
+
+	/**
+	 * Global exception handler for IllegalArgumentException
+	 *
+	 * @param ex - Exception thrown in application
+	 * @param request - Request Parameter to get details
+	 * @return ResponseEntity<?> - Response Entity object
+	 */
+	@ExceptionHandler(IllegalArgumentException.class)
+	public final ResponseEntity<?> illegalArgumentExceptionHandler(final IllegalArgumentException ex, WebRequest request) {
 		return new ResponseEntity<>(handleException(ex), HttpStatus.BAD_REQUEST);
 	}
 	
