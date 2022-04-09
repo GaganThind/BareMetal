@@ -59,10 +59,6 @@ public final class CountryDTO {
 		return regions;
 	}
 
-	public void setRegions(Set<RegionDTO> regions) {
-		this.regions = regions;
-	}
-
 	public void addRegion(RegionDTO region) {
 		if (null == this.regions) {
 			this.regions = new HashSet<>();

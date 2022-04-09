@@ -50,10 +50,6 @@ public final class CityDTO {
 	public Set<Long> getZipcodes() {
 		return zipcodes;
 	}
-	
-	public void setZipcodes(Set<Long> zipcodes) {
-		this.zipcodes = zipcodes;
-	}
 
 	public void addZipcode(long zipcode) {
 		if (null == this.zipcodes) {
