@@ -112,7 +112,7 @@ public class JWTUsernamePasswordAuthFilter extends UsernamePasswordAuthenticatio
 		
 		String token = this.jwtSvc.buildToken(authResult, ipAddress, userAgent);
 		String tokenPrefix = this.jwtProps.getTokenPrefix();
-		String headerString = new StringBuilder(tokenPrefix).append(token).toString();
+		String headerString = tokenPrefix + token;
 		
 		response.addHeader(HEADER_STRING, headerString);
 		

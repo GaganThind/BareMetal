@@ -26,6 +26,6 @@ package in.gagan.base.framework.exception;
 public final class UsernameExistException extends Exception {
 	
 	public UsernameExistException(String id) {
-		super(new StringBuilder("User with Username/Email_id: ").append(id).append(" already exists").toString());
+		super("User with Username/Email_id: " + id + " already exists");
 	}
 }

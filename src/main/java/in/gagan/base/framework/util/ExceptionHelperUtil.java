@@ -39,11 +39,10 @@ public final class ExceptionHelperUtil {
 	 * @return UsernameNotFoundException - exception
 	 */
 	public static Supplier<? extends UsernameNotFoundException> noUserNotFoundExceptionSupplier(String email) {
-		StringBuilder message = new StringBuilder();
-		message.append("Username/Email: ")
-				.append(email)
-				.append(" not found");
-		return () -> new UsernameNotFoundException(message.toString());
+        String message = "Username/Email: " +
+                email +
+                " not found";
+		return () -> new UsernameNotFoundException(message);
 	}
 
 	/**

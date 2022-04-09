@@ -78,7 +78,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	}
 	
 	private String convertRoleName(UserRoleDTO role) {
-		return new StringBuilder("ROLE_").append(role.getRoleName()).toString();
+		return "ROLE_" + role.getRoleName();
 	}
 
 }

@@ -56,7 +56,7 @@ public class JWTProps {
 	}
 
 	public String getTokenPrefix() {
-		return new StringBuilder(tokenPrefix).append(SINGLE_SPACE).toString();
+		return tokenPrefix + SINGLE_SPACE;
 	}
 	
 }

@@ -113,7 +113,7 @@ public final class UserHelperUtil {
 	@SuppressWarnings("unchecked")
 	public static boolean isAdminAccount() {
 		Authentication auth = loggedInUser();
-		String adminRoleName = new StringBuilder(ApplicationConstants.PREFIX_ROLE).append(UserRoles.ADMIN.name()).toString();
+		String adminRoleName = ApplicationConstants.PREFIX_ROLE + UserRoles.ADMIN.name();
 		GrantedAuthority admin = new SimpleGrantedAuthority(adminRoleName);
 		
 		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) auth.getAuthorities();
@@ -144,8 +144,8 @@ public final class UserHelperUtil {
 	 * @return username - firstname and lastname
 	 */
 	public static String getUsername(User user) {
-		return new StringBuilder(user.getFirstName()).append(ApplicationConstants.BLANK)
-				.append(user.getLastName()).toString();
+		return user.getFirstName() + ApplicationConstants.BLANK +
+                user.getLastName();
 	}
 	
 }

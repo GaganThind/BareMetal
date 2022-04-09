@@ -195,7 +195,7 @@ public class UserDTO {
 
 	@JsonIgnore
 	public String getUsername() {
-		return new StringBuilder(firstName).append(ApplicationConstants.BLANK).append(lastName).toString();
+		return firstName + ApplicationConstants.BLANK + lastName;
 	}
 
 	public String getEmail() {

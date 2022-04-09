@@ -53,7 +53,7 @@ public class UserDAOImpl extends AbstractBaseDAO<User, Long> implements UserDAO 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<User> findUserByEmail(String email) {
-		String selectQuery = new StringBuilder(LITERAL_FROM).append(getTableName()).append(WHERE_EMAIL_CLAUSE).toString();
+		String selectQuery = LITERAL_FROM + getTableName() + WHERE_EMAIL_CLAUSE;
 		Query query = entityManager.createQuery(selectQuery);
 		query.setParameter(EMAIL, email);
 		List<User> users = (List<User>) query.getResultList();
@@ -67,9 +67,9 @@ public class UserDAOImpl extends AbstractBaseDAO<User, Long> implements UserDAO 
 	 */
 	@Override
 	public void unlockUsers(List<String> emails) {
-		String softDeleteQuery = new StringBuilder(LITERAL_UPDATE).append(getTableName()).append(SET_ACCOUNT_LOCKED_CLAUSE)
-				.append(WHERE_EMAIL_IN_CLAUSE).toString();
-		Query query = entityManager.createQuery(softDeleteQuery);
+		String unlockQuery = LITERAL_UPDATE + getTableName() + SET_ACCOUNT_LOCKED_CLAUSE +
+                WHERE_EMAIL_IN_CLAUSE;
+		Query query = entityManager.createQuery(unlockQuery);
 		query.setParameter(EMAILS, emails);
 		query.executeUpdate();
 	}
@@ -81,8 +81,8 @@ public class UserDAOImpl extends AbstractBaseDAO<User, Long> implements UserDAO 
 	 */
 	@Override
 	public void deleteUsers(List<String> emails) {
-		String softDeleteQuery = new StringBuilder(LITERAL_UPDATE).append(getTableName()).append(SET_ACTIVE_N_CLAUSE)
-				.append(WHERE_EMAIL_IN_CLAUSE).toString();
+		String softDeleteQuery = LITERAL_UPDATE + getTableName() + SET_ACTIVE_N_CLAUSE +
+                WHERE_EMAIL_IN_CLAUSE;
 		Query query = entityManager.createQuery(softDeleteQuery);
 		query.setParameter(EMAILS, emails);
 		query.executeUpdate();

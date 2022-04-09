@@ -47,7 +47,7 @@ public class ForgotPasswordTokenDAOImpl extends AbstractBaseDAO<ForgotPasswordTo
 	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<ForgotPasswordToken> fetchByToken(String token) {
-		String selectQuery = new StringBuilder(LITERAL_FROM).append(getTableName()).append(WHERE_TOKEN_CLAUSE).toString();
+		String selectQuery = LITERAL_FROM + getTableName() + WHERE_TOKEN_CLAUSE;
 		Query query = entityManager.createQuery(selectQuery);
 		query.setParameter(TOKEN, token);
 		List<ForgotPasswordToken> forgotPasswordTokens = (List<ForgotPasswordToken>) query.getResultList();

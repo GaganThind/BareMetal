@@ -47,7 +47,7 @@ public class VerificationTokenDAOImpl extends AbstractBaseDAO<VerificationToken,
 	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<VerificationToken> fetchByToken(String token) {
-		String selectQuery = new StringBuilder(LITERAL_FROM).append(getTableName()).append(WHERE_TOKEN_CLAUSE).toString();
+		String selectQuery = LITERAL_FROM + getTableName() + WHERE_TOKEN_CLAUSE;
 		Query query = entityManager.createQuery(selectQuery);
 		query.setParameter(TOKEN, token);
 		List<VerificationToken> verificationTokens = (List<VerificationToken>) query.getResultList();
