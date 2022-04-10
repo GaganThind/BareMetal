@@ -189,7 +189,7 @@ public class AdminControllerIntegrationTest {
 
 	@Test
 	public void hardDeleteUserAccounts() {
-		String url = "/v1/admin/account/hardDelete";
+		String url = "/v1/admin/account/delete/hard";
 		List<String> emails = Arrays.asList("harddeleteuserbyadmin@e.com", "harddeleteuserbyadmin2@e.com");
 		ResponseEntity<String> responseEntity =
 				this.testRestUtil.delete(emails, url, INTEGRATION_TEST_USER, INTEGRATION_USER_PASSWORD);

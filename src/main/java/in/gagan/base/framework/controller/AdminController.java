@@ -103,7 +103,7 @@ public class AdminController extends AbstractController {
 	 * @param emails - emails of the accounts to be permanently deleted
 	 * @return success message
 	 */
-	@DeleteMapping(value = "/account/hardDelete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	@DeleteMapping(value = "/account/delete/hard", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> hardDeleteUserAccounts(@Valid @NotNull @NotEmpty @RequestBody List<String> emails) {
 		this.adminSvc.hardDeleteUsers(emails);
 		final String message = getMessage("message.admin.users.perm.delete");

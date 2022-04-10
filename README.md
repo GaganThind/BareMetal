@@ -162,7 +162,7 @@
 ]</code></pre>
         <li><h4>Hard Delete:-</h4></li>
         <b>Method:</b><code></code><br>
-        <b>URL:</b><code>/baseFw/api/v1/admin/account/hardDelete</code><br>
+        <b>URL:</b><code>/baseFw/api/v1/admin/account/delete/hard</code><br>
         <b>Payload:</b><pre><code>[ 
     "test3@e.com", 
     "test4@e.com" 
