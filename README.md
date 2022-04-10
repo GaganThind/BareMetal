@@ -114,9 +114,12 @@
     "email": "test1@e.com",
     "dob": "2020-05-03"
 }</code></pre>
-            <li><h4>Delete user:-</h4></li>
+            <li><h4>Delete user (Soft delete only):-</h4></li>
             <b>Method:</b><code>DELETE</code><br>
-            <b>URL:</b><code>/baseFw/api/v1/users/{email}</code><br><br>
+            <b>URL:</b><code>/baseFw/api/v1/users/{email}</code><br>
+            <li><h4>Delete user (Permanently):-</h4></li>
+            <b>Method:</b><code>DELETE</code><br>
+            <b>URL:</b><code>/baseFw/api/v1/users/{email}/hard</code><br>
             <li><h4>Activate User:-</h4></li>
             <b>Method:</b><code>PATCH</code><br>
             <b>URL:</b><code>/baseFw/api/v1/users/register/verify/{token}</code><br>
