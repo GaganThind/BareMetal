@@ -29,6 +29,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -47,13 +48,8 @@ import in.gagan.base.framework.constant.PersistenceConstants;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaAuditing
-@PropertySource(value = { "classpath:jpaConfiguration.properties" })
+@PropertySource("classpath:jpaConfiguration.properties")
 public class JPAPersistenceConfig {
-
-	/**
-	 * Default Spring data source
-	 */
-	private final DataSource dataSource;
 
 	/**
 	 * Environment variable
@@ -61,8 +57,7 @@ public class JPAPersistenceConfig {
 	private final Environment environment;
 	
 	@Autowired
-	public JPAPersistenceConfig(Environment environment, DataSource dataSource) {
-		this.dataSource = dataSource;
+	public JPAPersistenceConfig(Environment environment) {
 		this.environment = environment;
 	}
 
@@ -74,7 +69,7 @@ public class JPAPersistenceConfig {
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-		em.setDataSource(dataSource);
+		em.setDataSource(dataSource());
 		em.setPackagesToScan(PersistenceConstants.BASE_ENTITY_PATH, 
 				PersistenceConstants.APPLICATION_ENTITY_PATH);
 		em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
@@ -82,6 +77,17 @@ public class JPAPersistenceConfig {
 
 		return em;
 	}
+
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(environment.getProperty("jpa.datasource.driver-class-name"));
+        dataSource.setUrl(environment.getProperty("jpa.datasource.url"));
+        dataSource.setUsername(environment.getProperty("jpa.datasource.username"));
+        dataSource.setPassword(environment.getProperty("jpa.datasource.password"));
+
+        return dataSource;
+    }
 
 	/**
 	 * Transaction Manager
