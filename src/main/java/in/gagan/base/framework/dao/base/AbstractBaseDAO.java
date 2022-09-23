@@ -19,16 +19,12 @@ package in.gagan.base.framework.dao.base;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
