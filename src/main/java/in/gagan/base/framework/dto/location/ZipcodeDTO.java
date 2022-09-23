@@ -46,15 +46,15 @@ public class ZipcodeDTO {
 		return zipcode;
 	}
 
-	public String getCity() {
+	public String getCityId() {
 		return cityId;
 	}
 
-	public String getState() {
+	public String getStateId() {
 		return stateId;
 	}
 
-	public String getCountry() {
+	public String getCountryId() {
 		return countryId;
 	}
 

@@ -22,6 +22,7 @@ import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dto.location.CityDTO;
 import in.gagan.base.framework.dto.location.CountryDTO;
 import in.gagan.base.framework.dto.location.RegionDTO;
+import in.gagan.base.framework.dto.location.ZipcodeDTO;
 import in.gagan.base.framework.entity.user.Role;
 import in.gagan.base.framework.entity.user.User;
 import in.gagan.base.framework.service.location.AddressService;
@@ -39,7 +40,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-import java.util.Objects;
 import java.util.Set;
 
 import static in.gagan.base.framework.enums.UserRoles.ADMIN;
@@ -98,18 +98,29 @@ public class AddressControllerIntegrationTest {
     @Test
     public void testGetCountriesForAdminWithAdminUser() {
         ResponseEntity<Set<CountryDTO>> responseEntity =
-                this.testRestUtil.get(new ParameterizedTypeReference<>() { }, "/v1/address/admin/country",
-                        INTEGRATION_TEST_USER, USER_PASSWORD);
+                this.testRestUtil.get(
+                        new ParameterizedTypeReference<>() { },
+                        "/v1/address/admin/country",
+                        INTEGRATION_TEST_USER,
+                        USER_PASSWORD
+                );
 
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertFalse(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
+
+        Set<CountryDTO> countryDTOs = responseEntity.getBody();
+        Assert.assertNotNull("Response object is null", countryDTOs);
+        Assert.assertFalse("Country list is empty", countryDTOs.isEmpty());
     }
 
     @Test
     public void testGetCountriesForAdminWithNonAdminUser() {
         ResponseEntity<Set<CountryDTO>> responseEntity =
-                this.testRestUtil.get(new ParameterizedTypeReference<>() { }, "/v1/address/admin/country",
-                        "nonadminaddress@e.com", USER_PASSWORD);
+                this.testRestUtil.get(
+                        new ParameterizedTypeReference<>() { },
+                        "/v1/address/admin/country",
+                        "nonadminaddress@e.com",
+                        USER_PASSWORD
+                );
 
         Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
     }
@@ -117,27 +128,46 @@ public class AddressControllerIntegrationTest {
     @Test
     public void testGetCountryNames() {
         ResponseEntity<Set<CountryDTO>> responseEntity =
-                this.testRestUtil.get(new ParameterizedTypeReference<>() { }, "/v1/address/country",
-                        "nonadminaddress@e.com", USER_PASSWORD);
+                this.testRestUtil.get(
+                        new ParameterizedTypeReference<>() { },
+                        "/v1/address/country",
+                        "nonadminaddress@e.com",
+                        USER_PASSWORD
+                );
 
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertFalse(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
+
+        Set<CountryDTO> countryDTOs = responseEntity.getBody();
+        Assert.assertNotNull("Response object is null", countryDTOs);
+        Assert.assertFalse("Country names are empty", countryDTOs.isEmpty());
     }
 
     @Test
     public void testGetCountry() {
         ResponseEntity<CountryDTO> responseEntity =
-                this.testRestUtil.get(CountryDTO.class, "/v1/address/country/India",
-                        "nonadminaddress@e.com", USER_PASSWORD);
+                this.testRestUtil.get(
+                        CountryDTO.class,
+                        "/v1/address/country/India",
+                        "nonadminaddress@e.com",
+                        USER_PASSWORD
+                );
 
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        CountryDTO countryDTO = responseEntity.getBody();
+        Assert.assertNotNull("Response object is null", countryDTO);
+        Assert.assertNotNull("Country name cannot be null", countryDTO.getName());
     }
 
     @Test
     public void testGetCountryWithInvalidCountryId() {
         ResponseEntity<CountryDTO> responseEntity =
-                this.testRestUtil.get(CountryDTO.class, "/v1/address/country/IndiaNot",
-                        "nonadminaddress@e.com", USER_PASSWORD);
+                this.testRestUtil.get(
+                        CountryDTO.class,
+                        "/v1/address/country/IndiaNot",
+                        "nonadminaddress@e.com",
+                        USER_PASSWORD
+                );
 
         Assert.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
@@ -145,27 +175,46 @@ public class AddressControllerIntegrationTest {
     @Test
     public void testGetRegions() {
         ResponseEntity<Set<RegionDTO>> responseEntity =
-                this.testRestUtil.get(new ParameterizedTypeReference<>() { }, "/v1/address/country/India/states",
-                        "nonadminaddress@e.com", USER_PASSWORD);
+                this.testRestUtil.get(
+                        new ParameterizedTypeReference<>() { },
+                        "/v1/address/country/India/states",
+                        "nonadminaddress@e.com",
+                        USER_PASSWORD
+                );
 
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertFalse(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
+
+        Set<RegionDTO> regionDTOs = responseEntity.getBody();
+        Assert.assertNotNull("Response object is null", regionDTOs);
+        Assert.assertFalse("Region list is empty", regionDTOs.isEmpty());
     }
 
     @Test
     public void testGetRegion() {
         ResponseEntity<RegionDTO> responseEntity =
-                this.testRestUtil.get(RegionDTO.class, "/v1/address/country/India/states/Goa",
-                        "nonadminaddress@e.com", USER_PASSWORD);
+                this.testRestUtil.get(
+                        RegionDTO.class,
+                        "/v1/address/country/India/states/Goa",
+                        "nonadminaddress@e.com",
+                        USER_PASSWORD
+                );
 
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        RegionDTO regionDTO = responseEntity.getBody();
+        Assert.assertNotNull("Response object is null", regionDTO);
+        Assert.assertNotNull("Region name cannot be null", regionDTO.getName());
     }
 
     @Test
     public void testGetRegionWithInvalidRegionId() {
         ResponseEntity<RegionDTO> responseEntity =
-                this.testRestUtil.get(RegionDTO.class, "/v1/address/country/India/states/Goan",
-                        "nonadminaddress@e.com", USER_PASSWORD);
+                this.testRestUtil.get(
+                        RegionDTO.class,
+                        "/v1/address/country/India/states/Goan",
+                        "nonadminaddress@e.com",
+                        USER_PASSWORD
+                );
 
         Assert.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
@@ -173,50 +222,76 @@ public class AddressControllerIntegrationTest {
     @Test
     public void testGetCities() {
         ResponseEntity<Set<CityDTO>> responseEntity =
-                this.testRestUtil.get(new ParameterizedTypeReference<>() { },
+                this.testRestUtil.get(
+                        new ParameterizedTypeReference<>() { },
                         "/v1/address/country/India/states/Goa/cities",
-                        "nonadminaddress@e.com", USER_PASSWORD);
+                        "nonadminaddress@e.com",
+                        USER_PASSWORD
+                );
 
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertFalse(Objects.requireNonNull(responseEntity.getBody()).isEmpty());
+
+        Set<CityDTO> cityDTOs = responseEntity.getBody();
+        Assert.assertNotNull("Response object is null", cityDTOs);
+        Assert.assertFalse("City list is empty", cityDTOs.isEmpty());
     }
 
     @Test
     public void testGetCity() {
         ResponseEntity<CityDTO> responseEntity =
-                this.testRestUtil.get(CityDTO.class,
+                this.testRestUtil.get(
+                        CityDTO.class,
                         "/v1/address/country/India/states/Assam/cities/CACHAR",
-                        "nonadminaddress@e.com", USER_PASSWORD);
+                        "nonadminaddress@e.com",
+                        USER_PASSWORD
+                );
 
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        CityDTO cityDTO = responseEntity.getBody();
+        Assert.assertNotNull("Response object is null", cityDTO);
+        Assert.assertNotNull("City name cannot be null", cityDTO.getName());
     }
 
     @Test
     public void testGetCityWithInvalidCiyId() {
         ResponseEntity<CityDTO> responseEntity =
-                this.testRestUtil.get(CityDTO.class,
+                this.testRestUtil.get(
+                        CityDTO.class,
                         "/v1/address/country/India/states/Assam/cities/CACHARwqewq",
-                        "nonadminaddress@e.com", USER_PASSWORD);
+                        "nonadminaddress@e.com",
+                        USER_PASSWORD
+                );
 
         Assert.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 
     @Test
     public void testGetDataBasedOnZipCode() {
-        ResponseEntity<CityDTO> responseEntity =
-                this.testRestUtil.get(CityDTO.class,
+        ResponseEntity<ZipcodeDTO> responseEntity =
+                this.testRestUtil.get(
+                        ZipcodeDTO.class,
                         "/v1/address/country/India/zipcode/400708",
-                        "nonadminaddress@e.com", USER_PASSWORD);
+                        "nonadminaddress@e.com",
+                        USER_PASSWORD
+                );
 
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        ZipcodeDTO zipcodeDTO = responseEntity.getBody();
+        Assert.assertNotNull("Response object is null", zipcodeDTO);
+        Assert.assertNotNull("Valid zipcode return null value", zipcodeDTO.getCityId());
     }
 
     @Test
     public void testGetDataBasedOnZipCodeWithInvalidZipcode() {
-        ResponseEntity<CityDTO> responseEntity =
-                this.testRestUtil.get(CityDTO.class,
+        ResponseEntity<ZipcodeDTO> responseEntity =
+                this.testRestUtil.get(
+                        ZipcodeDTO.class,
                         "/v1/address/country/India/zipcode/400708354234",
-                        "nonadminaddress@e.com", USER_PASSWORD);
+                        "nonadminaddress@e.com",
+                        USER_PASSWORD
+                );
 
         Assert.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
