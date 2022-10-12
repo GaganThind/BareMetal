@@ -106,8 +106,7 @@ public class AddressController extends AbstractController {
 	 * @param countryId - country id for which data is to be searched
 	 * @return country - data consisting of all the states and respective cities
 	 */
-	@GetMapping(value = "/country/{countryId}", consumes = MediaType.TEXT_PLAIN_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/country/{countryId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CountryDTO> getCountry(@PathVariable String countryId) {
 		final String message = getMessage("message.address.country.not.found", countryId);
 		Country country =
@@ -127,8 +126,7 @@ public class AddressController extends AbstractController {
 	 * @return states - data consisting of all the states of the country and
 	 *         respective cities
 	 */
-	@GetMapping(value = "/country/{countryId}/states", consumes = MediaType.TEXT_PLAIN_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/country/{countryId}/states", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Set<RegionDTO>> getRegions(@PathVariable String countryId) {
 		final String message = getMessage("message.address.states.not.found", countryId);
 		Iterable<Region> regions =
@@ -147,8 +145,7 @@ public class AddressController extends AbstractController {
 	 * @param stateId   - state id for which data is to be searched
 	 * @return state - data consisting of all the cities of the state
 	 */
-	@GetMapping(value = "/country/{countryId}/states/{stateId}", consumes = MediaType.TEXT_PLAIN_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/country/{countryId}/states/{stateId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RegionDTO> getRegion(@PathVariable String countryId, @PathVariable String stateId) {
 		final String message = getMessage("message.address.state.not.found", stateId, countryId);
 		Region region =
@@ -168,8 +165,7 @@ public class AddressController extends AbstractController {
 	 * @param stateId   - state id for which data is to be searched
 	 * @return cities - data consisting of all the cities of the state
 	 */
-	@GetMapping(value = "/country/{countryId}/states/{stateId}/cities", consumes = MediaType.TEXT_PLAIN_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/country/{countryId}/states/{stateId}/cities", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Set<CityDTO>> getCities(@PathVariable String countryId, @PathVariable String stateId) {
 		final String message = getMessage("message.address.cities.not.found", stateId, countryId);
 		Iterable<City> cities =
@@ -188,7 +184,7 @@ public class AddressController extends AbstractController {
 	 * @param stateId   - state id for which data is to be searched
 	 * @return city - data consisting of city details
 	 */
-	@GetMapping(value = "/country/{countryId}/states/{stateId}/cities/{cityId}", consumes = MediaType.TEXT_PLAIN_VALUE,
+	@GetMapping(value = "/country/{countryId}/states/{stateId}/cities/{cityId}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CityDTO> getCity(@PathVariable String countryId, @PathVariable String stateId,
 			@PathVariable String cityId) {
@@ -214,8 +210,7 @@ public class AddressController extends AbstractController {
 	 * @param zipcode   - state id for which data is to be searched
 	 * @return zipcode - data containing details based on zipcode
 	 */
-	@GetMapping(value = "/country/{countryId}/zipcode/{zipcode}", consumes = MediaType.TEXT_PLAIN_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/country/{countryId}/zipcode/{zipcode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ZipcodeDTO> getDataBasedOnZipCode(@PathVariable String countryId, @PathVariable Long zipcode) {
 		final String message = getMessage("message.address.zipcode.not.found", zipcode, countryId);
 		ZipcodeDTO zipcodeObj =

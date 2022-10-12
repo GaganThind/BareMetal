@@ -60,7 +60,7 @@ public class AdminController extends AbstractController {
 	 * 
 	 * @return list of all the users in the system.
 	 */
-	@GetMapping(value = "/users", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UserDTO>> fetchAllUsers() {
 		final Iterable<User> users = this.adminSvc.fetchAllUsers()
 													.orElse(Collections.emptyList());
