@@ -19,6 +19,7 @@ package in.gagan.base.framework.dao.base;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -26,6 +27,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.entity.base.BaseEntity;
@@ -89,7 +91,8 @@ public abstract class AbstractBaseDAO<E extends BaseEntity, K extends Serializab
 	@Override
 	public Optional<Iterable<E>> findAll() {
 		TypedQuery<E> query = entityManager.createQuery(LITERAL_FROM + getPersistentClass().getSimpleName(), getPersistentClass());
-		return Optional.ofNullable(query.getResultList());
+		List<E> data = query.getResultList();
+		return !CollectionUtils.isEmpty(data) ? Optional.of(data) : Optional.empty();
 	}
 	
 	/**
