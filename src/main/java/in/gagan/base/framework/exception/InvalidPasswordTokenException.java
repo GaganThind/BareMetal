@@ -18,11 +18,15 @@
 package in.gagan.base.framework.exception;
 
 /**
- * class representing InvalidTokenException
+ * Exception thrown when invalid password reset token is received.
+ *
+ * @author gaganthind
+ *
  */
-public final class InvalidTokenException extends Exception {
+public class InvalidPasswordTokenException extends RuntimeException {
 
-    public InvalidTokenException() {
-        super("Invalid token");
+    public InvalidPasswordTokenException() { }
+    public InvalidPasswordTokenException(String message) {
+        super(message);
     }
 }

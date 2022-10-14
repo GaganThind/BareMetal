@@ -21,6 +21,7 @@ import in.gagan.base.framework.component.VerificationTokenProps;
 import in.gagan.base.framework.dao.user.ForgotPasswordTokenDAO;
 import in.gagan.base.framework.entity.user.ForgotPasswordToken;
 import in.gagan.base.framework.entity.user.User;
+import in.gagan.base.framework.exception.InvalidPasswordTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +75,7 @@ public class ForgotPasswordTokenServiceImpl implements ForgotPasswordTokenServic
 	public Optional<ForgotPasswordToken> fetchByToken(String token) {
 		ForgotPasswordToken forgotPasswordToken =
 				this.forgotPasswordTokenDAO.fetchByToken(token)
-						.orElseThrow(() -> new IllegalArgumentException("Invalid token!!!"));
+						.orElseThrow(InvalidPasswordTokenException::new);
 		
 		if (forgotPasswordToken.isExpiredToken()) {
 			String newToken = UUID.randomUUID().toString();

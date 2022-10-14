@@ -21,7 +21,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import in.gagan.base.framework.dto.ExceptionDetailDTO;
 import in.gagan.base.framework.dto.ExceptionMonitorDTO;
-import in.gagan.base.framework.exception.InvalidTokenException;
+import in.gagan.base.framework.exception.InvalidPasswordTokenException;
 import in.gagan.base.framework.exception.InvalidVerificationTokenException;
 import in.gagan.base.framework.exception.UsernameExistException;
 import in.gagan.base.framework.service.ExceptionMonitoringService;
@@ -194,15 +194,16 @@ public class GlobalExceptionHandler {
 	}
 
 	/**
-	 * Global exception handler for InvalidTokenException
+	 * Global exception handler for InvalidPasswordTokenException
 	 *
 	 * @param ex - Exception thrown in application
 	 * @param request - Request Parameter to get details
 	 * @return ResponseEntity<?> - Response Entity object
 	 */
-	@ExceptionHandler(InvalidTokenException.class)
-	public final ResponseEntity<?> invalidTokenExceptionHandler(final InvalidTokenException ex, WebRequest request) {
-		return new ResponseEntity<>(handleException(ex), HttpStatus.BAD_REQUEST);
+	@ExceptionHandler(InvalidPasswordTokenException.class)
+	public final ResponseEntity<?> invalidPasswordTokenExceptionHandler(final InvalidPasswordTokenException ex, WebRequest request) {
+		String message = getMessage("exception.password.token.invalid");
+		return new ResponseEntity<>(handleException(new InvalidPasswordTokenException(message)), HttpStatus.BAD_REQUEST);
 	}
 
 	/**

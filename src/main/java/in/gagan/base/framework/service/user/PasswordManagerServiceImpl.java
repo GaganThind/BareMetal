@@ -19,6 +19,7 @@ package in.gagan.base.framework.service.user;
 
 import javax.transaction.Transactional;
 
+import in.gagan.base.framework.exception.InvalidPasswordTokenException;
 import in.gagan.base.framework.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,7 +92,7 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 	@Override
 	public void forgotPassword(String password, String token) {
 		ForgotPasswordToken forgotPasswordToken = this.forgotPasswordTokenService.fetchByToken(token)
-				.orElseThrow(() -> new IllegalArgumentException("Illegal Token"));
+				.orElseThrow(InvalidPasswordTokenException::new);
 		User user = forgotPasswordToken.getUser();
 		
 		user.setPassword(password);
