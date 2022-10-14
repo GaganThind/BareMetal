@@ -21,10 +21,12 @@ import in.gagan.base.framework.dto.user.UsernamePasswordAuthDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.MessageSource;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 
+import java.util.Locale;
 import java.util.Objects;
 
 @Component
@@ -32,6 +34,20 @@ public class TestRestUtil {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Autowired
+    private MessageSource message;
+
+    /**
+     * Method used to get the message text from the message property file.
+     *
+     * @param message - message key corresponding to the message text
+     * @param tokens - any input token to be added to message text
+     * @return messageString - returns the complete message to be shown to user
+     */
+    public String getMessage(String message, Object... tokens) {
+        return this.message.getMessage(message, tokens, Locale.ENGLISH);
+    }
 
     /**
      * Method used to perform get operation.
