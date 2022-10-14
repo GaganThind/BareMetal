@@ -21,7 +21,7 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
-import in.gagan.base.framework.exception.InvalidTokenException;
+import in.gagan.base.framework.exception.InvalidVerificationTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,14 +71,14 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 	 * This method is used to fetch the provided token in the system.
 	 * 
 	 * @param token - Random verification token already sent in email
-	 * @throws InvalidTokenException - Token is not a valid one
+	 * @throws InvalidVerificationTokenException - Token is not a valid one
 	 * @return VerificationToken - Verification_Token record from database
 	 */
 	@Override
-	public VerificationToken fetchByToken(String token) throws InvalidTokenException {
+	public VerificationToken fetchByToken(String token) throws InvalidVerificationTokenException {
 		VerificationToken verificationToken = 
 				this.verificationTokenDAO.fetchByToken(token)
-						.orElseThrow(InvalidTokenException::new);
+						.orElseThrow(InvalidVerificationTokenException::new);
 		
 		if(verificationToken.isExpiredToken()) {
 			String newToken = UUID.randomUUID().toString();
@@ -93,13 +93,13 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 	 * This method is used to fetch the token in the system based on user's email.
 	 *
 	 * @param email - email id of user to search in database
-	 * @throws InvalidTokenException - Token is not a valid one
+	 * @throws InvalidVerificationTokenException - Token is not a valid one
 	 * @return VerificationToken - Verification_Token record from database
 	 */
 	@Override
-	public VerificationToken fetchByEmail(String email) throws InvalidTokenException {
+	public VerificationToken fetchByEmail(String email) throws InvalidVerificationTokenException {
 		return this.verificationTokenDAO.fetchByEmail(email)
-									.orElseThrow(InvalidTokenException::new);
+									.orElseThrow(InvalidVerificationTokenException::new);
 	}
 	
 	/**

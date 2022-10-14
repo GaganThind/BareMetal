@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import in.gagan.base.framework.dto.ExceptionDetailDTO;
 import in.gagan.base.framework.dto.ExceptionMonitorDTO;
 import in.gagan.base.framework.exception.InvalidTokenException;
+import in.gagan.base.framework.exception.InvalidVerificationTokenException;
 import in.gagan.base.framework.exception.UsernameExistException;
 import in.gagan.base.framework.service.ExceptionMonitoringService;
 import org.slf4j.Logger;
@@ -202,6 +203,19 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(InvalidTokenException.class)
 	public final ResponseEntity<?> invalidTokenExceptionHandler(final InvalidTokenException ex, WebRequest request) {
 		return new ResponseEntity<>(handleException(ex), HttpStatus.BAD_REQUEST);
+	}
+
+	/**
+	 * Global exception handler for InvalidVerificationTokenException
+	 *
+	 * @param ex - Exception thrown in application
+	 * @param request - Request Parameter to get details
+	 * @return ResponseEntity<?> - Response Entity object
+	 */
+	@ExceptionHandler(InvalidVerificationTokenException.class)
+	public final ResponseEntity<?> invalidVerificationTokenExceptionHandler(final InvalidVerificationTokenException ex, WebRequest request) {
+		String message = getMessage("exception.verification.token.invalid");
+		return new ResponseEntity<>(handleException(new InvalidVerificationTokenException(message)), HttpStatus.BAD_REQUEST);
 	}
 
 	/**

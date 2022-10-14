@@ -19,7 +19,7 @@ package in.gagan.base.framework.service.user;
 
 import in.gagan.base.framework.entity.user.User;
 import in.gagan.base.framework.entity.user.VerificationToken;
-import in.gagan.base.framework.exception.InvalidTokenException;
+import in.gagan.base.framework.exception.InvalidVerificationTokenException;
 
 /**
  * This Service interface defines the basic CRUD operations on a VERIFICATION_TOKEN table.
@@ -41,19 +41,19 @@ public interface VerificationTokenService {
 	 * This method is used to fetch the provided token in the system.
 	 * 
 	 * @param token - Random verification token already sent in email
-	 * @throws InvalidTokenException - Token is not a valid one
+	 * @throws InvalidVerificationTokenException - Token is not a valid one
 	 * @return VerificationToken - Verification_Token record from database
 	 */
-	VerificationToken fetchByToken(String token) throws InvalidTokenException;
+	VerificationToken fetchByToken(String token) throws InvalidVerificationTokenException;
 
 	/**
 	 * This method is used to fetch the token in the system based on user's email.
 	 *
 	 * @param email - email id of user to search in database
-	 * @throws InvalidTokenException - Token is not a valid one
+	 * @throws InvalidVerificationTokenException - Token is not a valid one
 	 * @return VerificationToken - Verification_Token record from database
 	 */
-	VerificationToken fetchByEmail(String email) throws InvalidTokenException;
+	VerificationToken fetchByEmail(String email) throws InvalidVerificationTokenException;
 	
 	/**
 	 * This method is used to delete the token once successfully verified.
