@@ -30,7 +30,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,19 +55,15 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BareMetalApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class AdminControllerIntegrationTest {
-	
-	@Autowired
-	private TestRestTemplate restTemplate;
 
-	@Autowired
-	private TestRestUtil testRestUtil;
-	
-	private static final String ADMIN_BASE_URL = "/v1/admin";
-	private static final String INTEGRATION_TEST_USER = "adminintergrationtest@e.com";
-	private static final String INTEGRATION_USER_PASSWORD = "TestUser@123";
+	private static final String ADMIN_USER = "adminintergrationtest@e.com";
+	private static final String ADMIN_PASSWORD = "TestUser@123";
 
 	@Autowired
 	private UserDataService userDataSvc;
+
+	@Autowired
+	private TestRestUtil testRestUtil;
 
 	private static boolean initialized = false;
 
@@ -79,41 +74,41 @@ public class AdminControllerIntegrationTest {
 			return;
 		}
 
-		User testingUser = new User("Integration", "Testing", INTEGRATION_TEST_USER, USER_PASSWORD);
+		User testingUser = new User("Admin", "Admin", ADMIN_USER, USER_PASSWORD);
 		testingUser.addRole(new Role(ADMIN));
 		testingUser.setActiveSw(ApplicationConstants.CHAR_Y);
 		this.userDataSvc.saveUser(testingUser);
 
-		User updateUser = new User("Update", "Testing", "updateadmintesting@e.com", USER_PASSWORD);
+		User updateUser = new User("A", "A", "updateadmintesting@e.com", USER_PASSWORD);
 		updateUser.addRole(new Role(USER_BASIC));
 		updateUser.setAccountLocked('Y');
 		this.userDataSvc.saveUser(updateUser);
 
-		User updateUser1 = new User("Update", "Testing", "updateadmintesting1@e.com", USER_PASSWORD);
+		User updateUser1 = new User("A", "A", "updateadmintesting1@e.com", USER_PASSWORD);
 		updateUser1.addRole(new Role(USER));
 		updateUser1.setAccountLocked('Y');
 		this.userDataSvc.saveUser(updateUser1);
 
-		User nonAdminUser = new User("Integration", "Testing", "nonadminusertesting@e.com", USER_PASSWORD);
+		User nonAdminUser = new User("A", "A", "nonadminusertesting@e.com", USER_PASSWORD);
 		nonAdminUser.addRole(new Role(USER));
 		nonAdminUser.setActiveSw(ApplicationConstants.CHAR_Y);
 		this.userDataSvc.saveUser(nonAdminUser);
 
-		User updateUser2 = new User("Update", "Testing", "updateadmintesting2@e.com", USER_PASSWORD);
+		User updateUser2 = new User("A", "A", "updateadmintesting2@e.com", USER_PASSWORD);
 		updateUser2.addRole(new Role(USER));
 		updateUser2.setAccountLocked('Y');
 		this.userDataSvc.saveUser(updateUser2);
 
-		User deleteUser = new User("Update", "Testing", "deleteuserbyadmin@e.com", USER_PASSWORD);
+		User deleteUser = new User("A", "A", "deleteuserbyadmin@e.com", USER_PASSWORD);
 		this.userDataSvc.saveUser(deleteUser);
 
-		User deleteUser2 = new User("Update", "Testing", "deleteuserbyadmin2@e.com", USER_PASSWORD);
+		User deleteUser2 = new User("A", "A", "deleteuserbyadmin2@e.com", USER_PASSWORD);
 		this.userDataSvc.saveUser(deleteUser2);
 
-		User hardDeleteUser = new User("Update", "Testing", "harddeleteuserbyadmin@e.com", USER_PASSWORD);
+		User hardDeleteUser = new User("A", "A", "harddeleteuserbyadmin@e.com", USER_PASSWORD);
 		this.userDataSvc.saveUser(hardDeleteUser);
 
-		User hardDeleteUser2 = new User("Update", "Testing", "harddeleteuserbyadmin2@e.com", USER_PASSWORD);
+		User hardDeleteUser2 = new User("A", "A", "harddeleteuserbyadmin2@e.com", USER_PASSWORD);
 		this.userDataSvc.saveUser(hardDeleteUser2);
 
 		initialized = true;
@@ -123,7 +118,7 @@ public class AdminControllerIntegrationTest {
 	public <T> void testFetchAllUsers() {
 		ResponseEntity<List<UserDTO>> responseEntity =
 				this.testRestUtil.get(new ParameterizedTypeReference<>() { }
-						, "/v1/admin/users", INTEGRATION_TEST_USER, INTEGRATION_USER_PASSWORD);
+						, "/v1/admin/users", ADMIN_USER, ADMIN_PASSWORD);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		assertTrue(Objects.requireNonNull(responseEntity.getBody()).size() > 0);
@@ -143,16 +138,19 @@ public class AdminControllerIntegrationTest {
 		String url = "/v1/admin/account/unlock";
 		List<String> emails = Arrays.asList("updateadmintesting@e.com", "updateadmintesting1@e.com");
 		ResponseEntity<String> responseEntity =
-				this.testRestUtil.patch(emails, String.class, url, INTEGRATION_TEST_USER, INTEGRATION_USER_PASSWORD);
+				this.testRestUtil.patch(emails, String.class, url, ADMIN_USER, ADMIN_PASSWORD);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+		final String message = this.testRestUtil.getMessage("message.admin.users.unlock");
+		assertEquals(message, responseEntity.getBody());
 	}
 
 	@Test
 	public void testUnlockUserAccountsWithNullPassed() {
 		String url = "/v1/admin/account/unlock";
 		ResponseEntity<String> responseEntity =
-				this.testRestUtil.patch(null, String.class, url, INTEGRATION_TEST_USER, INTEGRATION_USER_PASSWORD);
+				this.testRestUtil.patch(null, String.class, url, ADMIN_USER, ADMIN_PASSWORD);
 
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
@@ -162,7 +160,7 @@ public class AdminControllerIntegrationTest {
 		String url = "/v1/admin/account/unlock";
 		List<String> emails = new ArrayList<>();
 		ResponseEntity<String> responseEntity =
-				this.testRestUtil.patch(emails, String.class, url, INTEGRATION_TEST_USER, INTEGRATION_USER_PASSWORD);
+				this.testRestUtil.patch(emails, String.class, url, ADMIN_USER, ADMIN_PASSWORD);
 
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 	}
@@ -182,9 +180,12 @@ public class AdminControllerIntegrationTest {
 		String url = "/v1/admin/account/delete";
 		List<String> emails = Arrays.asList("deleteuserbyadmin@e.com", "deleteuserbyadmin2@e.com");
 		ResponseEntity<String> responseEntity =
-				this.testRestUtil.delete(emails, url, INTEGRATION_TEST_USER, INTEGRATION_USER_PASSWORD);
+				this.testRestUtil.delete(emails, url, ADMIN_USER, ADMIN_PASSWORD);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+		final String message = this.testRestUtil.getMessage("message.admin.users.delete");
+		assertEquals(message, responseEntity.getBody());
 	}
 
 	@Test
@@ -192,9 +193,12 @@ public class AdminControllerIntegrationTest {
 		String url = "/v1/admin/account/delete/hard";
 		List<String> emails = Arrays.asList("harddeleteuserbyadmin@e.com", "harddeleteuserbyadmin2@e.com");
 		ResponseEntity<String> responseEntity =
-				this.testRestUtil.delete(emails, url, INTEGRATION_TEST_USER, INTEGRATION_USER_PASSWORD);
+				this.testRestUtil.delete(emails, url, ADMIN_USER, ADMIN_PASSWORD);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+		final String message = this.testRestUtil.getMessage("message.admin.users.perm.delete");
+		assertEquals(message, responseEntity.getBody());
 	}
 
 }
