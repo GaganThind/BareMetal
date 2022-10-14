@@ -20,7 +20,6 @@ package in.gagan.base.framework.service.user;
 import in.gagan.base.framework.dto.user.UpdateUserDTO;
 import in.gagan.base.framework.dto.user.UserDTO;
 import in.gagan.base.framework.entity.user.User;
-import in.gagan.base.framework.exception.InvalidTokenException;
 import in.gagan.base.framework.exception.UsernameExistException;
 
 /**
@@ -29,7 +28,7 @@ import in.gagan.base.framework.exception.UsernameExistException;
  * @author gaganthind
  *
  */
-public interface UserRegisterationService {
+public interface UserRegistrationService {
 
 	/**
 	 * This method is used to register a new user in the system.
@@ -75,9 +74,8 @@ public interface UserRegisterationService {
 	 * This method is used to confirm the user registration by accepting a token.
 	 * 
 	 * @param token - Random token generated for activating user
-	 * @throws InvalidTokenException - Token is not a valid one
 	 */
-	void confirmUserRegisteration(String token) throws InvalidTokenException;
+	void confirmUserRegistration(String token);
 
 	/**
 	 * This method is used to send account verification email with random token for user verification.

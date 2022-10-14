@@ -19,7 +19,6 @@ package in.gagan.base.framework.service.user;
 
 import javax.transaction.Transactional;
 
-import in.gagan.base.framework.exception.InvalidTokenException;
 import in.gagan.base.framework.service.EmailService;
 import in.gagan.base.framework.util.DTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +33,14 @@ import in.gagan.base.framework.exception.UsernameExistException;
 import in.gagan.base.framework.util.UserHelperUtil;
 
 /**
- * This class provides the implementation of UserRegisterationService interface and provides operations for User Registeration functionality.
+ * This class provides the implementation of UserRegistrationService interface and provides operations for User Registeration functionality.
  * 
  * @author gaganthind
  *
  */
 @Transactional
 @Service
-public class UserRegisterationServiceImpl implements UserRegisterationService {
+public class UserRegistrationServiceImpl implements UserRegistrationService {
 	
 	private final UserDataService userDataSvc;
 	
@@ -50,7 +49,7 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	private final EmailService emailSvc;
 	
 	@Autowired
-	public UserRegisterationServiceImpl(UserDataService userDataSvc, VerificationTokenService verificationTokenSvc, EmailService emailSvc) {
+	public UserRegistrationServiceImpl(UserDataService userDataSvc, VerificationTokenService verificationTokenSvc, EmailService emailSvc) {
 		this.userDataSvc = userDataSvc;
 		this.verificationTokenSvc = verificationTokenSvc;
 		this.emailSvc = emailSvc;
@@ -134,10 +133,9 @@ public class UserRegisterationServiceImpl implements UserRegisterationService {
 	 * This method is used to confirm the user registration by accepting a token.
 	 * 
 	 * @param token - Random token generated for activating user
-	 * @throws InvalidTokenException - Token is not a valid one
 	 */
 	@Override
-	public void confirmUserRegisteration(String token) throws InvalidTokenException {
+	public void confirmUserRegistration(String token) {
 		VerificationToken verificationToken = this.verificationTokenSvc.fetchByToken(token);
 		User user = verificationToken.getUser();
 		user.setActiveSw(ApplicationConstants.CHAR_Y);

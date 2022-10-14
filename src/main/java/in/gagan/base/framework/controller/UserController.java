@@ -21,9 +21,8 @@ import in.gagan.base.framework.controller.base.AbstractController;
 import in.gagan.base.framework.dto.user.UpdateUserDTO;
 import in.gagan.base.framework.dto.user.UserDTO;
 import in.gagan.base.framework.entity.user.User;
-import in.gagan.base.framework.exception.InvalidTokenException;
 import in.gagan.base.framework.exception.UsernameExistException;
-import in.gagan.base.framework.service.user.UserRegisterationService;
+import in.gagan.base.framework.service.user.UserRegistrationService;
 import in.gagan.base.framework.util.DTOMapper;
 import in.gagan.base.framework.util.UserHelperUtil;
 import in.gagan.base.framework.validator.EmailValidator;
@@ -49,10 +48,10 @@ import javax.validation.constraints.NotNull;
 @Validated
 public class UserController extends AbstractController {
 	
-	private final UserRegisterationService userRegistrationSvc;
+	private final UserRegistrationService userRegistrationSvc;
 	
 	@Autowired
-	public UserController(UserRegisterationService userRegistrationSvc) {
+	public UserController(UserRegistrationService userRegistrationSvc) {
 		this.userRegistrationSvc = userRegistrationSvc;
 	}
 	
@@ -133,12 +132,11 @@ public class UserController extends AbstractController {
 	 * This method is used to activate a newly added user.
 	 * 
 	 * @param token - Unique token string
-	 * @throws InvalidTokenException - Token is not a valid one
 	 * @return success message
 	 */
 	@PatchMapping(value = "/register/verify/{token}", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<String> verifyUser(@NotNull @NotEmpty @PathVariable String token) throws InvalidTokenException {
-		this.userRegistrationSvc.confirmUserRegisteration(token);
+	public ResponseEntity<String> verifyUser(@NotNull @NotEmpty @PathVariable String token) {
+		this.userRegistrationSvc.confirmUserRegistration(token);
 		final String message = getMessage("message.registration.user.verified");
 		return new ResponseEntity<>(message, HttpStatus.OK);
 	}
