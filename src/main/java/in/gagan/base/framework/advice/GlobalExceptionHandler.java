@@ -27,6 +27,8 @@ import in.gagan.base.framework.service.ExceptionMonitoringService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -40,6 +42,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -53,10 +56,14 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 	
 	private final ExceptionMonitoringService exceptionMonitoringSvc;
+
+	private final MessageSource messageSource;
 	
 	@Autowired
-	public GlobalExceptionHandler(ExceptionMonitoringService exceptionMonitoringSvc) {
+	public GlobalExceptionHandler(ExceptionMonitoringService exceptionMonitoringSvc,
+								  @Qualifier("exceptionMessageSource") MessageSource messageSource) {
 		this.exceptionMonitoringSvc = exceptionMonitoringSvc;
+		this.messageSource = messageSource;
 	}
 
 	final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
@@ -97,7 +104,8 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(UsernameExistException.class)
 	public final ResponseEntity<?> usernameExistExceptionHandler(final UsernameExistException ex, WebRequest request) {
-		return new ResponseEntity<>(handleException(ex), HttpStatus.FOUND);
+		String message = getMessage("exception.user.exists", ex.getMessage());
+		return new ResponseEntity<>(handleException(new UsernameExistException(message)), HttpStatus.FOUND);
 	}
 	
 	/**
@@ -230,6 +238,17 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<?> globalExceptionHandler(final Exception ex, WebRequest request) {
 		return new ResponseEntity<>(handleException(ex), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	/**
+	 * Method used to get the message text from the message property file.
+	 *
+	 * @param message - message key corresponding to the message text
+	 * @param tokens - any input token to be added to message text
+	 * @return messageString - returns the complete message to be shown to user
+	 */
+	private String getMessage(String message, Object... tokens) {
+		return this.messageSource.getMessage(message, tokens, Locale.ENGLISH);
 	}
 
 }
