@@ -22,10 +22,9 @@ import in.gagan.base.framework.constant.ApplicationConstants;
 import in.gagan.base.framework.dto.user.UserDTO;
 import in.gagan.base.framework.entity.user.Role;
 import in.gagan.base.framework.entity.user.User;
-import in.gagan.base.framework.exception.InvalidTokenException;
 import in.gagan.base.framework.exception.UsernameExistException;
 import in.gagan.base.framework.service.user.UserDataService;
-import in.gagan.base.framework.service.user.UserRegisterationService;
+import in.gagan.base.framework.service.user.UserRegistrationService;
 import in.gagan.base.framework.service.user.VerificationTokenService;
 import in.gagan.base.framework.util.TestRestUtil;
 import org.junit.Before;
@@ -48,6 +47,7 @@ import static in.gagan.base.framework.enums.UserRoles.*;
 import static in.gagan.base.framework.util.CreateUserUtil.*;
 import static in.gagan.base.framework.util.TestRestUtil.createHttpHeader;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This class is used to test the functionality of the UserController class.
@@ -78,7 +78,7 @@ public class UserControllerIntegrationTest {
 	private VerificationTokenService verificationTokenSvc;
 
 	@Autowired
-	private UserRegisterationService userRegisterationSvc;
+	private UserRegistrationService userRegistrationSvc;
 
 	@Autowired
 	private TestRestUtil testRestUtil;
@@ -146,7 +146,7 @@ public class UserControllerIntegrationTest {
 		verifyUser.setActiveSw(ApplicationConstants.CHAR_Y);
 		verifyUser.setPasswordExpireDate(LocalDateTime.now().plusDays(2));
 		try {
-			this.userRegisterationSvc.registerNewUser(verifyUser);
+			this.userRegistrationSvc.registerNewUser(verifyUser);
 		} catch (UsernameExistException e) {
 			// Nothing should happen
 		}
@@ -160,6 +160,10 @@ public class UserControllerIntegrationTest {
 		ResponseEntity<String> responseEntity = registerUserPostRequest(userDTO, REGISTER_USER);
 
 		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+
+		final String message =
+				this.testRestUtil.getMessage("message.registration.successful", userDTO.getEmail());
+		assertEquals(message, responseEntity.getBody());
 	}
 
 	@Test
@@ -168,6 +172,10 @@ public class UserControllerIntegrationTest {
 		ResponseEntity<String> responseEntity = registerUserPostRequest(userDTO, REGISTER_USER);
 
 		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+
+		String message =
+				this.testRestUtil.getMessage("message.registration.successful", userDTO.getEmail());
+		assertEquals(message, responseEntity.getBody());
 	}
 
 	@Test
@@ -186,6 +194,7 @@ public class UserControllerIntegrationTest {
 		ResponseEntity<String> responseEntity = registerUserPostRequest(userDTO, REGISTER_USER);
 
 		assertEquals(HttpStatus.FOUND, responseEntity.getStatusCode());
+		assertTrue("Invalid error thrown", responseEntity.getBody().contains("UsernameExistException"));
 	}
 
 	private <T> ResponseEntity<String> registerUserPostRequest(T inputDTO, String url) {
@@ -234,38 +243,14 @@ public class UserControllerIntegrationTest {
 
 	@Test
 	public void testDeleteUserWithItself() {
-		String url = DELETE_USER_BASE_URL + "deletetesting@e.com";
-		ResponseEntity<String> responseEntity =
-				this.testRestUtil.delete(url, "deletetesting@e.com", USER_PASSWORD);
+		String email = "deletetesting@e.com";
+		String url = DELETE_USER_BASE_URL + email;
+		ResponseEntity<String> responseEntity = this.testRestUtil.delete(url, email, USER_PASSWORD);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-	}
 
-	@Test
-	public void testHardDeleteUser() {
-		String url = DELETE_USER_BASE_URL + "deletetesting3@e.com" + "/hard";
-		ResponseEntity<String> responseEntity =
-				this.testRestUtil.delete(url, "deletetesting3@e.com", USER_PASSWORD);
-
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-	}
-
-	@Test
-	public void testHardDeleteUserWithAdminUser() {
-		String url = DELETE_USER_BASE_URL + "deletetesting4@e.com" + "/hard";
-		ResponseEntity<String> responseEntity =
-				this.testRestUtil.delete(url, "admintesting@e.com", USER_PASSWORD);
-
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-	}
-
-	@Test
-	public void testHardDeleteUserWithNonAdminUser() {
-		String url = DELETE_USER_BASE_URL + "deletetesting5@e.com" + "/hard";
-		ResponseEntity<String> responseEntity =
-				this.testRestUtil.delete(url, INTEGRATION_TEST_USER, USER_PASSWORD);
-
-		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+		String message = this.testRestUtil.getMessage("message.registration.user.deleted", email);
+		assertEquals(message, responseEntity.getBody());
 	}
 
 	@Test
@@ -284,15 +269,56 @@ public class UserControllerIntegrationTest {
 				this.testRestUtil.delete(url, "admintesting@e.com", USER_PASSWORD);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+		String message = this.testRestUtil.getMessage("message.registration.user.deleted", "deletetesting2@e.com");
+		assertEquals(message, responseEntity.getBody());
 	}
 
 	@Test
-	public void testVerifyUser() throws InvalidTokenException {
+	public void testHardDeleteUser() {
+		String email = "deletetesting3@e.com";
+		String url = DELETE_USER_BASE_URL + email + "/hard";
+		ResponseEntity<String> responseEntity =
+				this.testRestUtil.delete(url, email, USER_PASSWORD);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+		String message = this.testRestUtil.getMessage("message.registration.user.hard.deleted", email);
+		assertEquals(message, responseEntity.getBody());
+	}
+
+	@Test
+	public void testHardDeleteUserWithAdminUser() {
+		String url = DELETE_USER_BASE_URL + "deletetesting4@e.com" + "/hard";
+		ResponseEntity<String> responseEntity =
+				this.testRestUtil.delete(url, "admintesting@e.com", USER_PASSWORD);
+
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+		String message = this.testRestUtil.getMessage("message.registration.user.hard.deleted",
+						"deletetesting4@e.com");
+		assertEquals(message, responseEntity.getBody());
+	}
+
+	@Test
+	public void testHardDeleteUserWithNonAdminUser() {
+		String url = DELETE_USER_BASE_URL + "deletetesting5@e.com" + "/hard";
+		ResponseEntity<String> responseEntity =
+				this.testRestUtil.delete(url, INTEGRATION_TEST_USER, USER_PASSWORD);
+
+		assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+	}
+
+	@Test
+	public void testVerifyUser() {
 		String token = this.verificationTokenSvc.fetchByEmail("verifyuser@e.com").getToken();
 		String url = VERIFY_USER_BASE_URL + token;
 		ResponseEntity<String> responseEntity = verifyTokenUsingPatchMethod(url);
 
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+		String message = this.testRestUtil.getMessage("message.registration.user.verified");
+		assertEquals(message, responseEntity.getBody());
 	}
 
 	@Test
@@ -301,6 +327,7 @@ public class UserControllerIntegrationTest {
 		ResponseEntity<String> responseEntity = verifyTokenUsingPatchMethod(url);
 
 		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		assertTrue("Invalid error thrown", responseEntity.getBody().contains("InvalidVerificationTokenException"));
 	}
 
 	@Test
