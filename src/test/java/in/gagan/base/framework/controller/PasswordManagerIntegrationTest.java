@@ -26,7 +26,7 @@ import in.gagan.base.framework.exception.UsernameExistException;
 import in.gagan.base.framework.service.user.ForgotPasswordTokenService;
 import in.gagan.base.framework.service.user.PasswordManagerService;
 import in.gagan.base.framework.service.user.UserDataService;
-import in.gagan.base.framework.service.user.UserRegisterationService;
+import in.gagan.base.framework.service.user.UserRegistrationService;
 import in.gagan.base.framework.util.TestRestUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +44,7 @@ import static in.gagan.base.framework.enums.UserRoles.ADMIN;
 import static in.gagan.base.framework.enums.UserRoles.USER;
 import static in.gagan.base.framework.util.CreateUserUtil.USER_PASSWORD;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This class is used to test the functionality of the PasswordManagerController class.
@@ -55,8 +56,7 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest(classes = BareMetalApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PasswordManagerIntegrationTest {
 
-    private static final String PASSWORD_BASE_URL = "/v1/password";
-    private static final String INTEGRATION_TEST_USER = "passwordintergrationtest@e.com";
+    private static final String ADMIN_USER = "passwordintergrationtest@e.com";
 
     @Autowired
     private TestRestUtil testRestUtil;
@@ -65,7 +65,7 @@ public class PasswordManagerIntegrationTest {
     private UserDataService userDataSvc;
 
     @Autowired
-    private UserRegisterationService userRegisterationSvc;
+    private UserRegistrationService userRegisterationSvc;
 
     @Autowired
     private ForgotPasswordTokenService forgotPasswordTokenSvc;
@@ -82,7 +82,7 @@ public class PasswordManagerIntegrationTest {
             return;
         }
 
-        User testingUser = new User("Integration", "Testing", INTEGRATION_TEST_USER, USER_PASSWORD);
+        User testingUser = new User("Integration", "Testing", ADMIN_USER, USER_PASSWORD);
         testingUser.setActiveSw(ApplicationConstants.CHAR_Y);
         testingUser.addRole(new Role(ADMIN));
         this.userDataSvc.saveUser(testingUser);
@@ -140,6 +140,9 @@ public class PasswordManagerIntegrationTest {
                         USER_PASSWORD);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        final String message = this.testRestUtil.getMessage("message.password.reset");
+        assertEquals(message, responseEntity.getBody());
     }
 
     @Test
@@ -148,10 +151,13 @@ public class PasswordManagerIntegrationTest {
         PasswordResetDTO passwordResetDTO = getPasswordResetDTO("Qwaszx@1234", "updatepasswordtesting2@e.com");
 
         ResponseEntity<String> responseEntity =
-                this.testRestUtil.patch(passwordResetDTO, String.class, url, INTEGRATION_TEST_USER,
+                this.testRestUtil.patch(passwordResetDTO, String.class, url, ADMIN_USER,
                         USER_PASSWORD);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        final String message = this.testRestUtil.getMessage("message.password.reset");
+        assertEquals(message, responseEntity.getBody());
     }
 
     @Test
@@ -174,6 +180,9 @@ public class PasswordManagerIntegrationTest {
                         USER_PASSWORD);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        final String message = this.testRestUtil.getMessage("message.password.token.reset");
+        assertEquals(message, responseEntity.getBody());
     }
 
     @Test
@@ -184,6 +193,9 @@ public class PasswordManagerIntegrationTest {
                         USER_PASSWORD);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        final String message = this.testRestUtil.getMessage("message.password.token.reset");
+        assertEquals(message, responseEntity.getBody());
     }
 
     @Test
@@ -201,6 +213,9 @@ public class PasswordManagerIntegrationTest {
                         "changepasswordbasedontokentesting@e.com", USER_PASSWORD);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        final String message = this.testRestUtil.getMessage("message.password.updated");
+        assertEquals(message, responseEntity.getBody());
     }
 
     @Test
@@ -216,6 +231,7 @@ public class PasswordManagerIntegrationTest {
                         "changepasswordbasedontokentesting@e.com", USER_PASSWORD);
 
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertTrue("Invalid error thrown", responseEntity.getBody().contains("InvalidPasswordTokenException"));
     }
 
     private PasswordResetDTO getPasswordResetDTO(String password, String email) {
