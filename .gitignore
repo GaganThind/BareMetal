@@ -29,3 +29,12 @@ Logs/
 # Files
 todo.txt
 Input.txt
+
+# Maven
+.mvn
+mvnw
+mvnw.cmd
+
+.classpath
+.project
+.settings
